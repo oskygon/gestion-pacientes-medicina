@@ -9,10 +9,13 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Separator } from '@/components/ui/separator';
 import { format } from 'date-fns';
+import DocumentoImprimible from '@/components/DocumentoImprimible';
 
 const NuevoPaciente = () => {
   const navigate = useNavigate();
   const [saving, setSaving] = useState(false);
+  const [pacienteRegistrado, setPacienteRegistrado] = useState<Paciente | null>(null);
+  const [showDocumento, setShowDocumento] = useState(false);
   const [formData, setFormData] = useState<Omit<Paciente, 'id' | 'createdAt'>>({
     nombre: '',
     apellido: '',
@@ -79,14 +82,36 @@ const NuevoPaciente = () => {
     try {
       setSaving(true);
       const id = await dbService.agregarPaciente(formData);
-      toast.success('Paciente registrado correctamente');
-      setTimeout(() => {
-        navigate(`/paciente/${id}`);
-      }, 1000);
+      
+      // Obtener el paciente registrado completo para mostrarlo en el documento
+      const pacienteCompleto = await dbService.obtenerPacientePorId(id);
+      
+      if (pacienteCompleto) {
+        setPacienteRegistrado(pacienteCompleto);
+        setShowDocumento(true);
+        toast.success('Paciente registrado correctamente');
+      } else {
+        toast.error('Error al recuperar datos del paciente');
+        setTimeout(() => {
+          navigate(`/paciente/${id}`);
+        }, 1000);
+      }
+      
+      setSaving(false);
     } catch (error) {
       console.error('Error al guardar el paciente:', error);
       toast.error('Error al guardar el paciente');
       setSaving(false);
+    }
+  };
+
+  const handleCloseDocumento = () => {
+    setShowDocumento(false);
+    // Redirigir a la página de detalle del paciente
+    if (pacienteRegistrado?.id) {
+      navigate(`/paciente/${pacienteRegistrado.id}`);
+    } else {
+      navigate('/');
     }
   };
 
@@ -605,7 +630,7 @@ const NuevoPaciente = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-6">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 py-6">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: -10 }}
@@ -614,11 +639,11 @@ const NuevoPaciente = () => {
         >
           <button 
             onClick={handleCancel}
-            className="mr-4 text-gray-600 hover:text-gray-900 transition-colors"
+            className="mr-4 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
           >
             <ArrowLeft className="w-6 h-6" />
           </button>
-          <h1 className="text-2xl font-bold text-gray-800">Registrar Nuevo Paciente</h1>
+          <h1 className="text-2xl font-bold text-gray-800 dark:text-white">Registrar Nuevo Paciente</h1>
         </motion.div>
 
         <form onSubmit={handleSubmit}>
@@ -671,6 +696,14 @@ const NuevoPaciente = () => {
             </div>
           </motion.div>
         </form>
+
+        {/* Documento imprimible */}
+        {showDocumento && pacienteRegistrado && (
+          <DocumentoImprimible 
+            paciente={pacienteRegistrado}
+            onClose={handleCloseDocumento}
+          />
+        )}
       </div>
     </div>
   );
