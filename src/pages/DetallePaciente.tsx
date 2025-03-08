@@ -1,7 +1,6 @@
-
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, Calendar, ClipboardList, Edit, User } from 'lucide-react';
+import { ArrowLeft, Calendar, ClipboardList, Edit, Printer, User } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { toast } from 'sonner';
 import { dbService, Paciente } from '../services/db';
@@ -10,12 +9,14 @@ import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import DocumentoImprimible from '@/components/DocumentoImprimible';
 
 const DetallePaciente = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [paciente, setPaciente] = useState<Paciente | null>(null);
   const [loading, setLoading] = useState(true);
+  const [mostrarDocumento, setMostrarDocumento] = useState(false);
 
   useEffect(() => {
     const cargarPaciente = async () => {
@@ -84,43 +85,52 @@ const DetallePaciente = () => {
   };
 
   const SeccionEncabezado = () => (
-    <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-md">
+    <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-md dark:bg-gray-800/80 dark:text-white">
       <div className="flex flex-col md:flex-row">
         <div className="w-full md:w-2/3">
-          <h2 className="text-2xl font-bold text-gray-800">
+          <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
             {paciente?.nombre} {paciente?.apellido}
           </h2>
           
           <div className="mt-2 grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2">
             <div className="flex items-center">
               <ClipboardList className="w-4 h-4 text-medical-600 mr-2" />
-              <span className="text-gray-600">HC: {paciente?.numeroHistoriaClinica}</span>
+              <span className="text-gray-600 dark:text-gray-300">HC: {paciente?.numeroHistoriaClinica}</span>
             </div>
             
             <div className="flex items-center">
               <Calendar className="w-4 h-4 text-medical-600 mr-2" />
-              <span className="text-gray-600">
+              <span className="text-gray-600 dark:text-gray-300">
                 Fecha de nacimiento: {formatearFecha(paciente?.fechaNacimiento || '')}
               </span>
             </div>
             
             <div className="flex items-center">
               <User className="w-4 h-4 text-medical-600 mr-2" />
-              <span className="text-gray-600">
+              <span className="text-gray-600 dark:text-gray-300">
                 Sexo: {paciente?.sexo === 'M' ? 'Masculino' : paciente?.sexo === 'F' ? 'Femenino' : paciente?.sexo || 'No especificado'}
               </span>
             </div>
             
             <div className="flex items-center">
               <Calendar className="w-4 h-4 text-medical-600 mr-2" />
-              <span className="text-gray-600">
+              <span className="text-gray-600 dark:text-gray-300">
                 Edad: {calcularEdad(paciente?.fechaNacimiento || '')}
               </span>
             </div>
           </div>
         </div>
         
-        <div className="flex-shrink-0 mt-4 md:mt-0">
+        <div className="flex-shrink-0 mt-4 md:mt-0 space-x-2">
+          <Button 
+            variant="outline"
+            onClick={() => setMostrarDocumento(true)}
+            className="border-medical-600 text-medical-600 hover:bg-medical-50 dark:text-medical-300 dark:border-medical-300 dark:hover:bg-gray-700"
+          >
+            <Printer className="w-4 h-4 mr-2" />
+            Imprimir Epicrisis
+          </Button>
+          
           <Button 
             className="bg-medical-600 hover:bg-medical-700 text-white" 
             onClick={() => navigate(`/editar-paciente/${id}`)}
@@ -420,7 +430,7 @@ const DetallePaciente = () => {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="w-12 h-12 border-4 border-medical-200 border-t-medical-600 rounded-full animate-spin mx-auto"></div>
-          <p className="mt-4 text-gray-600">Cargando datos del paciente...</p>
+          <p className="mt-4 text-gray-600 dark:text-gray-300">Cargando datos del paciente...</p>
         </div>
       </div>
     );
@@ -430,8 +440,8 @@ const DetallePaciente = () => {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-800 mb-2">Paciente no encontrado</h2>
-          <p className="text-gray-600 mb-6">No se encontró información para este paciente.</p>
+          <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">Paciente no encontrado</h2>
+          <p className="text-gray-600 dark:text-gray-300 mb-6">No se encontró información para este paciente.</p>
           <Button onClick={() => navigate('/')}>Volver al inicio</Button>
         </div>
       </div>
@@ -439,7 +449,7 @@ const DetallePaciente = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-6">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 py-6">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: -10 }}
@@ -448,11 +458,11 @@ const DetallePaciente = () => {
         >
           <button 
             onClick={() => navigate('/')}
-            className="mr-4 text-gray-600 hover:text-gray-900 transition-colors"
+            className="mr-4 text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors"
           >
             <ArrowLeft className="w-6 h-6" />
           </button>
-          <h1 className="text-2xl font-bold text-gray-800">Detalles del Paciente</h1>
+          <h1 className="text-2xl font-bold text-gray-800 dark:text-white">Detalles del Paciente</h1>
         </motion.div>
 
         <motion.div 
@@ -485,6 +495,13 @@ const DetallePaciente = () => {
           </div>
         </motion.div>
       </div>
+      
+      {mostrarDocumento && paciente && (
+        <DocumentoImprimible 
+          paciente={paciente} 
+          onClose={() => setMostrarDocumento(false)} 
+        />
+      )}
     </div>
   );
 };

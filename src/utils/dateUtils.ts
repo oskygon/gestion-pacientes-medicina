@@ -1,5 +1,5 @@
 
-import { format, parse } from 'date-fns';
+import { format, parse, isValid } from 'date-fns';
 
 /**
  * Formatea una fecha en formato yyyy-MM-dd a un formato legible (dd/MM/yyyy)
@@ -8,8 +8,16 @@ export const formatDate = (dateString: string): string => {
   try {
     if (!dateString) return '';
     
-    // Parsear la fecha de formato ISO (yyyy-MM-dd) a un objeto Date
-    const date = parse(dateString, 'yyyy-MM-dd', new Date());
+    // Convertir string a objeto Date directamente
+    let date = new Date(dateString);
+    
+    // Si la fecha no es válida, intentar parsear usando date-fns
+    if (!isValid(date)) {
+      date = parse(dateString, 'yyyy-MM-dd', new Date());
+    }
+    
+    // Verificar nuevamente si la fecha es válida
+    if (!isValid(date)) return dateString;
     
     // Formatear la fecha al formato deseado
     return format(date, 'dd/MM/yyyy');
