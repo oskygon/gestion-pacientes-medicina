@@ -1,0 +1,814 @@
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { ArrowLeft, Save, X } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { toast } from 'sonner';
+import { dbService, Paciente } from '../services/db';
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Separator } from '@/components/ui/separator';
+import { format } from 'date-fns';
+import DocumentoImprimible from '@/components/DocumentoImprimible';
+
+
+const EditarPaciente = () => {
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const [saving, setSaving] = useState(false);
+  const [paciente, setPaciente] = useState<Paciente | null>(null);
+  const [showDocumento, setShowDocumento] = useState(false);
+  const [ddv, setDDV] = useState<number>(0);
+  const calcularDDV = (fechaNacimiento: string): number => {
+    // Convertir la fecha de nacimiento a un objeto Date
+    const fechaNac = new Date(fechaNacimiento);
+    
+    // Obtener la fecha actual
+    const fechaActual = new Date();
+    
+    // Calcular la diferencia en milisegundos
+    const diferenciaMs = fechaActual.getTime() - fechaNac.getTime();
+    
+    // Convertir la diferencia de milisegundos a días
+    const diferenciaDias = Math.floor(diferenciaMs / (1000 * 60 * 60 * 24));
+    
+    return diferenciaDias;
+  };
+
+  // Cargar los datos del paciente al iniciar
+  useEffect(() => {
+    const cargarPaciente = async () => {
+      if (!id) return;
+         try {
+        const pacienteData = await dbService.obtenerPacientePorId(parseInt(id));
+        if (pacienteData) {
+          setPaciente(pacienteData);
+          // Calcular DDV automáticamente
+        const ddvCalculado = calcularDDV(pacienteData.fechaNacimiento);
+        setPaciente((prev) => (prev ? { ...prev, ddv: ddvCalculado.toString() } : null));
+      }
+      
+      } catch (error) {
+        console.error('Error al cargar paciente:', error);
+        toast.error('Error al cargar los datos del paciente');
+      }
+    };
+
+    cargarPaciente();
+  }, [id, navigate]);
+
+  useEffect(() => {
+    if (paciente?.fechaNacimiento) {
+      const ddvCalculado = calcularDDV(paciente.fechaNacimiento);
+      setPaciente((prev) => (prev ? { ...prev, ddv: ddvCalculado.toString() } : null));
+    }
+  }, [paciente?.fechaNacimiento]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const { name, value, type } = e.target as HTMLInputElement;
+
+    if (type === 'checkbox') {
+      const { checked } = e.target as HTMLInputElement;
+      setPaciente((prev) => (prev ? { ...prev, [name]: checked } : null));
+    } else {
+      setPaciente((prev) => (prev ? { ...prev, [name]: value } : null));
+    }
+  };
+
+  const handleCancel = () => {
+    navigate(`/paciente/${id}`);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!paciente?.nombre || !paciente?.apellido || !paciente?.numeroHistoriaClinica) {
+      toast.error('Por favor complete todos los campos obligatorios');
+      return;
+    }
+
+    try {
+      setSaving(true);
+      await dbService.actualizarPaciente(paciente);
+      toast.success('Paciente actualizado correctamente');
+      setSaving(false);
+      navigate(`/paciente/${id}`);
+    } catch (error) {
+      console.error('Error al actualizar el paciente:', error);
+      toast.error('Error al actualizar el paciente');
+      setSaving(false);
+    }
+  };
+
+  if (!paciente) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-medical-200 border-t-medical-600 rounded-full animate-spin mx-auto"></div>
+          <p className="mt-4 text-gray-600 dark:text-gray-300">Cargando datos del paciente...</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 py-6">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex items-center mb-6"
+        >
+          <button
+            onClick={handleCancel}
+            className="mr-4 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
+          >
+            <ArrowLeft className="w-6 h-6" />
+          </button>
+          <h1 className="text-2xl font-bold text-gray-800 dark:text-white">Editar Paciente</h1>
+        </motion.div>
+
+        <form onSubmit={handleSubmit}>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="space-y-6"
+          >
+            {/* Información Personal */}
+            <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-md">
+              <h3 className="text-lg font-semibold text-gray-800 mb-4">Información Personal</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">Nombre *</label>
+                  <input
+                    type="text"
+                    name="nombre"
+                    value={paciente.nombre}
+                    onChange={handleChange}
+                    className="glass-input w-full rounded-lg"
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">Apellido *</label>
+                  <input
+                    type="text"
+                    name="apellido"
+                    value={paciente.apellido}
+                    onChange={handleChange}
+                    className="glass-input w-full rounded-lg"
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">Fecha de Nacimiento *</label>
+                  <input
+                    type="date"
+                    name="fechaNacimiento"
+                    value={paciente.fechaNacimiento}
+                    onChange={handleChange}
+                    className="glass-input w-full rounded-lg"
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">Hora de Nacimiento</label>
+                  <input
+                    type="time"
+                    name="horaNacimiento"
+                    value={paciente.horaNacimiento}
+                    onChange={handleChange}
+                    className="glass-input w-full rounded-lg"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">Número de Historia Clínica *</label>
+                  <input
+                    type="text"
+                    name="numeroHistoriaClinica"
+                    value={paciente.numeroHistoriaClinica}
+                    onChange={handleChange}
+                    className="glass-input w-full rounded-lg"
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">Sexo</label>
+                  <select
+                    name="sexo"
+                    value={paciente.sexo}
+                    onChange={handleChange}
+                    className="glass-input w-full rounded-lg"
+                  >
+                    <option value="">Seleccionar...</option>
+                    <option value="M">Masculino</option>
+                    <option value="F">Femenino</option>
+                    <option value="O">Otro</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            {/* Datos de Nacimiento */}
+            <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-md">
+              <h3 className="text-lg font-semibold text-gray-800 mb-4">Datos de Nacimiento</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">Peso (g)</label>
+                  <input
+                    type="text"
+                    name="peso"
+                    value={paciente.peso}
+                    onChange={handleChange}
+                    className="glass-input w-full rounded-lg"
+                    placeholder="Ej: 3500"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">Talla (cm)</label>
+                  <input
+                    type="text"
+                    name="talla"
+                    value={paciente.talla}
+                    onChange={handleChange}
+                    className="glass-input w-full rounded-lg"
+                    placeholder="Ej: 50"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">Perímetro Cefálico (cm)</label>
+                  <input
+                    type="text"
+                    name="perimetroCefalico"
+                    value={paciente.perimetroCefalico}
+                    onChange={handleChange}
+                    className="glass-input w-full rounded-lg"
+                    placeholder="Ej: 34"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">Edad Gestacional</label>
+                  <input
+                    type="text"
+                    name="edadGestacional"
+                    value={paciente.edadGestacional}
+                    onChange={handleChange}
+                    className="glass-input w-full rounded-lg"
+                    placeholder="Ej: 38 sem"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">APGAR</label>
+                  <input
+                    type="text"
+                    name="apgar"
+                    value={paciente.apgar}
+                    onChange={handleChange}
+                    className="glass-input w-full rounded-lg"
+                    placeholder="Ej: 9/10"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">DDV</label>
+                  <input
+                    type="text"
+                    name="ddv"
+                    value={paciente.ddv}
+                    onChange={handleChange}
+                    className="glass-input w-full rounded-lg"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">HC</label>
+                  <input
+                    type="text"
+                    name="hc"
+                    value={paciente.hc}
+                    onChange={handleChange}
+                    className="glass-input w-full rounded-lg"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">Pulsera</label>
+                  <input
+                    type="text"
+                    name="pulsera"
+                    value={paciente.pulsera}
+                    onChange={handleChange}
+                    className="glass-input w-full rounded-lg"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Datos del Parto */}
+            <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-md">
+              <h3 className="text-lg font-semibold text-gray-800 mb-4">Datos del Parto</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">Nacido Por</label>
+                  <select
+                    name="nacidoPor"
+                    value={paciente.nacidoPor}
+                    onChange={handleChange}
+                    className="glass-input w-full rounded-lg"
+                  >
+                    <option value="">Seleccionar...</option>
+                    <option value="Parto vaginal">Parto vaginal</option>
+                    <option value="Cesárea">Cesárea</option>
+                  </select>
+                </div>
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">Presentación</label>
+                  <select
+                    name="presentacion"
+                    value={paciente.presentacion}
+                    onChange={handleChange}
+                    className="glass-input w-full rounded-lg"
+                  >
+                    <option value="">Seleccionar...</option>
+                    <option value="Cefálica">Cefálica</option>
+                    <option value="Podálica">Podálica</option>
+                    <option value="Transversa">Transversa</option>
+                  </select>
+                </div>
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">Líquido Amniótico</label>
+                  <select
+                    name="liquidoAmniotico"
+                    value={paciente.liquidoAmniotico}
+                    onChange={handleChange}
+                    className="glass-input w-full rounded-lg"
+                  >
+                    <option value="">Seleccionar...</option>
+                    <option value="Claro">Claro</option>
+                    <option value="Meconial">Meconial</option>
+                    <option value="Teñido">Teñido</option>
+                  </select>
+                </div>
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">Ruptura de Membranas</label>
+                  <select
+                    name="rupturaMembranas"
+                    value={paciente.rupturaMembranas}
+                    onChange={handleChange}
+                    className="glass-input w-full rounded-lg"
+                  >
+                    <option value="">Seleccionar...</option>
+                    <option value="Espontánea">Espontánea</option>
+                    <option value="Artificial">Artificial</option>
+                  </select>
+                </div>
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">Clasificación</label>
+                  <input
+                    type="text"
+                    name="clasificacion"
+                    value={paciente.clasificacion}
+                    onChange={handleChange}
+                    className="glass-input w-full rounded-lg"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">Procedencia</label>
+                  <input
+                    type="text"
+                    name="procedencia"
+                    value={paciente.procedencia}
+                    onChange={handleChange}
+                    className="glass-input w-full rounded-lg"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Personal Médico */}
+            <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-md">
+              <h3 className="text-lg font-semibold text-gray-800 mb-4">Personal Médico</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">Sector de Internación</label>
+                  <input
+                    type="text"
+                    name="sectorInternacion"
+                    value={paciente.sectorInternacion}
+                    onChange={handleChange}
+                    className="glass-input w-full rounded-lg"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">Obstetra</label>
+                  <input
+                    type="text"
+                    name="obstetra"
+                    value={paciente.obstetra}
+                    onChange={handleChange}
+                    className="glass-input w-full rounded-lg"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">Enfermera</label>
+                  <input
+                    type="text"
+                    name="enfermera"
+                    value={paciente.enfermera}
+                    onChange={handleChange}
+                    className="glass-input w-full rounded-lg"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">Neonatólogo/a</label>
+                  <input
+                    type="text"
+                    name="neonatologo"
+                    value={paciente.neonatologo}
+                    onChange={handleChange}
+                    className="glass-input w-full rounded-lg"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Vacunación y Pesquisa */}
+            <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-md">
+              <h3 className="text-lg font-semibold text-gray-800 mb-4">Vacunación y Pesquisa</h3>
+              <div className="mb-6">
+                <h4 className="text-md font-medium text-gray-700 mb-3">Vacunación</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-4">
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="vacunacionHbsag"
+                        name="vacunacionHbsag"
+                        checked={paciente.vacunacionHbsag}
+                        onCheckedChange={(checked) =>
+                          setPaciente((prev) => (prev ? { ...prev, vacunacionHbsag: checked === true } : null))
+                        }
+                      />
+                      <label htmlFor="vacunacionHbsag" className="text-sm font-medium text-gray-700">
+                        Vacunación HBsAg
+                      </label>
+                    </div>
+                    {paciente.vacunacionHbsag && (
+                      <div className="grid grid-cols-2 gap-2 pl-6">
+                        <div className="space-y-1">
+                          <label className="block text-xs font-medium text-gray-700">Lote</label>
+                          <input
+                            type="text"
+                            name="loteHbsag"
+                            value={paciente.loteHbsag}
+                            onChange={handleChange}
+                            className="glass-input w-full rounded-lg text-sm"
+                          />
+                        </div>
+                        <div className="space-y-1">
+                          <label className="block text-xs font-medium text-gray-700">Fecha</label>
+                          <input
+                            type="date"
+                            name="fechaHbsag"
+                            value={paciente.fechaHbsag}
+                            onChange={handleChange}
+                            className="glass-input w-full rounded-lg text-sm"
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  <div className="space-y-4">
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="vacunacionBcg"
+                        name="vacunacionBcg"
+                        checked={paciente.vacunacionBcg}
+                        onCheckedChange={(checked) =>
+                          setPaciente((prev) => (prev ? { ...prev, vacunacionBcg: checked === true } : null))
+                        }
+                      />
+                      <label htmlFor="vacunacionBcg" className="text-sm font-medium text-gray-700">
+                        Vacunación BCG
+                      </label>
+                    </div>
+                    {paciente.vacunacionBcg && (
+                      <div className="grid grid-cols-2 gap-2 pl-6">
+                        <div className="space-y-1">
+                          <label className="block text-xs font-medium text-gray-700">Lote</label>
+                          <input
+                            type="text"
+                            name="loteBcg"
+                            value={paciente.loteBcg}
+                            onChange={handleChange}
+                            className="glass-input w-full rounded-lg text-sm"
+                          />
+                        </div>
+                        <div className="space-y-1">
+                          <label className="block text-xs font-medium text-gray-700">Fecha</label>
+                          <input
+                            type="date"
+                            name="fechaBcg"
+                            value={paciente.fechaBcg}
+                            onChange={handleChange}
+                            className="glass-input w-full rounded-lg text-sm"
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+              <div className="mb-6">
+                <h4 className="text-md font-medium text-gray-700 mb-3">Pesquisa Metabólica</h4>
+                <div className="space-y-4">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="pesquisaMetabolica"
+                      name="pesquisaMetabolica"
+                      checked={paciente.pesquisaMetabolica}
+                      onCheckedChange={(checked) =>
+                        setPaciente((prev) => (prev ? { ...prev, pesquisaMetabolica: checked === true } : null))
+                      }
+                    />
+                    <label htmlFor="pesquisaMetabolica" className="text-sm font-medium text-gray-700">
+                      Pesquisa Metabólica
+                    </label>
+                  </div>
+                  {paciente.pesquisaMetabolica && (
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pl-6">
+                      <div className="space-y-1">
+                        <label className="block text-xs font-medium text-gray-700">N° Protocolo</label>
+                        <input
+                          type="text"
+                          name="protocoloPesquisa"
+                          value={paciente.protocoloPesquisa}
+                          onChange={handleChange}
+                          className="glass-input w-full rounded-lg text-sm"
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <label className="block text-xs font-medium text-gray-700">Fecha</label>
+                        <input
+                          type="date"
+                          name="fechaPesquisa"
+                          value={paciente.fechaPesquisa}
+                          onChange={handleChange}
+                          className="glass-input w-full rounded-lg text-sm"
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <label className="block text-xs font-medium text-gray-700">Hora</label>
+                        <input
+                          type="time"
+                          name="horaPesquisa"
+                          value={paciente.horaPesquisa}
+                          onChange={handleChange}
+                          className="glass-input w-full rounded-lg text-sm"
+                        />
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div className="mb-6">
+                <h4 className="text-md font-medium text-gray-700 mb-3">Grupo y Factor</h4>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="space-y-2">
+                    <label className="block text-sm font-medium text-gray-700">Recién Nacido</label>
+                    <input
+                      type="text"
+                      name="grupoFactorRn"
+                      value={paciente.grupoFactorRn}
+                      onChange={handleChange}
+                      className="glass-input w-full rounded-lg"
+                      placeholder="Ej: A Rh+"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="block text-sm font-medium text-gray-700">Materno</label>
+                    <input
+                      type="text"
+                      name="grupoFactorMaterno"
+                      value={paciente.grupoFactorMaterno}
+                      onChange={handleChange}
+                      className="glass-input w-full rounded-lg"
+                      placeholder="Ej: O Rh+"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="block text-sm font-medium text-gray-700">PCD</label>
+                    <select
+                      name="pcd"
+                      value={paciente.pcd}
+                      onChange={handleChange}
+                      className="glass-input w-full rounded-lg"
+                    >
+                      <option value="">Seleccionar...</option>
+                      <option value="Positiva">Positiva</option>
+                      <option value="Negativa">Negativa</option>
+                      <option value="No realizada">No realizada</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <h4 className="text-md font-medium text-gray-700 mb-3">Laboratorios</h4>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                  <div className="space-y-2">
+                    <label className="block text-sm font-medium text-gray-700">Bilirrubina Total (mg/dl)</label>
+                    <input
+                      type="text"
+                      name="bilirrubinaTotalValor"
+                      value={paciente.bilirrubinaTotalValor}
+                      onChange={handleChange}
+                      className="glass-input w-full rounded-lg"
+                      placeholder="Ej: 12.5"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="block text-sm font-medium text-gray-700">Bilirrubina Directa (mg/dl)</label>
+                    <input
+                      type="text"
+                      name="bilirrubinaDirectaValor"
+                      value={paciente.bilirrubinaDirectaValor}
+                      onChange={handleChange}
+                      className="glass-input w-full rounded-lg"
+                      placeholder="Ej: 0.8"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="block text-sm font-medium text-gray-700">Hematocrito (%)</label>
+                    <input
+                      type="text"
+                      name="hematocritoValor"
+                      value={paciente.hematocritoValor}
+                      onChange={handleChange}
+                      className="glass-input w-full rounded-lg"
+                      placeholder="Ej: 45"
+                    />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">Otros laboratorios</label>
+                  <textarea
+                    name="laboratorios"
+                    value={paciente.laboratorios}
+                    onChange={handleChange}
+                    rows={2}
+                    className="glass-input w-full rounded-lg"
+                  />
+                </div>
+              </div>
+            </div>
+
+        
+
+            {/* Datos Maternos */}
+            <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-md">
+              <h3 className="text-lg font-semibold text-gray-800 mb-4">Datos Maternos</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2 md:col-span-2">
+                  <label className="block text-sm font-medium text-gray-700">Datos Maternos Generales</label>
+                  <textarea
+                    name="datosMaternos"
+                    value={paciente.datosMaternos}
+                    onChange={handleChange}
+                    rows={2}
+                    className="glass-input w-full rounded-lg"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">SARS-CoV-2 (PCR)</label>
+                  <select
+                    name="sarsCov2"
+                    value={paciente.sarsCov2}
+                    onChange={handleChange}
+                    className="glass-input w-full rounded-lg"
+                  >
+                    <option value="">Seleccionar...</option>
+                    <option value="Positivo">Positivo</option>
+                    <option value="Negativo">Negativo</option>
+                    <option value="No realizado">No realizado</option>
+                  </select>
+                </div>
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">Chagas</label>
+                  <select
+                    name="chagas"
+                    value={paciente.chagas}
+                    onChange={handleChange}
+                    className="glass-input w-full rounded-lg"
+                  >
+                    <option value="">Seleccionar...</option>
+                    <option value="Positivo">Positivo</option>
+                    <option value="Negativo">Negativo</option>
+                    <option value="No realizado">No realizado</option>
+                  </select>
+                </div>
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">Toxoplasmosis</label>
+                  <select
+                    name="toxoplasmosis"
+                    value={paciente.toxoplasmosis}
+                    onChange={handleChange}
+                    className="glass-input w-full rounded-lg"
+                  >
+                    <option value="">Seleccionar...</option>
+                    <option value="Positivo">Positivo</option>
+                    <option value="Negativo">Negativo</option>
+                    <option value="No realizado">No realizado</option>
+                  </select>
+                </div>
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">HIV</label>
+                  <select
+                    name="hiv"
+                    value={paciente.hiv}
+                    onChange={handleChange}
+                    className="glass-input w-full rounded-lg"
+                  >
+                    <option value="">Seleccionar...</option>
+                    <option value="Positivo">Positivo</option>
+                    <option value="Negativo">Negativo</option>
+                    <option value="No realizado">No realizado</option>
+                  </select>
+                </div>
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">VDRL</label>
+                  <select
+                    name="vdrl"
+                    value={paciente.vdrl}
+                    onChange={handleChange}
+                    className="glass-input w-full rounded-lg"
+                  >
+                    <option value="">Seleccionar...</option>
+                    <option value="Positivo">Positivo</option>
+                    <option value="Negativo">Negativo</option>
+                    <option value="No realizado">No realizado</option>
+                  </select>
+                </div>
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">Hepatitis B</label>
+                  <select
+                    name="hepatitisB"
+                    value={paciente.hepatitisB}
+                    onChange={handleChange}
+                    className="glass-input w-full rounded-lg"
+                  >
+                    <option value="">Seleccionar...</option>
+                    <option value="Positivo">Positivo</option>
+                    <option value="Negativo">Negativo</option>
+                    <option value="No realizado">No realizado</option>
+                  </select>
+                </div>
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">EGB</label>
+                  <select
+                    name="egb"
+                    value={paciente.egb}
+                    onChange={handleChange}
+                    className="glass-input w-full rounded-lg"
+                  >
+                    <option value="">Seleccionar...</option>
+                    <option value="Positivo">Positivo</option>
+                    <option value="Negativo">Negativo</option>
+                    <option value="No realizado">No realizado</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            {/* Botones de acción */}
+            <div className="flex justify-end space-x-4 mt-8">
+              <Button
+                type="button"
+                onClick={handleCancel}
+                variant="outline"
+                className="px-6"
+              >
+                <X className="w-4 h-4 mr-2" />
+                Cancelar
+              </Button>
+              <Button
+                type="submit"
+                disabled={saving}
+                className="bg-medical-600 hover:bg-medical-700 text-white px-6"
+              >
+                {saving ? (
+                  <div className="flex items-center">
+                    <div className="mr-2 w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    Guardando...
+                  </div>
+                ) : (
+                  <>
+                    <Save className="w-4 h-4 mr-2" />
+                    Guardar Cambios
+                  </>
+                )}
+              </Button>
+            </div>
+          </motion.div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default EditarPaciente;

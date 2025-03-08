@@ -69,6 +69,10 @@ const NuevoPaciente = () => {
     fechaEgreso: '',
     horaEgreso: '',
     pesoEgreso: '',
+    evolucionInternacion: '',
+  diagnosticos: '',
+  indicacionesEgreso: '',
+  observaciones: '',
     enfermeraEgreso: '',
     neonatologoEgreso: '',
     // Otros campos
@@ -706,7 +710,7 @@ const NuevoPaciente = () => {
 
   const datosEgreso = (
     <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-md">
-      <h3 className="text-lg font-semibold text-gray-800 mb-4">Datos de Egreso</h3>
+      <h3 className="text-lg font-semibold text-gray-800 mb-4">Datos del Egreso</h3>
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="space-y-2">
@@ -761,6 +765,53 @@ const NuevoPaciente = () => {
             name="neonatologoEgreso"
             value={formData.neonatologoEgreso}
             onChange={handleChange}
+            className="glass-input w-full rounded-lg"
+          />
+        </div>
+      </div>
+  
+      {/* Nuevos campos agregados */}
+      <div className="mt-6 space-y-4">
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-gray-700">Evolución durante la internación</label>
+          <textarea
+            name="evolucionInternacion"
+            value={formData.evolucionInternacion}
+            onChange={handleChange}
+            rows={3}
+            className="glass-input w-full rounded-lg"
+          />
+        </div>
+  
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-gray-700">Diagnósticos</label>
+          <textarea
+            name="diagnosticos"
+            value={formData.diagnosticos}
+            onChange={handleChange}
+            rows={3}
+            className="glass-input w-full rounded-lg"
+          />
+        </div>
+  
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-gray-700">Indicaciones al egreso</label>
+          <textarea
+            name="indicacionesEgreso"
+            value={formData.indicacionesEgreso}
+            onChange={handleChange}
+            rows={3}
+            className="glass-input w-full rounded-lg"
+          />
+        </div>
+  
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-gray-700">Observaciones</label>
+          <textarea
+            name="observaciones"
+            value={formData.observaciones}
+            onChange={handleChange}
+            rows={3}
             className="glass-input w-full rounded-lg"
           />
         </div>
@@ -925,9 +976,10 @@ const NuevoPaciente = () => {
             
             {vacunacionPesquisa}
             
+            {datosMaternos}
+
             {datosEgreso}
             
-            {datosMaternos}
 
             <div className="flex justify-end space-x-4 mt-8">
               <Button

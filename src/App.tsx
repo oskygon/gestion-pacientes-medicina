@@ -10,6 +10,7 @@ import DetallePaciente from "./pages/DetallePaciente";
 import NotFound from "./pages/NotFound";
 import { ThemeProvider } from "./components/theme/ThemeProvider";
 import { ThemeToggle } from "./components/theme/ThemeToggle";
+import EditarPaciente from "./pages/EditarPaciente";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +28,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/nuevo-paciente" element={<NuevoPaciente />} />
             <Route path="/paciente/:id" element={<DetallePaciente />} />
+            <Route path="/editar-paciente/:id" element={<EditarPaciente />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

@@ -404,7 +404,7 @@ const DetallePaciente = () => {
 
   const SeccionDatosEgreso = () => (
     <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-md">
-      <h3 className="text-lg font-semibold text-gray-800 mb-4">Datos de Egreso</h3>
+      <h3 className="text-lg font-semibold text-gray-800 mb-4">Datos del Egreso</h3>
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
         <div>
@@ -426,6 +426,28 @@ const DetallePaciente = () => {
           <p className="text-sm text-gray-500">% Diferencia Peso</p>
           <p className="font-medium text-gray-800">{calcularPorcentajeDiferenciaPeso()}</p>
         </div>
+
+        <div>
+        <p className="text-sm text-gray-500">Evolución durante la internación</p>
+        <p className="font-medium text-gray-800">{paciente?.evolucionInternacion || '-'}</p>
+      </div>
+
+      <div>
+        <p className="text-sm text-gray-500">Diagnósticos</p>
+        <p className="font-medium text-gray-800">{paciente?.diagnosticos || '-'}</p>
+      </div>
+
+      <div>
+        <p className="text-sm text-gray-500">Indicaciones al egreso</p>
+        <p className="font-medium text-gray-800">{paciente?.indicacionesEgreso || '-'}</p>
+      </div>
+
+      <div>
+        <p className="text-sm text-gray-500">Observaciones</p>
+        <p className="font-medium text-gray-800">{paciente?.observaciones || '-'}</p>
+      </div>
+
+        
         
         <div>
           <p className="text-sm text-gray-500">Enfermera</p>
@@ -621,9 +643,10 @@ const DetallePaciente = () => {
           
           <SeccionVacunacionPesquisa />
           
+          <SeccionDatosMaternos />
+          
           <SeccionDatosEgreso />
           
-          <SeccionDatosMaternos />
           
           <div className="flex justify-center mt-8">
             <Button

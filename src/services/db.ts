@@ -54,6 +54,10 @@ interface Paciente {
   fechaEgreso: string;
   horaEgreso: string;
   pesoEgreso: string;
+  evolucionInternacion: string;
+  diagnosticos: string;
+  indicacionesEgreso: string;
+  observaciones: string;
   enfermeraEgreso: string;
   neonatologoEgreso: string;
   // Campos existentes
@@ -119,6 +123,10 @@ class DBService {
                 fechaEgreso: record.fechaEgreso || '',
                 horaEgreso: record.horaEgreso || '',
                 pesoEgreso: record.pesoEgreso || '',
+                evolucionInternacion: record.evolucionInternacion || '',
+                diagnosticos: record.diagnosticos || '',
+                indicacionesEgreso: record.indicacionesEgreso || '',
+                observaciones: record.observaciones || '',
                 enfermeraEgreso: record.enfermeraEgreso || '',
                 neonatologoEgreso: record.neonatologoEgreso || ''
               };

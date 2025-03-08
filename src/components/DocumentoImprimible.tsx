@@ -23,7 +23,7 @@ const DocumentoImprimible: React.FC<DocumentoImprimibleProps> = ({
     document.body.innerHTML = `
       <html>
         <head>
-          <title>Certificado de Nacimiento - ${paciente.nombre} ${paciente.apellido}</title>
+          <title>EPICRISIS NEONATAL - ${paciente.nombre} ${paciente.apellido}</title>
           <style>
             body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
             .documento { max-width: 800px; margin: 0 auto; padding: 20px; }
@@ -97,8 +97,8 @@ const DocumentoImprimible: React.FC<DocumentoImprimibleProps> = ({
             <div className="print-container" ref={documentRef}>
               <div className="documento">
                 <div className="header">
-                  <div className="titulo">CERTIFICADO DE NACIMIENTO</div>
-                  <div className="subtitulo">Documento oficial de registro de nacimiento</div>
+                  <div className="titulo">EPICRISIS NEONATAL</div>
+                  <div className="subtitulo">SANATORIO SAN FRANCISCO DE ASÍS</div>
                 </div>
                 
                 <div className="seccion">
@@ -252,7 +252,7 @@ const DocumentoImprimible: React.FC<DocumentoImprimibleProps> = ({
                 
                 {(paciente.fechaEgreso || paciente.pesoEgreso) && (
                   <div className="seccion">
-                    <div className="seccion-titulo">DATOS DE EGRESO</div>
+                    <div className="seccion-titulo">DATOS DEL EGRESO</div>
                     <div className="fila">
                       <span className="etiqueta">Fecha de egreso:</span>
                       <span className="valor">{formatDate(paciente.fechaEgreso) || 'No especificada'}</span>
@@ -269,6 +269,29 @@ const DocumentoImprimible: React.FC<DocumentoImprimibleProps> = ({
                       <span className="etiqueta">% diferencia peso:</span>
                       <span className="valor">{calcularPorcentajeDiferenciaPeso()}</span>
                     </div>
+                     {/* Sección de Evolución */}
+      <div className="mb-4">
+        <h3 className="text-lg font-semibold">Evolución durante la internación</h3>
+        <p className="text-gray-700">{paciente.evolucionInternacion || 'No especificado'}</p>
+      </div>
+
+      {/* Sección de Diagnósticos */}
+      <div className="mb-4">
+        <h3 className="text-lg font-semibold">Diagnósticos</h3>
+        <p className="text-gray-700">{paciente.diagnosticos || 'No especificado'}</p>
+      </div>
+
+      {/* Sección de Indicaciones al egreso */}
+      <div className="mb-4">
+        <h3 className="text-lg font-semibold">Indicaciones al egreso</h3>
+        <p className="text-gray-700">{paciente.indicacionesEgreso || 'No especificado'}</p>
+      </div>
+
+      {/* Sección de Observaciones */}
+      <div className="mb-4">
+        <h3 className="text-lg font-semibold">Observaciones</h3>
+        <p className="text-gray-700">{paciente.observaciones || 'No especificado'}</p>
+      </div>
                     <div className="fila">
                       <span className="etiqueta">Enfermera:</span>
                       <span className="valor">{paciente.enfermeraEgreso || 'No especificada'}</span>
@@ -296,9 +319,34 @@ const DocumentoImprimible: React.FC<DocumentoImprimibleProps> = ({
                   </div>
                 </div>
                 
-                <div className="pie-pagina">
-                  <p>Este documento es un certificado oficial de nacimiento. Fecha de emisión: {new Date().toLocaleDateString()}</p>
-                </div>
+                <div className="pie-pagina bg-white p-6 rounded-lg shadow-md space-y-4">
+  <p className="text-sm text-gray-700">
+    Realizar consulta ambulatoria por consultorios externos para seguimiento del recién nacido dentro de los 7 (siete) días de producido el egreso sanatorial. 
+    <span className="font-semibold">{new Date().toLocaleDateString()}</span>
+  </p>
+  
+  <p className="text-sm text-gray-700">
+    A fin de dar cumplimiento a lo estipulado en el ART 4 INC.D del D.R. N° 208/01 de la Ley básica de salud N° 153/99, a pedido del paciente, familiar, representante legal, se hace entrega en este acto de copia de Epicrisis de historia clínica del RN. 
+    <span className="font-semibold">{new Date().toLocaleDateString()}</span>
+  </p>
+  
+  <p className="text-sm text-gray-700 font-semibold">RECIBÍ CONFORME</p>
+  
+  <div className="space-y-6">
+    <p className="text-sm text-gray-700">FIRMA: _______________________________</p>
+    <p className="text-sm text-gray-700">ACLARACIÓN: __________________________</p>
+    <p className="text-sm text-gray-700">DNI: _________________________________</p>
+  </div>
+  
+  <div className="space-y-2">
+    <p className="text-sm text-gray-700">PROFESIONAL ACTUANTE: ________________</p>
+    <p className="text-sm text-gray-700">FIRMA Y SELLO</p>
+  </div>
+  
+  <p className="text-sm text-gray-700">
+    FECHA: <span className="font-semibold">{new Date().toLocaleDateString()}</span>
+  </p>
+</div>
               </div>
             </div>
           </div>
