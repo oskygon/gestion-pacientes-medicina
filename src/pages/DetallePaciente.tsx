@@ -10,6 +10,7 @@ import { es } from 'date-fns/locale';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import DocumentoImprimible from '@/components/DocumentoImprimible';
+import { formatDate } from '../utils/dateUtils';
 
 const DetallePaciente = () => {
   const { id } = useParams<{ id: string }>();
@@ -81,6 +82,24 @@ const DetallePaciente = () => {
       return `${edad} años`;
     } catch (e) {
       return 'Error en fecha';
+    }
+  };
+
+  const calcularPorcentajeDiferenciaPeso = () => {
+    if (!paciente?.peso || !paciente?.pesoEgreso) return '-';
+    
+    try {
+      const pesoNacimiento = parseFloat(paciente.peso);
+      const pesoEgreso = parseFloat(paciente.pesoEgreso);
+      
+      if (isNaN(pesoNacimiento) || isNaN(pesoEgreso) || pesoNacimiento === 0) {
+        return 'Error en cálculo';
+      }
+      
+      const porcentaje = ((pesoEgreso * 100) / pesoNacimiento) - 100;
+      return porcentaje.toFixed(2) + '%';
+    } catch (e) {
+      return 'Error en cálculo';
     }
   };
 
@@ -266,35 +285,156 @@ const DetallePaciente = () => {
     <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-md">
       <h3 className="text-lg font-semibold text-gray-800 mb-4">Vacunación y Pesquisa</h3>
       
-      <div className="flex flex-wrap gap-2 mb-4">
-        {paciente?.vacunacionHbsag && (
-          <Badge variant="outline" className="bg-green-50 text-green-600 border-green-200">
-            Vacunación HBsAg
-          </Badge>
-        )}
-        
-        {paciente?.vacunacionBcg && (
-          <Badge variant="outline" className="bg-green-50 text-green-600 border-green-200">
-            Vacunación BCG
-          </Badge>
-        )}
-        
-        {paciente?.pesquisaMetabolica && (
-          <Badge variant="outline" className="bg-green-50 text-green-600 border-green-200">
-            Pesquisa Metabólica
-          </Badge>
-        )}
-      </div>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
         <div>
-          <p className="text-sm text-gray-500">Grupo y Factor</p>
-          <p className="font-medium text-gray-800">{paciente?.grupoFactor || '-'}</p>
+          <h4 className="text-md font-medium text-gray-700 mb-2">Vacunación HBsAg</h4>
+          <div className="flex items-center mb-2">
+            <Badge variant="outline" className={paciente?.vacunacionHbsag ? "bg-green-50 text-green-600 border-green-200" : "bg-gray-50 text-gray-600 border-gray-200"}>
+              {paciente?.vacunacionHbsag ? 'Aplicada' : 'No aplicada'}
+            </Badge>
+          </div>
+          {paciente?.vacunacionHbsag && (
+            <>
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <p className="text-sm text-gray-500">Lote</p>
+                  <p className="font-medium text-gray-800">{paciente?.loteHbsag || '-'}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500">Fecha</p>
+                  <p className="font-medium text-gray-800">{formatDate(paciente?.fechaHbsag || '')}</p>
+                </div>
+              </div>
+            </>
+          )}
         </div>
         
         <div>
-          <p className="text-sm text-gray-500">Laboratorios</p>
+          <h4 className="text-md font-medium text-gray-700 mb-2">Vacunación BCG</h4>
+          <div className="flex items-center mb-2">
+            <Badge variant="outline" className={paciente?.vacunacionBcg ? "bg-green-50 text-green-600 border-green-200" : "bg-gray-50 text-gray-600 border-gray-200"}>
+              {paciente?.vacunacionBcg ? 'Aplicada' : 'No aplicada'}
+            </Badge>
+          </div>
+          {paciente?.vacunacionBcg && (
+            <>
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <p className="text-sm text-gray-500">Lote</p>
+                  <p className="font-medium text-gray-800">{paciente?.loteBcg || '-'}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500">Fecha</p>
+                  <p className="font-medium text-gray-800">{formatDate(paciente?.fechaBcg || '')}</p>
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+      
+      <div className="mb-6">
+        <h4 className="text-md font-medium text-gray-700 mb-2">Pesquisa Metabólica</h4>
+        <div className="flex items-center mb-2">
+          <Badge variant="outline" className={paciente?.pesquisaMetabolica ? "bg-green-50 text-green-600 border-green-200" : "bg-gray-50 text-gray-600 border-gray-200"}>
+            {paciente?.pesquisaMetabolica ? 'Realizada' : 'No realizada'}
+          </Badge>
+        </div>
+        {paciente?.pesquisaMetabolica && (
+          <>
+            <div className="grid grid-cols-3 gap-2">
+              <div>
+                <p className="text-sm text-gray-500">Protocolo</p>
+                <p className="font-medium text-gray-800">{paciente?.protocoloPesquisa || '-'}</p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-500">Fecha</p>
+                <p className="font-medium text-gray-800">{formatDate(paciente?.fechaPesquisa || '')}</p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-500">Hora</p>
+                <p className="font-medium text-gray-800">{paciente?.horaPesquisa || '-'}</p>
+              </div>
+            </div>
+          </>
+        )}
+      </div>
+      
+      <div className="mb-6">
+        <h4 className="text-md font-medium text-gray-700 mb-2">Grupo y Factor</h4>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+          <div>
+            <p className="text-sm text-gray-500">Recién Nacido</p>
+            <p className="font-medium text-gray-800">{paciente?.grupoFactorRn || '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm text-gray-500">Materno</p>
+            <p className="font-medium text-gray-800">{paciente?.grupoFactorMaterno || '-'}</p>
+          </div>
+          <div>
+            <p className="text-sm text-gray-500">PCD</p>
+            <p className="font-medium text-gray-800">{paciente?.pcd || '-'}</p>
+          </div>
+        </div>
+      </div>
+      
+      <div>
+        <h4 className="text-md font-medium text-gray-700 mb-2">Laboratorios</h4>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-2">
+          <div>
+            <p className="text-sm text-gray-500">Bilirrubina Total</p>
+            <p className="font-medium text-gray-800">{paciente?.bilirrubinaTotalValor || '-'} mg/dl</p>
+          </div>
+          <div>
+            <p className="text-sm text-gray-500">Bilirrubina Directa</p>
+            <p className="font-medium text-gray-800">{paciente?.bilirrubinaDirectaValor || '-'} mg/dl</p>
+          </div>
+          <div>
+            <p className="text-sm text-gray-500">Hematocrito</p>
+            <p className="font-medium text-gray-800">{paciente?.hematocritoValor || '-'} %</p>
+          </div>
+        </div>
+        <div>
+          <p className="text-sm text-gray-500">Otros laboratorios</p>
           <p className="font-medium text-gray-800">{paciente?.laboratorios || '-'}</p>
+        </div>
+      </div>
+    </div>
+  );
+
+  const SeccionDatosEgreso = () => (
+    <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-md">
+      <h3 className="text-lg font-semibold text-gray-800 mb-4">Datos de Egreso</h3>
+      
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+        <div>
+          <p className="text-sm text-gray-500">Fecha</p>
+          <p className="font-medium text-gray-800">{formatDate(paciente?.fechaEgreso || '')}</p>
+        </div>
+        
+        <div>
+          <p className="text-sm text-gray-500">Hora</p>
+          <p className="font-medium text-gray-800">{paciente?.horaEgreso || '-'}</p>
+        </div>
+        
+        <div>
+          <p className="text-sm text-gray-500">Peso</p>
+          <p className="font-medium text-gray-800">{paciente?.pesoEgreso || '-'} g</p>
+        </div>
+        
+        <div>
+          <p className="text-sm text-gray-500">% Diferencia Peso</p>
+          <p className="font-medium text-gray-800">{calcularPorcentajeDiferenciaPeso()}</p>
+        </div>
+        
+        <div>
+          <p className="text-sm text-gray-500">Enfermera</p>
+          <p className="font-medium text-gray-800">{paciente?.enfermeraEgreso || '-'}</p>
+        </div>
+        
+        <div>
+          <p className="text-sm text-gray-500">Neonatólogo/a</p>
+          <p className="font-medium text-gray-800">{paciente?.neonatologoEgreso || '-'}</p>
         </div>
       </div>
     </div>
@@ -480,6 +620,8 @@ const DetallePaciente = () => {
           <SeccionPersonalMedico />
           
           <SeccionVacunacionPesquisa />
+          
+          <SeccionDatosEgreso />
           
           <SeccionDatosMaternos />
           

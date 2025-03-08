@@ -16,11 +16,14 @@ const NuevoPaciente = () => {
   const [saving, setSaving] = useState(false);
   const [pacienteRegistrado, setPacienteRegistrado] = useState<Paciente | null>(null);
   const [showDocumento, setShowDocumento] = useState(false);
+  const fechaActual = format(new Date(), 'yyyy-MM-dd');
+  const horaActual = format(new Date(), 'HH:mm');
+  
   const [formData, setFormData] = useState<Omit<Paciente, 'id' | 'createdAt'>>({
     nombre: '',
     apellido: '',
-    fechaNacimiento: format(new Date(), 'yyyy-MM-dd'),
-    horaNacimiento: format(new Date(), 'HH:mm'),
+    fechaNacimiento: fechaActual,
+    horaNacimiento: horaActual,
     numeroHistoriaClinica: '',
     sexo: '',
     peso: '',
@@ -41,11 +44,34 @@ const NuevoPaciente = () => {
     obstetra: '',
     enfermera: '',
     neonatologo: '',
+    // Campos de vacunación
     vacunacionHbsag: false,
+    loteHbsag: '',
+    fechaHbsag: fechaActual,
     vacunacionBcg: false,
+    loteBcg: '',
+    fechaBcg: fechaActual,
+    // Campos de pesquisa
     pesquisaMetabolica: false,
-    grupoFactor: '',
+    protocoloPesquisa: '',
+    fechaPesquisa: fechaActual,
+    horaPesquisa: horaActual,
+    // Campos de grupo y factor
+    grupoFactorRn: '',
+    grupoFactorMaterno: '',
+    pcd: '',
+    // Campos de laboratorio
+    bilirrubinaTotalValor: '',
+    bilirrubinaDirectaValor: '',
+    hematocritoValor: '',
     laboratorios: '',
+    // Campos de egreso
+    fechaEgreso: '',
+    horaEgreso: '',
+    pesoEgreso: '',
+    enfermeraEgreso: '',
+    neonatologoEgreso: '',
+    // Otros campos
     datosMaternos: '',
     sarsCov2: '',
     chagas: '',
@@ -438,67 +464,303 @@ const NuevoPaciente = () => {
   const vacunacionPesquisa = (
     <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-md">
       <h3 className="text-lg font-semibold text-gray-800 mb-4">Vacunación y Pesquisa</h3>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="flex items-center space-x-2">
-          <Checkbox 
-            id="vacunacionHbsag"
-            name="vacunacionHbsag"
-            checked={formData.vacunacionHbsag} 
-            onCheckedChange={(checked) => 
-              setFormData(prev => ({ ...prev, vacunacionHbsag: checked === true }))
-            }
-          />
-          <label htmlFor="vacunacionHbsag" className="text-sm font-medium text-gray-700">
-            Vacunación HBsAg
-          </label>
+      
+      <div className="mb-6">
+        <h4 className="text-md font-medium text-gray-700 mb-3">Vacunación</h4>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-4">
+            <div className="flex items-center space-x-2">
+              <Checkbox 
+                id="vacunacionHbsag"
+                name="vacunacionHbsag"
+                checked={formData.vacunacionHbsag} 
+                onCheckedChange={(checked) => 
+                  setFormData(prev => ({ ...prev, vacunacionHbsag: checked === true }))
+                }
+              />
+              <label htmlFor="vacunacionHbsag" className="text-sm font-medium text-gray-700">
+                Vacunación HBsAg
+              </label>
+            </div>
+            
+            {formData.vacunacionHbsag && (
+              <div className="grid grid-cols-2 gap-2 pl-6">
+                <div className="space-y-1">
+                  <label className="block text-xs font-medium text-gray-700">Lote</label>
+                  <input
+                    type="text"
+                    name="loteHbsag"
+                    value={formData.loteHbsag}
+                    onChange={handleChange}
+                    className="glass-input w-full rounded-lg text-sm"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="block text-xs font-medium text-gray-700">Fecha</label>
+                  <input
+                    type="date"
+                    name="fechaHbsag"
+                    value={formData.fechaHbsag}
+                    onChange={handleChange}
+                    className="glass-input w-full rounded-lg text-sm"
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+          
+          <div className="space-y-4">
+            <div className="flex items-center space-x-2">
+              <Checkbox 
+                id="vacunacionBcg"
+                name="vacunacionBcg"
+                checked={formData.vacunacionBcg} 
+                onCheckedChange={(checked) => 
+                  setFormData(prev => ({ ...prev, vacunacionBcg: checked === true }))
+                }
+              />
+              <label htmlFor="vacunacionBcg" className="text-sm font-medium text-gray-700">
+                Vacunación BCG
+              </label>
+            </div>
+            
+            {formData.vacunacionBcg && (
+              <div className="grid grid-cols-2 gap-2 pl-6">
+                <div className="space-y-1">
+                  <label className="block text-xs font-medium text-gray-700">Lote</label>
+                  <input
+                    type="text"
+                    name="loteBcg"
+                    value={formData.loteBcg}
+                    onChange={handleChange}
+                    className="glass-input w-full rounded-lg text-sm"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="block text-xs font-medium text-gray-700">Fecha</label>
+                  <input
+                    type="date"
+                    name="fechaBcg"
+                    value={formData.fechaBcg}
+                    onChange={handleChange}
+                    className="glass-input w-full rounded-lg text-sm"
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+      
+      <div className="mb-6">
+        <h4 className="text-md font-medium text-gray-700 mb-3">Pesquisa Metabólica</h4>
+        <div className="space-y-4">
+          <div className="flex items-center space-x-2">
+            <Checkbox 
+              id="pesquisaMetabolica"
+              name="pesquisaMetabolica"
+              checked={formData.pesquisaMetabolica} 
+              onCheckedChange={(checked) => 
+                setFormData(prev => ({ ...prev, pesquisaMetabolica: checked === true }))
+              }
+            />
+            <label htmlFor="pesquisaMetabolica" className="text-sm font-medium text-gray-700">
+              Pesquisa Metabólica
+            </label>
+          </div>
+          
+          {formData.pesquisaMetabolica && (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pl-6">
+              <div className="space-y-1">
+                <label className="block text-xs font-medium text-gray-700">N° Protocolo</label>
+                <input
+                  type="text"
+                  name="protocoloPesquisa"
+                  value={formData.protocoloPesquisa}
+                  onChange={handleChange}
+                  className="glass-input w-full rounded-lg text-sm"
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="block text-xs font-medium text-gray-700">Fecha</label>
+                <input
+                  type="date"
+                  name="fechaPesquisa"
+                  value={formData.fechaPesquisa}
+                  onChange={handleChange}
+                  className="glass-input w-full rounded-lg text-sm"
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="block text-xs font-medium text-gray-700">Hora</label>
+                <input
+                  type="time"
+                  name="horaPesquisa"
+                  value={formData.horaPesquisa}
+                  onChange={handleChange}
+                  className="glass-input w-full rounded-lg text-sm"
+                />
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+      
+      <div className="mb-6">
+        <h4 className="text-md font-medium text-gray-700 mb-3">Grupo y Factor</h4>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="space-y-2">
+            <label className="block text-sm font-medium text-gray-700">Recién Nacido</label>
+            <input
+              type="text"
+              name="grupoFactorRn"
+              value={formData.grupoFactorRn}
+              onChange={handleChange}
+              className="glass-input w-full rounded-lg"
+              placeholder="Ej: A Rh+"
+            />
+          </div>
+          
+          <div className="space-y-2">
+            <label className="block text-sm font-medium text-gray-700">Materno</label>
+            <input
+              type="text"
+              name="grupoFactorMaterno"
+              value={formData.grupoFactorMaterno}
+              onChange={handleChange}
+              className="glass-input w-full rounded-lg"
+              placeholder="Ej: O Rh+"
+            />
+          </div>
+          
+          <div className="space-y-2">
+            <label className="block text-sm font-medium text-gray-700">PCD</label>
+            <select
+              name="pcd"
+              value={formData.pcd}
+              onChange={handleChange}
+              className="glass-input w-full rounded-lg"
+            >
+              <option value="">Seleccionar...</option>
+              <option value="Positiva">Positiva</option>
+              <option value="Negativa">Negativa</option>
+              <option value="No realizada">No realizada</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      
+      <div>
+        <h4 className="text-md font-medium text-gray-700 mb-3">Laboratorios</h4>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+          <div className="space-y-2">
+            <label className="block text-sm font-medium text-gray-700">Bilirrubina Total (mg/dl)</label>
+            <input
+              type="text"
+              name="bilirrubinaTotalValor"
+              value={formData.bilirrubinaTotalValor}
+              onChange={handleChange}
+              className="glass-input w-full rounded-lg"
+              placeholder="Ej: 12.5"
+            />
+          </div>
+          
+          <div className="space-y-2">
+            <label className="block text-sm font-medium text-gray-700">Bilirrubina Directa (mg/dl)</label>
+            <input
+              type="text"
+              name="bilirrubinaDirectaValor"
+              value={formData.bilirrubinaDirectaValor}
+              onChange={handleChange}
+              className="glass-input w-full rounded-lg"
+              placeholder="Ej: 0.8"
+            />
+          </div>
+          
+          <div className="space-y-2">
+            <label className="block text-sm font-medium text-gray-700">Hematocrito (%)</label>
+            <input
+              type="text"
+              name="hematocritoValor"
+              value={formData.hematocritoValor}
+              onChange={handleChange}
+              className="glass-input w-full rounded-lg"
+              placeholder="Ej: 45"
+            />
+          </div>
         </div>
         
-        <div className="flex items-center space-x-2">
-          <Checkbox 
-            id="vacunacionBcg"
-            name="vacunacionBcg"
-            checked={formData.vacunacionBcg} 
-            onCheckedChange={(checked) => 
-              setFormData(prev => ({ ...prev, vacunacionBcg: checked === true }))
-            }
-          />
-          <label htmlFor="vacunacionBcg" className="text-sm font-medium text-gray-700">
-            Vacunación BCG
-          </label>
-        </div>
-        
-        <div className="flex items-center space-x-2">
-          <Checkbox 
-            id="pesquisaMetabolica"
-            name="pesquisaMetabolica"
-            checked={formData.pesquisaMetabolica} 
-            onCheckedChange={(checked) => 
-              setFormData(prev => ({ ...prev, pesquisaMetabolica: checked === true }))
-            }
-          />
-          <label htmlFor="pesquisaMetabolica" className="text-sm font-medium text-gray-700">
-            Pesquisa Metabólica
-          </label>
-        </div>
-        
-        <div className="space-y-2 md:col-span-3">
-          <label className="block text-sm font-medium text-gray-700">Grupo y Factor</label>
-          <input
-            type="text"
-            name="grupoFactor"
-            value={formData.grupoFactor}
-            onChange={handleChange}
-            className="glass-input w-full rounded-lg"
-          />
-        </div>
-        
-        <div className="space-y-2 md:col-span-3">
-          <label className="block text-sm font-medium text-gray-700">Laboratorios</label>
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-gray-700">Otros laboratorios</label>
           <textarea
             name="laboratorios"
             value={formData.laboratorios}
             onChange={handleChange}
             rows={2}
+            className="glass-input w-full rounded-lg"
+          />
+        </div>
+      </div>
+    </div>
+  );
+
+  const datosEgreso = (
+    <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-md">
+      <h3 className="text-lg font-semibold text-gray-800 mb-4">Datos de Egreso</h3>
+      
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-gray-700">Fecha de Egreso</label>
+          <input
+            type="date"
+            name="fechaEgreso"
+            value={formData.fechaEgreso}
+            onChange={handleChange}
+            className="glass-input w-full rounded-lg"
+          />
+        </div>
+        
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-gray-700">Hora de Egreso</label>
+          <input
+            type="time"
+            name="horaEgreso"
+            value={formData.horaEgreso}
+            onChange={handleChange}
+            className="glass-input w-full rounded-lg"
+          />
+        </div>
+        
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-gray-700">Peso de Egreso (g)</label>
+          <input
+            type="text"
+            name="pesoEgreso"
+            value={formData.pesoEgreso}
+            onChange={handleChange}
+            className="glass-input w-full rounded-lg"
+            placeholder="Ej: 3200"
+          />
+        </div>
+        
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-gray-700">Enfermera de Egreso</label>
+          <input
+            type="text"
+            name="enfermeraEgreso"
+            value={formData.enfermeraEgreso}
+            onChange={handleChange}
+            className="glass-input w-full rounded-lg"
+          />
+        </div>
+        
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-gray-700">Neonatólogo/a de Egreso</label>
+          <input
+            type="text"
+            name="neonatologoEgreso"
+            value={formData.neonatologoEgreso}
+            onChange={handleChange}
             className="glass-input w-full rounded-lg"
           />
         </div>
@@ -662,6 +924,8 @@ const NuevoPaciente = () => {
             {personalMedico}
             
             {vacunacionPesquisa}
+            
+            {datosEgreso}
             
             {datosMaternos}
 

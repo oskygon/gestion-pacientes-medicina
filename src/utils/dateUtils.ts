@@ -11,9 +11,20 @@ export const formatDate = (dateString: string): string => {
     // Convertir string a objeto Date directamente
     let date = new Date(dateString);
     
-    // Si la fecha no es válida, intentar parsear usando date-fns
+    // Si la fecha no es válida, intentar parsear usando diferentes formatos
     if (!isValid(date)) {
+      // Probar formato yyyy-MM-dd
       date = parse(dateString, 'yyyy-MM-dd', new Date());
+      
+      // Si sigue sin ser válida, probar otros formatos comunes
+      if (!isValid(date)) {
+        const formats = ['dd/MM/yyyy', 'MM/dd/yyyy', 'dd-MM-yyyy'];
+        
+        for (const fmt of formats) {
+          date = parse(dateString, fmt, new Date());
+          if (isValid(date)) break;
+        }
+      }
     }
     
     // Verificar nuevamente si la fecha es válida

@@ -1,6 +1,6 @@
 
 const DB_NAME = 'ClinicaDB';
-const DB_VERSION = 1;
+const DB_VERSION = 2; // Increased version for schema migration
 const STORE_NAME = 'pacientes';
 
 interface Paciente {
@@ -29,11 +29,34 @@ interface Paciente {
   obstetra: string;
   enfermera: string;
   neonatologo: string;
+  // Vacunación con nuevos campos
   vacunacionHbsag: boolean;
+  loteHbsag: string;
+  fechaHbsag: string;
   vacunacionBcg: boolean;
+  loteBcg: string;
+  fechaBcg: string;
+  // Pesquisa con nuevos campos
   pesquisaMetabolica: boolean;
-  grupoFactor: string;
+  protocoloPesquisa: string;
+  fechaPesquisa: string;
+  horaPesquisa: string;
+  // Grupo y factor extendido
+  grupoFactorRn: string;
+  grupoFactorMaterno: string;
+  pcd: string;
+  // Laboratorios extendidos
+  bilirrubinaTotalValor: string;
+  bilirrubinaDirectaValor: string;
+  hematocritoValor: string;
   laboratorios: string;
+  // Datos de egreso
+  fechaEgreso: string;
+  horaEgreso: string;
+  pesoEgreso: string;
+  enfermeraEgreso: string;
+  neonatologoEgreso: string;
+  // Campos existentes
   datosMaternos: string;
   sarsCov2: string;
   chagas: string;
@@ -54,10 +77,56 @@ class DBService {
 
       request.onupgradeneeded = (event) => {
         const db = (event.target as IDBOpenDBRequest).result;
+        const transaction = (event.target as IDBOpenDBRequest).transaction;
+        
         if (!db.objectStoreNames.contains(STORE_NAME)) {
+          // Create new store if it doesn't exist
           const store = db.createObjectStore(STORE_NAME, { keyPath: 'id', autoIncrement: true });
           store.createIndex('nombreApellido', ['nombre', 'apellido'], { unique: false });
           store.createIndex('numeroHistoriaClinica', 'numeroHistoriaClinica', { unique: true });
+        } else {
+          // Get existing store for modification
+          const store = transaction!.objectStore(STORE_NAME);
+          
+          // Migrate existing data if needed
+          const getAllRequest = store.getAll();
+          getAllRequest.onsuccess = function() {
+            const allRecords = getAllRequest.result;
+            
+            // Update each record with new schema
+            allRecords.forEach(record => {
+              // Add new fields with default values if they don't exist
+              const updatedRecord = {
+                ...record,
+                // Vacunación
+                loteHbsag: record.loteHbsag || '',
+                fechaHbsag: record.fechaHbsag || '',
+                loteBcg: record.loteBcg || '',
+                fechaBcg: record.fechaBcg || '',
+                // Pesquisa
+                protocoloPesquisa: record.protocoloPesquisa || '',
+                fechaPesquisa: record.fechaPesquisa || '',
+                horaPesquisa: record.horaPesquisa || '',
+                // Grupo y factor
+                grupoFactorRn: record.grupoFactorRn || record.grupoFactor || '',
+                grupoFactorMaterno: record.grupoFactorMaterno || '',
+                pcd: record.pcd || '',
+                // Laboratorios
+                bilirrubinaTotalValor: record.bilirrubinaTotalValor || '',
+                bilirrubinaDirectaValor: record.bilirrubinaDirectaValor || '',
+                hematocritoValor: record.hematocritoValor || '',
+                // Datos de egreso
+                fechaEgreso: record.fechaEgreso || '',
+                horaEgreso: record.horaEgreso || '',
+                pesoEgreso: record.pesoEgreso || '',
+                enfermeraEgreso: record.enfermeraEgreso || '',
+                neonatologoEgreso: record.neonatologoEgreso || ''
+              };
+              
+              // Update the record
+              store.put(updatedRecord);
+            });
+          };
         }
       };
 

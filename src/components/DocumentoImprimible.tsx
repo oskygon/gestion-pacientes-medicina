@@ -58,6 +58,24 @@ const DocumentoImprimible: React.FC<DocumentoImprimibleProps> = ({
     window.location.reload();
   };
 
+  const calcularPorcentajeDiferenciaPeso = () => {
+    if (!paciente?.peso || !paciente?.pesoEgreso) return '-';
+    
+    try {
+      const pesoNacimiento = parseFloat(paciente.peso);
+      const pesoEgreso = parseFloat(paciente.pesoEgreso);
+      
+      if (isNaN(pesoNacimiento) || isNaN(pesoEgreso) || pesoNacimiento === 0) {
+        return 'Error en cálculo';
+      }
+      
+      const porcentaje = ((pesoEgreso * 100) / pesoNacimiento) - 100;
+      return porcentaje.toFixed(2) + '%';
+    } catch (e) {
+      return 'Error en cálculo';
+    }
+  };
+
   return (
     <>
       <div className="fixed inset-0 bg-black/50 z-40 flex items-center justify-center p-4">
@@ -155,19 +173,112 @@ const DocumentoImprimible: React.FC<DocumentoImprimibleProps> = ({
                     <span className="etiqueta">Vacunación HBsAg:</span>
                     <span className="valor">{paciente.vacunacionHbsag ? 'Sí' : 'No'}</span>
                   </div>
+                  {paciente.vacunacionHbsag && (
+                    <>
+                      <div className="fila">
+                        <span className="etiqueta">Lote HBsAg:</span>
+                        <span className="valor">{paciente.loteHbsag || 'No especificado'}</span>
+                      </div>
+                      <div className="fila">
+                        <span className="etiqueta">Fecha HBsAg:</span>
+                        <span className="valor">{formatDate(paciente.fechaHbsag) || 'No especificada'}</span>
+                      </div>
+                    </>
+                  )}
                   <div className="fila">
                     <span className="etiqueta">Vacunación BCG:</span>
                     <span className="valor">{paciente.vacunacionBcg ? 'Sí' : 'No'}</span>
                   </div>
+                  {paciente.vacunacionBcg && (
+                    <>
+                      <div className="fila">
+                        <span className="etiqueta">Lote BCG:</span>
+                        <span className="valor">{paciente.loteBcg || 'No especificado'}</span>
+                      </div>
+                      <div className="fila">
+                        <span className="etiqueta">Fecha BCG:</span>
+                        <span className="valor">{formatDate(paciente.fechaBcg) || 'No especificada'}</span>
+                      </div>
+                    </>
+                  )}
                   <div className="fila">
                     <span className="etiqueta">Pesquisa metabólica:</span>
                     <span className="valor">{paciente.pesquisaMetabolica ? 'Sí' : 'No'}</span>
                   </div>
+                  {paciente.pesquisaMetabolica && (
+                    <>
+                      <div className="fila">
+                        <span className="etiqueta">Protocolo:</span>
+                        <span className="valor">{paciente.protocoloPesquisa || 'No especificado'}</span>
+                      </div>
+                      <div className="fila">
+                        <span className="etiqueta">Fecha y hora:</span>
+                        <span className="valor">
+                          {formatDate(paciente.fechaPesquisa) || 'No especificada'} {paciente.horaPesquisa || ''}
+                        </span>
+                      </div>
+                    </>
+                  )}
+                </div>
+                
+                <div className="seccion">
+                  <div className="seccion-titulo">DATOS CLÍNICOS</div>
                   <div className="fila">
-                    <span className="etiqueta">Grupo y factor:</span>
-                    <span className="valor">{paciente.grupoFactor || 'No especificado'}</span>
+                    <span className="etiqueta">Grupo y factor RN:</span>
+                    <span className="valor">{paciente.grupoFactorRn || 'No especificado'}</span>
+                  </div>
+                  <div className="fila">
+                    <span className="etiqueta">Grupo y factor materno:</span>
+                    <span className="valor">{paciente.grupoFactorMaterno || 'No especificado'}</span>
+                  </div>
+                  <div className="fila">
+                    <span className="etiqueta">PCD:</span>
+                    <span className="valor">{paciente.pcd || 'No especificado'}</span>
+                  </div>
+                  
+                  <div className="fila">
+                    <span className="etiqueta">Bilirrubina Total:</span>
+                    <span className="valor">{paciente.bilirrubinaTotalValor || 'No especificado'} mg/dl</span>
+                  </div>
+                  <div className="fila">
+                    <span className="etiqueta">Bilirrubina Directa:</span>
+                    <span className="valor">{paciente.bilirrubinaDirectaValor || 'No especificado'} mg/dl</span>
+                  </div>
+                  <div className="fila">
+                    <span className="etiqueta">Hematocrito:</span>
+                    <span className="valor">{paciente.hematocritoValor || 'No especificado'} %</span>
                   </div>
                 </div>
+                
+                {(paciente.fechaEgreso || paciente.pesoEgreso) && (
+                  <div className="seccion">
+                    <div className="seccion-titulo">DATOS DE EGRESO</div>
+                    <div className="fila">
+                      <span className="etiqueta">Fecha de egreso:</span>
+                      <span className="valor">{formatDate(paciente.fechaEgreso) || 'No especificada'}</span>
+                    </div>
+                    <div className="fila">
+                      <span className="etiqueta">Hora de egreso:</span>
+                      <span className="valor">{paciente.horaEgreso || 'No especificada'}</span>
+                    </div>
+                    <div className="fila">
+                      <span className="etiqueta">Peso de egreso:</span>
+                      <span className="valor">{paciente.pesoEgreso || 'No especificado'} g</span>
+                    </div>
+                    <div className="fila">
+                      <span className="etiqueta">% diferencia peso:</span>
+                      <span className="valor">{calcularPorcentajeDiferenciaPeso()}</span>
+                    </div>
+                    <div className="fila">
+                      <span className="etiqueta">Enfermera:</span>
+                      <span className="valor">{paciente.enfermeraEgreso || 'No especificada'}</span>
+                    </div>
+                    <div className="fila">
+                      <span className="etiqueta">Neonatólogo/a:</span>
+                      <span className="valor">{paciente.neonatologoEgreso || 'No especificado'}</span>
+                    </div>
+                  </div>
+                )}
                 
                 <div className="seccion">
                   <div className="seccion-titulo">EQUIPO MÉDICO</div>
