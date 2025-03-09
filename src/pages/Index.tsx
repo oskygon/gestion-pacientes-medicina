@@ -78,7 +78,7 @@ const Index = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
       <div className="max-w-6xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -86,8 +86,8 @@ const Index = () => {
           transition={{ duration: 0.5 }}
           className="text-center mb-12"
         >
-          <h1 className="text-4xl font-bold text-gray-800 mb-3">Neonatología</h1>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <h1 className="text-4xl font-bold text-gray-800 dark:text-gray-100 mb-3">Neonatología</h1>
+          <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
             Gestione de manera eficiente los datos de sus pacientes con esta herramienta intuitiva y elegante.
           </p>
         </motion.div>
@@ -96,15 +96,15 @@ const Index = () => {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl p-6 mb-8"
+          className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-md rounded-2xl shadow-xl p-6 mb-8"
         >
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-2 gap-6 items-center">
             <div className="space-y-4">
               <div className="flex items-center">
                 <Search className="w-6 h-6 text-medical-600 mr-3" />
-                <h2 className="text-xl font-semibold text-gray-800">Buscar Paciente</h2>
+                <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100">Buscar Paciente</h2>
               </div>
-              <p className="text-gray-600">
+              <p className="text-gray-600 dark:text-gray-300">
                 Busque pacientes existentes por nombre, apellido o número de historia clínica.
               </p>
               <SearchInput 
@@ -115,17 +115,17 @@ const Index = () => {
             </div>
             
             <div 
-              className="space-y-4 bg-medical-50 rounded-xl p-5 cursor-pointer hover:bg-medical-100 transition-colors duration-300"
+              className="space-y-4 bg-medical-50 dark:bg-gray-700/50 rounded-xl p-5 cursor-pointer hover:bg-medical-100 dark:hover:bg-gray-700 transition-colors duration-300"
               onClick={handleNewPatient}
             >
               <div className="flex items-center">
                 <PlusCircle className="w-6 h-6 text-medical-600 mr-3" />
-                <h2 className="text-xl font-semibold text-gray-800">Nuevo Paciente</h2>
+                <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100">Nuevo Paciente</h2>
               </div>
-              <p className="text-gray-600">
+              <p className="text-gray-600 dark:text-gray-300">
                 Registre un nuevo paciente en el sistema con todos sus datos médicos.
               </p>
-              <button className="btn-medical mt-2 w-full md:w-auto">
+              <button className="btn-medical mt-2 w-full">
                 Crear nuevo paciente
               </button>
             </div>
