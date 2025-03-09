@@ -584,5 +584,107 @@ const NuevoPaciente = () => {
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity
+      exit={{ opacity: 0, scale: 0.95 }}
+      className="p-6"
+    >
+      <div className="mx-auto max-w-5xl space-y-8">
+        <div className="flex justify-between items-center">
+          <div className="flex items-center space-x-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={handleCancel}
+              className="h-10 w-10"
+            >
+              <ArrowLeft className="h-5 w-5" />
+            </Button>
+            <h1 className="text-2xl font-bold text-gray-800 dark:text-white">
+              Nuevo Paciente
+            </h1>
+          </div>
+          <div className="flex space-x-2">
+            <Button
+              variant="destructive"
+              onClick={handleCancel}
+              className="flex items-center space-x-1"
+              size="sm"
+            >
+              <X className="mr-1 h-4 w-4" />
+              <span>Cancelar</span>
+            </Button>
+            <Button
+              onClick={handleSubmit}
+              className="flex items-center space-x-1 bg-medical-600 hover:bg-medical-700"
+              size="sm"
+              disabled={saving}
+            >
+              <Save className="mr-1 h-4 w-4" />
+              <span>{saving ? 'Guardando...' : 'Guardar'}</span>
+            </Button>
+          </div>
+        </div>
 
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {informacionPersonal}
+          {datosNacimiento}
+          {datosParto}
+          {personalMedico}
+          {vacunacionPesquisa}
+          
+          <div className="flex justify-end space-x-2 pt-4">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={handleCancel}
+              className="flex items-center space-x-1"
+            >
+              <X className="mr-1 h-4 w-4" />
+              <span>Cancelar</span>
+            </Button>
+            <Button
+              type="submit"
+              className="flex items-center space-x-1 bg-medical-600 hover:bg-medical-700"
+              disabled={saving}
+            >
+              <Save className="mr-1 h-4 w-4" />
+              <span>{saving ? 'Guardando...' : 'Guardar'}</span>
+            </Button>
+          </div>
+        </form>
+      </div>
+      
+      {showDocumento && pacienteRegistrado && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-5xl w-full max-h-[90vh] overflow-auto">
+            <div className="p-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+              <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100">
+                Ficha de Paciente Registrado
+              </h2>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={handleCloseDocumento}
+                className="h-8 w-8"
+              >
+                <X className="h-5 w-5" />
+              </Button>
+            </div>
+            <div className="p-4">
+              <DocumentoImprimible paciente={pacienteRegistrado} />
+            </div>
+            <div className="p-4 border-t border-gray-200 dark:border-gray-700 flex justify-end space-x-2">
+              <Button
+                variant="outline"
+                onClick={handleCloseDocumento}
+              >
+                Cerrar
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+    </motion.div>
+  );
+};
+
+export default NuevoPaciente;
