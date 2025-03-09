@@ -62,6 +62,9 @@ interface Paciente {
   neonatologoEgreso: string;
   // Campos existentes
   datosMaternos: string;
+  numeroDocumento: string;
+  telefono: string;          // Nuevo campo para el número de teléfono
+  obraSocial: string;
   sarsCov2: string;
   chagas: string;
   toxoplasmosis: string;
@@ -69,6 +72,7 @@ interface Paciente {
   vdrl: string;
   hepatitisB: string;
   egb: string;
+  profilaxisATB: string;
   createdAt: number;
 }
 

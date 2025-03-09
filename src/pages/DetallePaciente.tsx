@@ -42,49 +42,120 @@ const DetallePaciente = () => {
     cargarPaciente();
   }, [id, navigate]);
 
+  // const formatearFecha = (fecha: string) => {
+  //   try {
+  //     const date = new Date(fecha);
+  //     if (isNaN(date.getTime())) return 'Fecha no válida';
+  //     return format(date, 'PPP', { locale: es });
+  //   } catch (e) {
+  //     return 'Fecha no válida';
+  //   }
+  // };
+
   const formatearFecha = (fecha: string) => {
     try {
       const date = new Date(fecha);
       if (isNaN(date.getTime())) return 'Fecha no válida';
-      return format(date, 'PPP', { locale: es });
+  
+      // Extraer día, mes y año
+      const dia = date.getDate(); // Día del mes (1-31)
+      const mes = date.getMonth() + 1; // Mes (0-11) + 1 para ajustar a 1-12
+      const año = date.getFullYear(); // Año (4 dígitos)
+  
+      // Formatear como "día/mes/año"
+      return `${dia}/${mes}/${año}`;
     } catch (e) {
       return 'Fecha no válida';
     }
   };
 
-  const calcularEdad = (fechaNacimiento: string) => {
-    try {
-      const hoy = new Date();
-      const fechaNac = new Date(fechaNacimiento);
+//   const calcularEdad = (fechaNacimiento: string) => {
+//     try {
+//         // Convertir la fecha de nacimiento al formato Date
+//         const [dia, mes, anio] = fechaNacimiento.split('/').map(Number);
+//         const fechaNac = new Date(anio, mes - 1, dia); // Los meses en Date son 0-indexados
+        
+//         const hoy = new Date();
+        
+//         // Validar si la fecha es válida
+//         if (isNaN(fechaNac.getTime())) return 'Fecha no válida';
+        
+//         // Calcular la edad
+//         const edad = hoy.getFullYear() - fechaNac.getFullYear();
+//         const mesActual = hoy.getMonth() - fechaNac.getMonth();
+        
+//         // Ajustar la edad si aún no ha pasado el cumpleaños este año
+//         if (mesActual < 0 || (mesActual === 0 && hoy.getDate() < fechaNac.getDate())) {
+//             return `${edad - 1} años`;
+//         }
+        
+//         // Si la edad es 0, calcular meses o días
+//         if (edad === 0) {
+//             const meses = hoy.getMonth() - fechaNac.getMonth() + 
+//                 (hoy.getDate() < fechaNac.getDate() ? -1 : 0) + 
+//                 (hoy.getMonth() < fechaNac.getMonth() ? 12 : 0);
+            
+//             if (meses === 0) {
+//                 const dias = Math.floor((hoy.getTime() - fechaNac.getTime()) / (1000 * 60 * 60 * 24));
+//                 return `${dias} días`;
+//             }
+            
+//             return `${meses} meses`;
+//         }
+        
+//         return `${edad} años`;
+//     } catch (e) {
+//         return 'Error en fecha';
+//     }
+// };
+
+
+const calcularEdad = (fechaNacimiento: string) => {
+  try {
+      // Convertir la fecha de nacimiento al formato Date
+      const [dia, mes, anio] = fechaNacimiento.split('/').map(Number);
+      const fechaNac = new Date(anio, mes - 1, dia); // Los meses en Date son 0-indexados
       
+      const hoy = new Date();
+      
+      // Validar si la fecha es válida
       if (isNaN(fechaNac.getTime())) return 'Fecha no válida';
       
+      // Verificar que la fecha de nacimiento no sea en el futuro
+      if (fechaNac > hoy) return 'La fecha de nacimiento no puede ser en el futuro';
+      
+      // Calcular la diferencia en días
+      const diferenciaMilisegundos = hoy.getTime() - fechaNac.getTime();
+      const dias = Math.floor(diferenciaMilisegundos / (1000 * 60 * 60 * 24));
+      
+      // Calcular la edad en años
       const edad = hoy.getFullYear() - fechaNac.getFullYear();
-      const mes = hoy.getMonth() - fechaNac.getMonth();
+      const mesActual = hoy.getMonth() - fechaNac.getMonth();
       
-      if (mes < 0 || (mes === 0 && hoy.getDate() < fechaNac.getDate())) {
-        return `${edad - 1} años`;
-      }
-      
-      if (edad === 0) {
-        const meses = hoy.getMonth() - fechaNac.getMonth() + 
-          (hoy.getDate() < fechaNac.getDate() ? -1 : 0) + 
-          (hoy.getMonth() < fechaNac.getMonth() ? 12 : 0);
-        
-        if (meses === 0) {
-          const dias = Math.floor((hoy.getTime() - fechaNac.getTime()) / (1000 * 60 * 60 * 24));
+      // Si es un recién nacido (menos de 30 días), retornar los días
+      if (dias < 30) {
           return `${dias} días`;
-        }
-        
-        return `${meses} meses`;
       }
       
-      return `${edad} años`;
-    } catch (e) {
+      // Si tiene menos de un año, calcular los meses
+      if (edad === 0) {
+          const meses = hoy.getMonth() - fechaNac.getMonth() + 
+              (hoy.getDate() < fechaNac.getDate() ? -1 : 0) + 
+              (hoy.getMonth() < fechaNac.getMonth() ? 12 : 0);
+          
+          return `${meses} meses y ${dias % 30} días`;
+      }
+      
+      // Ajustar la edad si aún no ha pasado el cumpleaños este año
+      if (mesActual < 0 || (mesActual === 0 && hoy.getDate() < fechaNac.getDate())) {
+          return `${edad - 1} años y ${dias % 365} días`;
+      }
+      
+      return `${edad} años y ${dias % 365} días`;
+  } catch (e) {
       return 'Error en fecha';
-    }
-  };
-
+  }
+};
   const calcularPorcentajeDiferenciaPeso = () => {
     if (!paciente?.peso || !paciente?.pesoEgreso) return '-';
     
@@ -644,7 +715,7 @@ const DetallePaciente = () => {
           <SeccionVacunacionPesquisa />
           
           <SeccionDatosMaternos />
-          
+
           <SeccionDatosEgreso />
           
           

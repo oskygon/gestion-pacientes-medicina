@@ -97,7 +97,7 @@ const DocumentoImprimible: React.FC<DocumentoImprimibleProps> = ({
             <div className="print-container" ref={documentRef}>
               <div className="documento">
                 <div className="header">
-                  <div className="titulo">EPICRISIS NEONATAL</div>
+                  <div className="titulo text-bold text-3xl">EPICRISIS NEONATAL</div>
                   <div className="subtitulo">SANATORIO SAN FRANCISCO DE ASÍS</div>
                 </div>
                 
@@ -256,6 +256,10 @@ const DocumentoImprimible: React.FC<DocumentoImprimibleProps> = ({
                     <div className="fila">
                       <span className="etiqueta">Fecha de egreso:</span>
                       <span className="valor">{formatDate(paciente.fechaEgreso) || 'No especificada'}</span>
+                    </div>
+                    <div className="fila">
+                      <span className="etiqueta">Días de vida:</span>
+                      <span className="valor">{paciente.ddv || 'No especificados'}</span>
                     </div>
                     <div className="fila">
                       <span className="etiqueta">Hora de egreso:</span>

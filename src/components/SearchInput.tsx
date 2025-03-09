@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { Search, X } from 'lucide-react';
 
@@ -38,14 +37,14 @@ const SearchInput: React.FC<SearchInputProps> = ({
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        className="glass-input w-full pl-10 pr-12 py-3 rounded-xl text-gray-700 focus:outline-none"
+        className="w-full pl-10 pr-12 py-3 rounded-xl text-gray-700 dark:text-gray-200 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-medical-300 focus:border-transparent transition-all duration-300"
         placeholder={placeholder}
       />
       
       {query && (
         <button 
           onClick={handleClear}
-          className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600 transition-colors"
+          className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
         >
           <X className="w-5 h-5" />
         </button>
