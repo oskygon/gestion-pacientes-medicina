@@ -86,7 +86,7 @@ const Index = () => {
           transition={{ duration: 0.5 }}
           className="text-center mb-12"
         >
-          <h1 className="text-4xl font-bold text-gray-800 mb-3">Sistema de Gestión de Pacientes</h1>
+          <h1 className="text-4xl font-bold text-gray-800 mb-3">Neonatología</h1>
           <p className="text-gray-600 max-w-2xl mx-auto">
             Gestione de manera eficiente los datos de sus pacientes con esta herramienta intuitiva y elegante.
           </p>
