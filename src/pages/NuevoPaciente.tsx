@@ -1,5 +1,4 @@
-<lov-code>
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Save, X } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -8,7 +7,7 @@ import { dbService, Paciente } from '../services/db';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Separator } from '@/components/ui/separator';
-import { format } from 'date-fns';
+import { format, differenceInDays } from 'date-fns';
 import DocumentoImprimible from '@/components/DocumentoImprimible';
 
 const NuevoPaciente = () => {
@@ -44,38 +43,32 @@ const NuevoPaciente = () => {
     obstetra: '',
     enfermera: '',
     neonatologo: '',
-    // Campos de vacunación
     vacunacionHbsag: false,
     loteHbsag: '',
     fechaHbsag: fechaActual,
     vacunacionBcg: false,
     loteBcg: '',
     fechaBcg: fechaActual,
-    // Campos de pesquisa
     pesquisaMetabolica: false,
     protocoloPesquisa: '',
     fechaPesquisa: fechaActual,
     horaPesquisa: horaActual,
-    // Campos de grupo y factor
     grupoFactorRn: '',
     grupoFactorMaterno: '',
     pcd: '',
-    // Campos de laboratorio
     bilirrubinaTotalValor: '',
     bilirrubinaDirectaValor: '',
     hematocritoValor: '',
     laboratorios: '',
-    // Campos de egreso
     fechaEgreso: '',
     horaEgreso: '',
     pesoEgreso: '',
     evolucionInternacion: '',
-  diagnosticos: '',
-  indicacionesEgreso: '',
-  observaciones: '',
+    diagnosticos: '',
+    indicacionesEgreso: '',
+    observaciones: '',
     enfermeraEgreso: '',
     neonatologoEgreso: '',
-    // Otros campos
     datosMaternos: '',
     sarsCov2: '',
     chagas: '',
@@ -85,6 +78,19 @@ const NuevoPaciente = () => {
     hepatitisB: '',
     egb: ''
   });
+
+  useEffect(() => {
+    if (formData.fechaNacimiento) {
+      const fechaNacimiento = new Date(formData.fechaNacimiento);
+      const hoy = new Date();
+      const diasDeVida = differenceInDays(hoy, fechaNacimiento);
+      
+      setFormData(prev => ({ 
+        ...prev, 
+        ddv: diasDeVida.toString() 
+      }));
+    }
+  }, [formData.fechaNacimiento]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target as HTMLInputElement;
@@ -113,7 +119,6 @@ const NuevoPaciente = () => {
       setSaving(true);
       const id = await dbService.agregarPaciente(formData);
       
-      // Obtener el paciente registrado completo para mostrarlo en el documento
       const pacienteCompleto = await dbService.obtenerPacientePorId(id);
       
       if (pacienteCompleto) {
@@ -137,7 +142,6 @@ const NuevoPaciente = () => {
 
   const handleCloseDocumento = () => {
     setShowDocumento(false);
-    // Redirigir a la página de detalle del paciente
     if (pacienteRegistrado?.id) {
       navigate(`/paciente/${pacienteRegistrado.id}`);
     } else {
@@ -145,7 +149,6 @@ const NuevoPaciente = () => {
     }
   };
 
-  // Grupos de campos para mejor organización del formulario
   const informacionPersonal = (
     <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl p-6 shadow-md">
       <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">Información Personal</h3>
@@ -292,13 +295,13 @@ const NuevoPaciente = () => {
         </div>
         
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">DDV</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">DDV (días de vida)</label>
           <input
             type="text"
             name="ddv"
             value={formData.ddv}
-            onChange={handleChange}
-            className="w-full h-12 p-3 text-base rounded-lg bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-medical-300 focus:border-transparent transition-all duration-300 text-gray-700 dark:text-gray-200"
+            readOnly
+            className="w-full h-12 p-3 text-base rounded-lg bg-gray-100 dark:bg-gray-700/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-medical-300 focus:border-transparent transition-all duration-300 text-gray-700 dark:text-gray-200"
           />
         </div>
         
@@ -568,4 +571,18 @@ const NuevoPaciente = () => {
                 setFormData(prev => ({ ...prev, pesquisaMetabolica: checked === true }))
               }
             />
-            <label htmlFor="pesquisaMetabolica" className="text-sm font-medium text-gray-700 dark:text-gray-3
+            <label htmlFor="pesquisaMetabolica" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+              Pesquisa Metabólica
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity
+
