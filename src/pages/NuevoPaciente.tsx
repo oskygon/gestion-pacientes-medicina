@@ -1,4 +1,4 @@
-
+<lov-code>
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Save, X } from 'lucide-react';
@@ -147,75 +147,75 @@ const NuevoPaciente = () => {
 
   // Grupos de campos para mejor organización del formulario
   const informacionPersonal = (
-    <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-md">
-      <h3 className="text-lg font-semibold text-gray-800 mb-4">Información Personal</h3>
+    <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl p-6 shadow-md">
+      <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">Información Personal</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">Nombre *</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Nombre *</label>
           <input
             type="text"
             name="nombre"
             value={formData.nombre}
             onChange={handleChange}
-            className="glass-input w-full rounded-lg"
+            className="w-full h-12 p-3 text-base rounded-lg bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-medical-300 focus:border-transparent transition-all duration-300 text-gray-700 dark:text-gray-200"
             required
           />
         </div>
         
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">Apellido *</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Apellido *</label>
           <input
             type="text"
             name="apellido"
             value={formData.apellido}
             onChange={handleChange}
-            className="glass-input w-full rounded-lg"
+            className="w-full h-12 p-3 text-base rounded-lg bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-medical-300 focus:border-transparent transition-all duration-300 text-gray-700 dark:text-gray-200"
             required
           />
         </div>
         
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">Fecha de Nacimiento *</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Fecha de Nacimiento *</label>
           <input
             type="date"
             name="fechaNacimiento"
             value={formData.fechaNacimiento}
             onChange={handleChange}
-            className="glass-input w-full rounded-lg"
+            className="w-full h-12 p-3 text-base rounded-lg bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-medical-300 focus:border-transparent transition-all duration-300 text-gray-700 dark:text-gray-200"
             required
           />
         </div>
         
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">Hora de Nacimiento</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Hora de Nacimiento</label>
           <input
             type="time"
             name="horaNacimiento"
             value={formData.horaNacimiento}
             onChange={handleChange}
-            className="glass-input w-full rounded-lg"
+            className="w-full h-12 p-3 text-base rounded-lg bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-medical-300 focus:border-transparent transition-all duration-300 text-gray-700 dark:text-gray-200"
           />
         </div>
         
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">Número de Historia Clínica *</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Número de Historia Clínica *</label>
           <input
             type="text"
             name="numeroHistoriaClinica"
             value={formData.numeroHistoriaClinica}
             onChange={handleChange}
-            className="glass-input w-full rounded-lg"
+            className="w-full h-12 p-3 text-base rounded-lg bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-medical-300 focus:border-transparent transition-all duration-300 text-gray-700 dark:text-gray-200"
             required
           />
         </div>
         
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">Sexo</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Sexo</label>
           <select
             name="sexo"
             value={formData.sexo}
             onChange={handleChange}
-            className="glass-input w-full rounded-lg"
+            className="w-full h-12 p-3 text-base rounded-lg bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-medical-300 focus:border-transparent transition-all duration-300 text-gray-700 dark:text-gray-200"
           >
             <option value="">Seleccionar...</option>
             <option value="M">Masculino</option>
@@ -228,99 +228,99 @@ const NuevoPaciente = () => {
   );
 
   const datosNacimiento = (
-    <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-md">
-      <h3 className="text-lg font-semibold text-gray-800 mb-4">Datos de Nacimiento</h3>
+    <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl p-6 shadow-md">
+      <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">Datos de Nacimiento</h3>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">Peso (g)</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Peso (g)</label>
           <input
             type="text"
             name="peso"
             value={formData.peso}
             onChange={handleChange}
-            className="glass-input w-full rounded-lg"
+            className="w-full h-12 p-3 text-base rounded-lg bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-medical-300 focus:border-transparent transition-all duration-300 text-gray-700 dark:text-gray-200"
             placeholder="Ej: 3500"
           />
         </div>
         
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">Talla (cm)</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Talla (cm)</label>
           <input
             type="text"
             name="talla"
             value={formData.talla}
             onChange={handleChange}
-            className="glass-input w-full rounded-lg"
+            className="w-full h-12 p-3 text-base rounded-lg bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-medical-300 focus:border-transparent transition-all duration-300 text-gray-700 dark:text-gray-200"
             placeholder="Ej: 50"
           />
         </div>
         
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">Perímetro Cefálico (cm)</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Perímetro Cefálico (cm)</label>
           <input
             type="text"
             name="perimetroCefalico"
             value={formData.perimetroCefalico}
             onChange={handleChange}
-            className="glass-input w-full rounded-lg"
+            className="w-full h-12 p-3 text-base rounded-lg bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-medical-300 focus:border-transparent transition-all duration-300 text-gray-700 dark:text-gray-200"
             placeholder="Ej: 34"
           />
         </div>
         
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">Edad Gestacional</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Edad Gestacional</label>
           <input
             type="text"
             name="edadGestacional"
             value={formData.edadGestacional}
             onChange={handleChange}
-            className="glass-input w-full rounded-lg"
+            className="w-full h-12 p-3 text-base rounded-lg bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-medical-300 focus:border-transparent transition-all duration-300 text-gray-700 dark:text-gray-200"
             placeholder="Ej: 38 sem"
           />
         </div>
         
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">APGAR</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">APGAR</label>
           <input
             type="text"
             name="apgar"
             value={formData.apgar}
             onChange={handleChange}
-            className="glass-input w-full rounded-lg"
+            className="w-full h-12 p-3 text-base rounded-lg bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-medical-300 focus:border-transparent transition-all duration-300 text-gray-700 dark:text-gray-200"
             placeholder="Ej: 9/10"
           />
         </div>
         
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">DDV</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">DDV</label>
           <input
             type="text"
             name="ddv"
             value={formData.ddv}
             onChange={handleChange}
-            className="glass-input w-full rounded-lg"
+            className="w-full h-12 p-3 text-base rounded-lg bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-medical-300 focus:border-transparent transition-all duration-300 text-gray-700 dark:text-gray-200"
           />
         </div>
         
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">HC</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">HC</label>
           <input
             type="text"
             name="hc"
             value={formData.hc}
             onChange={handleChange}
-            className="glass-input w-full rounded-lg"
+            className="w-full h-12 p-3 text-base rounded-lg bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-medical-300 focus:border-transparent transition-all duration-300 text-gray-700 dark:text-gray-200"
           />
         </div>
         
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">Pulsera</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Pulsera</label>
           <input
             type="text"
             name="pulsera"
             value={formData.pulsera}
             onChange={handleChange}
-            className="glass-input w-full rounded-lg"
+            className="w-full h-12 p-3 text-base rounded-lg bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-medical-300 focus:border-transparent transition-all duration-300 text-gray-700 dark:text-gray-200"
           />
         </div>
       </div>
@@ -328,16 +328,16 @@ const NuevoPaciente = () => {
   );
 
   const datosParto = (
-    <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-md">
-      <h3 className="text-lg font-semibold text-gray-800 mb-4">Datos del Parto</h3>
+    <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl p-6 shadow-md">
+      <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">Datos del Parto</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">Nacido Por</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Nacido Por</label>
           <select
             name="nacidoPor"
             value={formData.nacidoPor}
             onChange={handleChange}
-            className="glass-input w-full rounded-lg"
+            className="w-full h-12 p-3 text-base rounded-lg bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-medical-300 focus:border-transparent transition-all duration-300 text-gray-700 dark:text-gray-200"
           >
             <option value="">Seleccionar...</option>
             <option value="Parto vaginal">Parto vaginal</option>
@@ -346,12 +346,12 @@ const NuevoPaciente = () => {
         </div>
         
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">Presentación</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Presentación</label>
           <select
             name="presentacion"
             value={formData.presentacion}
             onChange={handleChange}
-            className="glass-input w-full rounded-lg"
+            className="w-full h-12 p-3 text-base rounded-lg bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-medical-300 focus:border-transparent transition-all duration-300 text-gray-700 dark:text-gray-200"
           >
             <option value="">Seleccionar...</option>
             <option value="Cefálica">Cefálica</option>
@@ -361,12 +361,12 @@ const NuevoPaciente = () => {
         </div>
         
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">Líquido Amniótico</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Líquido Amniótico</label>
           <select
             name="liquidoAmniotico"
             value={formData.liquidoAmniotico}
             onChange={handleChange}
-            className="glass-input w-full rounded-lg"
+            className="w-full h-12 p-3 text-base rounded-lg bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-medical-300 focus:border-transparent transition-all duration-300 text-gray-700 dark:text-gray-200"
           >
             <option value="">Seleccionar...</option>
             <option value="Claro">Claro</option>
@@ -376,12 +376,12 @@ const NuevoPaciente = () => {
         </div>
         
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">Ruptura de Membranas</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Ruptura de Membranas</label>
           <select
             name="rupturaMembranas"
             value={formData.rupturaMembranas}
             onChange={handleChange}
-            className="glass-input w-full rounded-lg"
+            className="w-full h-12 p-3 text-base rounded-lg bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-medical-300 focus:border-transparent transition-all duration-300 text-gray-700 dark:text-gray-200"
           >
             <option value="">Seleccionar...</option>
             <option value="Espontánea">Espontánea</option>
@@ -390,24 +390,24 @@ const NuevoPaciente = () => {
         </div>
         
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">Clasificación</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Clasificación</label>
           <input
             type="text"
             name="clasificacion"
             value={formData.clasificacion}
             onChange={handleChange}
-            className="glass-input w-full rounded-lg"
+            className="w-full h-12 p-3 text-base rounded-lg bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-medical-300 focus:border-transparent transition-all duration-300 text-gray-700 dark:text-gray-200"
           />
         </div>
         
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">Procedencia</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Procedencia</label>
           <input
             type="text"
             name="procedencia"
             value={formData.procedencia}
             onChange={handleChange}
-            className="glass-input w-full rounded-lg"
+            className="w-full h-12 p-3 text-base rounded-lg bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-medical-300 focus:border-transparent transition-all duration-300 text-gray-700 dark:text-gray-200"
           />
         </div>
       </div>
@@ -415,50 +415,50 @@ const NuevoPaciente = () => {
   );
 
   const personalMedico = (
-    <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-md">
-      <h3 className="text-lg font-semibold text-gray-800 mb-4">Personal Médico</h3>
+    <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl p-6 shadow-md">
+      <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">Personal Médico</h3>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">Sector de Internación</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Sector de Internación</label>
           <input
             type="text"
             name="sectorInternacion"
             value={formData.sectorInternacion}
             onChange={handleChange}
-            className="glass-input w-full rounded-lg"
+            className="w-full h-12 p-3 text-base rounded-lg bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-medical-300 focus:border-transparent transition-all duration-300 text-gray-700 dark:text-gray-200"
           />
         </div>
         
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">Obstetra</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Obstetra</label>
           <input
             type="text"
             name="obstetra"
             value={formData.obstetra}
             onChange={handleChange}
-            className="glass-input w-full rounded-lg"
+            className="w-full h-12 p-3 text-base rounded-lg bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-medical-300 focus:border-transparent transition-all duration-300 text-gray-700 dark:text-gray-200"
           />
         </div>
         
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">Enfermera</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Enfermera</label>
           <input
             type="text"
             name="enfermera"
             value={formData.enfermera}
             onChange={handleChange}
-            className="glass-input w-full rounded-lg"
+            className="w-full h-12 p-3 text-base rounded-lg bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-medical-300 focus:border-transparent transition-all duration-300 text-gray-700 dark:text-gray-200"
           />
         </div>
         
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">Neonatólogo/a</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Neonatólogo/a</label>
           <input
             type="text"
             name="neonatologo"
             value={formData.neonatologo}
             onChange={handleChange}
-            className="glass-input w-full rounded-lg"
+            className="w-full h-12 p-3 text-base rounded-lg bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-medical-300 focus:border-transparent transition-all duration-300 text-gray-700 dark:text-gray-200"
           />
         </div>
       </div>
@@ -466,11 +466,11 @@ const NuevoPaciente = () => {
   );
 
   const vacunacionPesquisa = (
-    <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-md">
-      <h3 className="text-lg font-semibold text-gray-800 mb-4">Vacunación y Pesquisa</h3>
+    <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl p-6 shadow-md">
+      <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">Vacunación y Pesquisa</h3>
       
       <div className="mb-6">
-        <h4 className="text-md font-medium text-gray-700 mb-3">Vacunación</h4>
+        <h4 className="text-md font-medium text-gray-700 dark:text-gray-300 mb-3">Vacunación</h4>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
@@ -482,7 +482,7 @@ const NuevoPaciente = () => {
                   setFormData(prev => ({ ...prev, vacunacionHbsag: checked === true }))
                 }
               />
-              <label htmlFor="vacunacionHbsag" className="text-sm font-medium text-gray-700">
+              <label htmlFor="vacunacionHbsag" className="text-sm font-medium text-gray-700 dark:text-gray-300">
                 Vacunación HBsAg
               </label>
             </div>
@@ -490,23 +490,23 @@ const NuevoPaciente = () => {
             {formData.vacunacionHbsag && (
               <div className="grid grid-cols-2 gap-2 pl-6">
                 <div className="space-y-1">
-                  <label className="block text-xs font-medium text-gray-700">Lote</label>
+                  <label className="block text-xs font-medium text-gray-700 dark:text-gray-300">Lote</label>
                   <input
                     type="text"
                     name="loteHbsag"
                     value={formData.loteHbsag}
                     onChange={handleChange}
-                    className="glass-input w-full rounded-lg text-sm"
+                    className="w-full h-10 p-2 text-sm rounded-lg bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-medical-300 focus:border-transparent transition-all duration-300 text-gray-700 dark:text-gray-200"
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="block text-xs font-medium text-gray-700">Fecha</label>
+                  <label className="block text-xs font-medium text-gray-700 dark:text-gray-300">Fecha</label>
                   <input
                     type="date"
                     name="fechaHbsag"
                     value={formData.fechaHbsag}
                     onChange={handleChange}
-                    className="glass-input w-full rounded-lg text-sm"
+                    className="w-full h-10 p-2 text-sm rounded-lg bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-medical-300 focus:border-transparent transition-all duration-300 text-gray-700 dark:text-gray-200"
                   />
                 </div>
               </div>
@@ -523,7 +523,7 @@ const NuevoPaciente = () => {
                   setFormData(prev => ({ ...prev, vacunacionBcg: checked === true }))
                 }
               />
-              <label htmlFor="vacunacionBcg" className="text-sm font-medium text-gray-700">
+              <label htmlFor="vacunacionBcg" className="text-sm font-medium text-gray-700 dark:text-gray-300">
                 Vacunación BCG
               </label>
             </div>
@@ -531,23 +531,23 @@ const NuevoPaciente = () => {
             {formData.vacunacionBcg && (
               <div className="grid grid-cols-2 gap-2 pl-6">
                 <div className="space-y-1">
-                  <label className="block text-xs font-medium text-gray-700">Lote</label>
+                  <label className="block text-xs font-medium text-gray-700 dark:text-gray-300">Lote</label>
                   <input
                     type="text"
                     name="loteBcg"
                     value={formData.loteBcg}
                     onChange={handleChange}
-                    className="glass-input w-full rounded-lg text-sm"
+                    className="w-full h-10 p-2 text-sm rounded-lg bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-medical-300 focus:border-transparent transition-all duration-300 text-gray-700 dark:text-gray-200"
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="block text-xs font-medium text-gray-700">Fecha</label>
+                  <label className="block text-xs font-medium text-gray-700 dark:text-gray-300">Fecha</label>
                   <input
                     type="date"
                     name="fechaBcg"
                     value={formData.fechaBcg}
                     onChange={handleChange}
-                    className="glass-input w-full rounded-lg text-sm"
+                    className="w-full h-10 p-2 text-sm rounded-lg bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-medical-300 focus:border-transparent transition-all duration-300 text-gray-700 dark:text-gray-200"
                   />
                 </div>
               </div>
@@ -557,7 +557,7 @@ const NuevoPaciente = () => {
       </div>
       
       <div className="mb-6">
-        <h4 className="text-md font-medium text-gray-700 mb-3">Pesquisa Metabólica</h4>
+        <h4 className="text-md font-medium text-gray-700 dark:text-gray-300 mb-3">Pesquisa Metabólica</h4>
         <div className="space-y-4">
           <div className="flex items-center space-x-2">
             <Checkbox 
@@ -568,461 +568,4 @@ const NuevoPaciente = () => {
                 setFormData(prev => ({ ...prev, pesquisaMetabolica: checked === true }))
               }
             />
-            <label htmlFor="pesquisaMetabolica" className="text-sm font-medium text-gray-700">
-              Pesquisa Metabólica
-            </label>
-          </div>
-          
-          {formData.pesquisaMetabolica && (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pl-6">
-              <div className="space-y-1">
-                <label className="block text-xs font-medium text-gray-700">N° Protocolo</label>
-                <input
-                  type="text"
-                  name="protocoloPesquisa"
-                  value={formData.protocoloPesquisa}
-                  onChange={handleChange}
-                  className="glass-input w-full rounded-lg text-sm"
-                />
-              </div>
-              <div className="space-y-1">
-                <label className="block text-xs font-medium text-gray-700">Fecha</label>
-                <input
-                  type="date"
-                  name="fechaPesquisa"
-                  value={formData.fechaPesquisa}
-                  onChange={handleChange}
-                  className="glass-input w-full rounded-lg text-sm"
-                />
-              </div>
-              <div className="space-y-1">
-                <label className="block text-xs font-medium text-gray-700">Hora</label>
-                <input
-                  type="time"
-                  name="horaPesquisa"
-                  value={formData.horaPesquisa}
-                  onChange={handleChange}
-                  className="glass-input w-full rounded-lg text-sm"
-                />
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-      
-      <div className="mb-6">
-        <h4 className="text-md font-medium text-gray-700 mb-3">Grupo y Factor</h4>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">Recién Nacido</label>
-            <input
-              type="text"
-              name="grupoFactorRn"
-              value={formData.grupoFactorRn}
-              onChange={handleChange}
-              className="glass-input w-full rounded-lg"
-              placeholder="Ej: A Rh+"
-            />
-          </div>
-          
-          <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">Materno</label>
-            <input
-              type="text"
-              name="grupoFactorMaterno"
-              value={formData.grupoFactorMaterno}
-              onChange={handleChange}
-              className="glass-input w-full rounded-lg"
-              placeholder="Ej: O Rh+"
-            />
-          </div>
-          
-          <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">PCD</label>
-            <select
-              name="pcd"
-              value={formData.pcd}
-              onChange={handleChange}
-              className="glass-input w-full rounded-lg"
-            >
-              <option value="">Seleccionar...</option>
-              <option value="Positiva">Positiva</option>
-              <option value="Negativa">Negativa</option>
-              <option value="No realizada">No realizada</option>
-            </select>
-          </div>
-        </div>
-      </div>
-      
-      <div>
-        <h4 className="text-md font-medium text-gray-700 mb-3">Laboratorios</h4>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-          <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">Bilirrubina Total (mg/dl)</label>
-            <input
-              type="text"
-              name="bilirrubinaTotalValor"
-              value={formData.bilirrubinaTotalValor}
-              onChange={handleChange}
-              className="glass-input w-full rounded-lg"
-              placeholder="Ej: 12.5"
-            />
-          </div>
-          
-          <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">Bilirrubina Directa (mg/dl)</label>
-            <input
-              type="text"
-              name="bilirrubinaDirectaValor"
-              value={formData.bilirrubinaDirectaValor}
-              onChange={handleChange}
-              className="glass-input w-full rounded-lg"
-              placeholder="Ej: 0.8"
-            />
-          </div>
-          
-          <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">Hematocrito (%)</label>
-            <input
-              type="text"
-              name="hematocritoValor"
-              value={formData.hematocritoValor}
-              onChange={handleChange}
-              className="glass-input w-full rounded-lg"
-              placeholder="Ej: 45"
-            />
-          </div>
-        </div>
-        
-        <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">Otros laboratorios</label>
-          <textarea
-            name="laboratorios"
-            value={formData.laboratorios}
-            onChange={handleChange}
-            rows={2}
-            className="glass-input w-full rounded-lg"
-          />
-        </div>
-      </div>
-    </div>
-  );
-
-  const datosEgreso = (
-    <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-md">
-      <h3 className="text-lg font-semibold text-gray-800 mb-4">Datos del Egreso</h3>
-      
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">Fecha de Egreso</label>
-          <input
-            type="date"
-            name="fechaEgreso"
-            value={formData.fechaEgreso}
-            onChange={handleChange}
-            className="glass-input w-full rounded-lg"
-          />
-        </div>
-        
-        <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">Hora de Egreso</label>
-          <input
-            type="time"
-            name="horaEgreso"
-            value={formData.horaEgreso}
-            onChange={handleChange}
-            className="glass-input w-full rounded-lg"
-          />
-        </div>
-        
-        <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">Peso de Egreso (g)</label>
-          <input
-            type="text"
-            name="pesoEgreso"
-            value={formData.pesoEgreso}
-            onChange={handleChange}
-            className="glass-input w-full rounded-lg"
-            placeholder="Ej: 3200"
-          />
-        </div>
-        
-        <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">Enfermera de Egreso</label>
-          <input
-            type="text"
-            name="enfermeraEgreso"
-            value={formData.enfermeraEgreso}
-            onChange={handleChange}
-            className="glass-input w-full rounded-lg"
-          />
-        </div>
-        
-        <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">Neonatólogo/a de Egreso</label>
-          <input
-            type="text"
-            name="neonatologoEgreso"
-            value={formData.neonatologoEgreso}
-            onChange={handleChange}
-            className="glass-input w-full rounded-lg"
-          />
-        </div>
-      </div>
-  
-      {/* Nuevos campos agregados */}
-      <div className="mt-6 space-y-4">
-        <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">Evolución durante la internación</label>
-          <textarea
-            name="evolucionInternacion"
-            value={formData.evolucionInternacion}
-            onChange={handleChange}
-            rows={3}
-            className="glass-input w-full rounded-lg"
-          />
-        </div>
-  
-        <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">Diagnósticos</label>
-          <textarea
-            name="diagnosticos"
-            value={formData.diagnosticos}
-            onChange={handleChange}
-            rows={3}
-            className="glass-input w-full rounded-lg"
-          />
-        </div>
-  
-        <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">Indicaciones al egreso</label>
-          <textarea
-            name="indicacionesEgreso"
-            value={formData.indicacionesEgreso}
-            onChange={handleChange}
-            rows={3}
-            className="glass-input w-full rounded-lg"
-          />
-        </div>
-  
-        <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">Observaciones</label>
-          <textarea
-            name="observaciones"
-            value={formData.observaciones}
-            onChange={handleChange}
-            rows={3}
-            className="glass-input w-full rounded-lg"
-          />
-        </div>
-      </div>
-    </div>
-  );
-
-  const datosMaternos = (
-    <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-md">
-      <h3 className="text-lg font-semibold text-gray-800 mb-4">Datos Maternos</h3>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="space-y-2 md:col-span-2">
-          <label className="block text-sm font-medium text-gray-700">Datos Maternos Generales</label>
-          <textarea
-            name="datosMaternos"
-            value={formData.datosMaternos}
-            onChange={handleChange}
-            rows={2}
-            className="glass-input w-full rounded-lg"
-          />
-        </div>
-        
-        <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">SARS-CoV-2 (PCR)</label>
-          <select
-            name="sarsCov2"
-            value={formData.sarsCov2}
-            onChange={handleChange}
-            className="glass-input w-full rounded-lg"
-          >
-            <option value="">Seleccionar...</option>
-            <option value="Positivo">Positivo</option>
-            <option value="Negativo">Negativo</option>
-            <option value="No realizado">No realizado</option>
-          </select>
-        </div>
-        
-        <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">Chagas</label>
-          <select
-            name="chagas"
-            value={formData.chagas}
-            onChange={handleChange}
-            className="glass-input w-full rounded-lg"
-          >
-            <option value="">Seleccionar...</option>
-            <option value="Positivo">Positivo</option>
-            <option value="Negativo">Negativo</option>
-            <option value="No realizado">No realizado</option>
-          </select>
-        </div>
-        
-        <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">Toxoplasmosis</label>
-          <select
-            name="toxoplasmosis"
-            value={formData.toxoplasmosis}
-            onChange={handleChange}
-            className="glass-input w-full rounded-lg"
-          >
-            <option value="">Seleccionar...</option>
-            <option value="Positivo">Positivo</option>
-            <option value="Negativo">Negativo</option>
-            <option value="No realizado">No realizado</option>
-          </select>
-        </div>
-        
-        <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">HIV</label>
-          <select
-            name="hiv"
-            value={formData.hiv}
-            onChange={handleChange}
-            className="glass-input w-full rounded-lg"
-          >
-            <option value="">Seleccionar...</option>
-            <option value="Positivo">Positivo</option>
-            <option value="Negativo">Negativo</option>
-            <option value="No realizado">No realizado</option>
-          </select>
-        </div>
-        
-        <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">VDRL</label>
-          <select
-            name="vdrl"
-            value={formData.vdrl}
-            onChange={handleChange}
-            className="glass-input w-full rounded-lg"
-          >
-            <option value="">Seleccionar...</option>
-            <option value="Positivo">Positivo</option>
-            <option value="Negativo">Negativo</option>
-            <option value="No realizado">No realizado</option>
-          </select>
-        </div>
-        
-        <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">Hepatitis B</label>
-          <select
-            name="hepatitisB"
-            value={formData.hepatitisB}
-            onChange={handleChange}
-            className="glass-input w-full rounded-lg"
-          >
-            <option value="">Seleccionar...</option>
-            <option value="Positivo">Positivo</option>
-            <option value="Negativo">Negativo</option>
-            <option value="No realizado">No realizado</option>
-          </select>
-        </div>
-        
-        <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">EGB</label>
-          <select
-            name="egb"
-            value={formData.egb}
-            onChange={handleChange}
-            className="glass-input w-full rounded-lg"
-          >
-            <option value="">Seleccionar...</option>
-            <option value="Positivo">Positivo</option>
-            <option value="Negativo">Negativo</option>
-            <option value="No realizado">No realizado</option>
-          </select>
-        </div>
-      </div>
-    </div>
-  );
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 py-6">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="flex items-center mb-6"
-        >
-          <button 
-            onClick={handleCancel}
-            className="mr-4 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
-          >
-            <ArrowLeft className="w-6 h-6" />
-          </button>
-          <h1 className="text-2xl font-bold text-gray-800 dark:text-white">Registrar Nuevo Paciente</h1>
-        </motion.div>
-
-        <form onSubmit={handleSubmit}>
-          <motion.div 
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="space-y-6"
-          >
-            {informacionPersonal}
-            
-            {datosNacimiento}
-            
-            {datosParto}
-            
-            {personalMedico}
-            
-            {vacunacionPesquisa}
-            
-            {datosMaternos}
-
-            {datosEgreso}
-            
-
-            <div className="flex justify-end space-x-4 mt-8">
-              <Button
-                type="button"
-                onClick={handleCancel}
-                variant="outline"
-                className="px-6"
-              >
-                <X className="w-4 h-4 mr-2" />
-                Cancelar
-              </Button>
-              
-              <Button
-                type="submit"
-                disabled={saving}
-                className="bg-medical-600 hover:bg-medical-700 text-white px-6"
-              >
-                {saving ? (
-                  <div className="flex items-center">
-                    <div className="mr-2 w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                    Guardando...
-                  </div>
-                ) : (
-                  <>
-                    <Save className="w-4 h-4 mr-2" />
-                    Guardar Paciente
-                  </>
-                )}
-              </Button>
-            </div>
-          </motion.div>
-        </form>
-
-        {/* Documento imprimible */}
-        {showDocumento && pacienteRegistrado && (
-          <DocumentoImprimible 
-            paciente={pacienteRegistrado}
-            onClose={handleCloseDocumento}
-          />
-        )}
-      </div>
-    </div>
-  );
-};
-
-export default NuevoPaciente;
+            <label htmlFor="pesquisaMetabolica" className="text-sm font-medium text-gray-700 dark:text-gray-3
