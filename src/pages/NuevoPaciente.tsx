@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Save, X } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -8,7 +7,7 @@ import { dbService, Paciente } from '../services/db';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Separator } from '@/components/ui/separator';
-import { format } from 'date-fns';
+import { format, differenceInDays } from 'date-fns';
 import DocumentoImprimible from '@/components/DocumentoImprimible';
 
 const NuevoPaciente = () => {
@@ -46,38 +45,32 @@ const NuevoPaciente = () => {
     obstetra: '',
     enfermera: '',
     neonatologo: '',
-    // Campos de vacunación
     vacunacionHbsag: false,
     loteHbsag: '',
     fechaHbsag: fechaActual,
     vacunacionBcg: false,
     loteBcg: '',
     fechaBcg: fechaActual,
-    // Campos de pesquisa
     pesquisaMetabolica: false,
     protocoloPesquisa: '',
     fechaPesquisa: fechaActual,
     horaPesquisa: horaActual,
-    // Campos de grupo y factor
     grupoFactorRn: '',
     grupoFactorMaterno: '',
     pcd: '',
-    // Campos de laboratorio
     bilirrubinaTotalValor: '',
     bilirrubinaDirectaValor: '',
     hematocritoValor: '',
     laboratorios: '',
-    // Campos de egreso
     fechaEgreso: '',
     horaEgreso: '',
     pesoEgreso: '',
     evolucionInternacion: '',
-  diagnosticos: '',
-  indicacionesEgreso: '',
-  observaciones: '',
+    diagnosticos: '',
+    indicacionesEgreso: '',
+    observaciones: '',
     enfermeraEgreso: '',
     neonatologoEgreso: '',
-    // Otros campos
     datosMaternos: '',
     numeroDocumento: '',
     telefono: "",             // Inicializar campo de teléfono
@@ -91,6 +84,19 @@ const NuevoPaciente = () => {
     egb: '',
     profilaxisATB: ''
   });
+
+  useEffect(() => {
+    if (formData.fechaNacimiento) {
+      const fechaNacimiento = new Date(formData.fechaNacimiento);
+      const hoy = new Date();
+      const diasDeVida = differenceInDays(hoy, fechaNacimiento);
+      
+      setFormData(prev => ({ 
+        ...prev, 
+        ddv: diasDeVida.toString() 
+      }));
+    }
+  }, [formData.fechaNacimiento]);
 
   // const handleHistoriaClinicaChange = (e) => {
   //   const { value } = e.target;
@@ -128,7 +134,6 @@ const NuevoPaciente = () => {
       setSaving(true);
       const id = await dbService.agregarPaciente(formData);
       
-      // Obtener el paciente registrado completo para mostrarlo en el documento
       const pacienteCompleto = await dbService.obtenerPacientePorId(id);
       
       if (pacienteCompleto) {
@@ -152,7 +157,6 @@ const NuevoPaciente = () => {
 
   const handleCloseDocumento = () => {
     setShowDocumento(false);
-    // Redirigir a la página de detalle del paciente
     if (pacienteRegistrado?.id) {
       navigate(`/paciente/${pacienteRegistrado.id}`);
     } else {
@@ -1081,16 +1085,39 @@ const vacunacionPesquisa = (
             </div>
           </motion.div>
         </form>
-
-        {/* Documento imprimible */}
-        {showDocumento && pacienteRegistrado && (
-          <DocumentoImprimible 
-            paciente={pacienteRegistrado}
-            onClose={handleCloseDocumento}
-          />
-        )}
       </div>
-    </div>
+      
+      {showDocumento && pacienteRegistrado && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-5xl w-full max-h-[90vh] overflow-auto">
+            <div className="p-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+              <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100">
+                Ficha de Paciente Registrado
+              </h2>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={handleCloseDocumento}
+                className="h-8 w-8"
+              >
+                <X className="h-5 w-5" />
+              </Button>
+            </div>
+            <div className="p-4">
+              <DocumentoImprimible paciente={pacienteRegistrado} />
+            </div>
+            <div className="p-4 border-t border-gray-200 dark:border-gray-700 flex justify-end space-x-2">
+              <Button
+                variant="outline"
+                onClick={handleCloseDocumento}
+              >
+                Cerrar
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+    </motion.div>
   );
 };
 
