@@ -168,7 +168,7 @@ const NuevoPaciente = () => {
 // Grupos de campos para mejor organización del formulario
 const informacionPersonal = (
   <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl p-6 shadow-md">
-    <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">Datos del Recién Nacido</h3>
+    <h3 className="text-lg font-semibold text-gray-800 dark:text-blue-600 mb-4">Datos del Recién Nacido</h3>
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div className="space-y-2">
         <label className="block text-sm font-medium text-gray-700 dark:text-gray-100">Nombre *</label>
@@ -261,7 +261,7 @@ const informacionPersonal = (
 
 const datosNacimiento = (
   <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl p-6 shadow-md">
-    <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">Datos del Nacimiento</h3>
+    <h3 className="text-lg font-semibold text-gray-800 dark:text-blue-600 mb-4">Datos del Nacimiento</h3>
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
       <div className="space-y-2">
         <label className="block text-sm font-medium text-gray-700 dark:text-gray-100">Peso (g)</label>
@@ -339,7 +339,7 @@ const datosNacimiento = (
 
 const datosParto = (
   <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl p-6 shadow-md">
-    <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">Datos del Parto</h3>
+    <h3 className="text-lg font-semibold text-gray-800 dark:text-blue-600 mb-4">Datos del Parto</h3>
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div className="space-y-2">
         <label className="block text-sm font-medium text-gray-700 dark:text-gray-100">Nacido Por</label>
@@ -426,18 +426,9 @@ const datosParto = (
 
 const personalMedico = (
   <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl p-6 shadow-md">
-    <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">Personal de Recepción</h3>
+    <h3 className="text-lg font-semibold text-gray-800 dark:text-blue-600 mb-4">Personal de Recepción</h3>
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-      {/* <div className="space-y-2">
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-100">Sector de Internación</label>
-        <input
-          type="text"
-          name="sectorInternacion"
-          value={formData.sectorInternacion}
-          onChange={handleChange}
-          className="w-full h-12 p-3 text-base rounded-lg bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-medical-300 focus:border-transparent transition-all duration-300 text-gray-700 dark:text-gray-200"
-        />
-      </div> */}
+
       
       <div className="space-y-2">
         <label className="block text-sm font-medium text-gray-700 dark:text-gray-100">Obstetra</label>
@@ -477,7 +468,7 @@ const personalMedico = (
 
 const vacunacionPesquisa = (
   <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl p-6 shadow-md">
-    <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">Vacunación y Laboratorios</h3>
+    <h3 className="text-lg font-semibold text-gray-800 dark:text-blue-600 mb-4">Vacunación y Laboratorios</h3>
     
     <div className="mb-6">
       <h4 className="text-md font-medium text-gray-700 dark:text-gray-300 mb-3">Vacunación</h4>
@@ -493,7 +484,7 @@ const vacunacionPesquisa = (
               }
             />
             <label htmlFor="vacunacionHbsag" className="text-sm font-medium text-gray-700 dark:text-gray-300">
-              Vacunación HBsAg
+              HBsAg
             </label>
           </div>
           
@@ -534,7 +525,7 @@ const vacunacionPesquisa = (
               }
             />
             <label htmlFor="vacunacionBcg" className="text-sm font-medium text-gray-700 dark:text-gray-300">
-              Vacunación BCG
+              BCG
             </label>
           </div>
           
@@ -568,7 +559,7 @@ const vacunacionPesquisa = (
     
     
     <div className="mb-6">
-      <h4 className="text-md font-medium text-gray-700 dark:text-gray-300 mb-3">Pesquisa Metabólica</h4>
+      <h4 className="text-md font-medium text-gray-700 dark:text-gray-300 mb-3">Laboratorios</h4>
       <div className="space-y-4">
         <div className="flex items-center space-x-2">
           <Checkbox 
@@ -667,7 +658,7 @@ const vacunacionPesquisa = (
       </div>
       
       <div>
-        <h4 className="text-md font-medium text-gray-700 dark:text-gray-300 mb-3">Laboratorios</h4>
+        
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
           <div className="space-y-2">
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Bilirrubina Total (mg/dl)</label>
@@ -723,7 +714,7 @@ const vacunacionPesquisa = (
   
   const datosMaternos = (
     <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl p-6 shadow-md">
-      <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">Datos Maternos</h3>
+      <h3 className="text-lg font-semibold text-gray-800 dark:text-blue-600 mb-4">Datos Maternos</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Apellido y Nombre</label>
@@ -907,7 +898,7 @@ const vacunacionPesquisa = (
   
   const datosEgreso = (
     <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl p-6 shadow-md">
-      <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">Datos del Egreso</h3>
+      <h3 className="text-lg font-semibold text-gray-800 dark:text-blue-600 mb-4">Datos del Egreso</h3>
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="space-y-2">
@@ -967,7 +958,7 @@ const vacunacionPesquisa = (
         </div>
       </div>
   
-      {/* Nuevos campos agregados */}
+      
       <div className="mt-6 space-y-4">
         <div className="space-y-2">
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Evolución durante la internación</label>

@@ -66,7 +66,7 @@ const PatientCard: React.FC<PatientCardProps> = ({ patient, onClick }) => {
           <User className="w-6 h-6 text-medical-600" />
         </div>
         <div className="flex-1">
-          <h3 className="text-lg font-semibold text-gray-800">
+          <h3 className="text-lg font-semibold text-gray-800 dark:text-white">
             {patient.nombre} {patient.apellido}
           </h3>
           <div className="mt-2 space-y-1">
