@@ -7,7 +7,7 @@ import { dbService, Paciente } from '../services/db';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Separator } from '@/components/ui/separator';
-import { format, differenceInDays } from 'date-fns';
+import { format, differenceInDays, parseISO } from 'date-fns';
 import DocumentoImprimible from '@/components/DocumentoImprimible';
 
 const NuevoPaciente = () => {
@@ -18,7 +18,8 @@ const NuevoPaciente = () => {
   const fechaActual = format(new Date(), 'yyyy-MM-dd');
   const horaActual = format(new Date(), 'HH:mm');
 
-  
+  // Combinar fecha y hora para el formulario
+  const [fechaHoraNacimiento, setFechaHoraNacimiento] = useState(`${fechaActual}T${horaActual}`);
   
   const [formData, setFormData] = useState<Omit<Paciente, 'id' | 'createdAt'>>({
     nombre: '',
@@ -73,7 +74,7 @@ const NuevoPaciente = () => {
     neonatologoEgreso: '',
     datosMaternos: '',
     numeroDocumento: '',
-    telefono: "",             // Inicializar campo de teléfono
+    telefono: "",
     obraSocial: "",  
     sarsCov2: '',
     chagas: '',
@@ -85,27 +86,33 @@ const NuevoPaciente = () => {
     profilaxisATB: ''
   });
 
+  // Manejador para el cambio de fecha-hora combinado
+  const handleFechaHoraNacimientoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setFechaHoraNacimiento(value);
+    
+    // Separar fecha y hora para actualizar el estado
+    const [fecha, hora] = value.split('T');
+    setFormData(prev => ({
+      ...prev,
+      fechaNacimiento: fecha,
+      horaNacimiento: hora
+    }));
+  };
+
   useEffect(() => {
     if (formData.fechaNacimiento) {
-      const fechaNacimiento = new Date(formData.fechaNacimiento);
+      // Crear un objeto fecha combinando fecha y hora
+      const fechaHora = new Date(`${formData.fechaNacimiento}T${formData.horaNacimiento || '00:00'}`);
       const hoy = new Date();
-      const diasDeVida = differenceInDays(hoy, fechaNacimiento);
+      const diasDeVida = differenceInDays(hoy, fechaHora);
       
       setFormData(prev => ({ 
         ...prev, 
         ddv: diasDeVida.toString() 
       }));
     }
-  }, [formData.fechaNacimiento]);
-
-  // const handleHistoriaClinicaChange = (e) => {
-  //   const { value } = e.target;
-  //   setFormData({
-  //     ...formData,
-  //     numeroHistoriaClinica: value,
-  //     numeroDocumento: value, // Actualiza automáticamente el número de documento
-  //   });
-  // };
+  }, [formData.fechaNacimiento, formData.horaNacimiento]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target as HTMLInputElement;
@@ -164,7 +171,6 @@ const NuevoPaciente = () => {
     }
   };
 
-
 // Grupos de campos para mejor organización del formulario
 const informacionPersonal = (
   <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl p-6 shadow-md">
@@ -195,25 +201,14 @@ const informacionPersonal = (
       </div>
       
       <div className="space-y-2">
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-100">Fecha de Nacimiento *</label>
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-100">Fecha y Hora de Nacimiento *</label>
         <input
-          type="date"
-          name="fechaNacimiento"
-          value={formData.fechaNacimiento}
-          onChange={handleChange}
+          type="datetime-local"
+          name="fechaHoraNacimiento"
+          value={fechaHoraNacimiento}
+          onChange={handleFechaHoraNacimientoChange}
           className="w-full h-12 p-3 text-base rounded-lg bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-medical-300 focus:border-transparent transition-all duration-300 text-gray-700 dark:text-gray-200"
           required
-        />
-      </div>
-      
-      <div className="space-y-2">
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-100">Hora de Nacimiento</label>
-        <input
-          type="time"
-          name="horaNacimiento"
-          value={formData.horaNacimiento}
-          onChange={handleChange}
-          className="w-full h-12 p-3 text-base rounded-lg bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-medical-300 focus:border-transparent transition-all duration-300 text-gray-700 dark:text-gray-200"
         />
       </div>
       
