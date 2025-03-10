@@ -1031,7 +1031,7 @@ const vacunacionPesquisa = (
           </button>
           <h1 className="text-2xl font-bold text-gray-800 dark:text-white">Registrar Nuevo Paciente</h1>
         </motion.div>
-
+  
         <form onSubmit={handleSubmit}>
           <motion.div 
             initial={{ opacity: 0, y: 10 }}
@@ -1050,10 +1050,10 @@ const vacunacionPesquisa = (
             {vacunacionPesquisa}
             
             {datosMaternos}
-
+  
             {datosEgreso}
             
-
+  
             <div className="flex justify-end space-x-4 mt-8">
               <Button
                 type="button"
@@ -1103,8 +1103,12 @@ const vacunacionPesquisa = (
                 <X className="h-5 w-5" />
               </Button>
             </div>
+            
             <div className="p-4">
-              <DocumentoImprimible paciente={pacienteRegistrado} />
+              <DocumentoImprimible 
+                paciente={pacienteRegistrado} 
+                onClose={handleCloseDocumento} 
+              />
             </div>
             <div className="p-4 border-t border-gray-200 dark:border-gray-700 flex justify-end space-x-2">
               <Button
@@ -1117,7 +1121,8 @@ const vacunacionPesquisa = (
           </div>
         </div>
       )}
-    </motion.div>
+    </div> 
+  
   );
 };
 
