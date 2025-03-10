@@ -66,18 +66,18 @@ const PatientCard: React.FC<PatientCardProps> = ({ patient, onClick }) => {
           <User className="w-6 h-6 text-medical-600 dark:text-medical-400" />
         </div>
         <div className="flex-1">
-          <h3 className="text-lg font-semibold text-gray-800">
+          <h3 className="text-lg font-semibold text-blue-600">
             {patient.nombre} {patient.apellido}
           </h3>
           <div className="mt-2 space-y-1">
-            <div className="flex items-center text-sm text-gray-600 dark:text-red-300">
-              <Clock className="w-4 h-4 mr-2 text-medical-500 dark:text-red-400" />
+            <div className="flex items-center text-sm text-gray-600 dark:text-gray-300">
+              <Clock className="w-4 h-4 mr-2 text-medical-500 dark:text-gray-400" />
               <span>
                 {formatearFecha(patient.fechaNacimiento)} • {calcularEdad(patient.fechaNacimiento)}
               </span>
             </div>
-            <div className="flex items-center text-sm text-gray-600 dark:text-red-300">
-              <FileText className="w-4 h-4 mr-2 text-medical-500 dark:text-red-400" />
+            <div className="flex items-center text-sm text-gray-600 dark:text-gray-300">
+              <FileText className="w-4 h-4 mr-2 text-medical-500 dark:text-gray-400" />
               <span>HC: {patient.numeroHistoriaClinica}</span>
             </div>
           </div>
