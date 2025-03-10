@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { PlusCircle, Search, Users } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -70,7 +71,7 @@ const Index = () => {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="w-12 h-12 border-4 border-medical-200 border-t-medical-600 rounded-full animate-spin mx-auto"></div>
-          <p className="mt-4 text-gray-600">Inicializando sistema...</p>
+          <p className="mt-4 text-gray-600 dark:text-red-300">Inicializando sistema...</p>
         </div>
       </div>
     );
@@ -85,8 +86,8 @@ const Index = () => {
           transition={{ duration: 0.5 }}
           className="text-center mb-12"
         >
-          <h1 className="text-4xl font-bold text-gray-800 dark:text-gray-100 mb-3">Sistema de Gestión de Recién Nacidos</h1>
-          <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+          <h1 className="text-4xl font-bold text-gray-800 dark:text-red-400 mb-3">Sistema de Gestión de Recién Nacidos</h1>
+          <p className="text-gray-600 dark:text-red-300 max-w-2xl mx-auto">
             SANATORIO SAN FRANCISCO DE ASÍS
           </p>
         </motion.div>
@@ -100,10 +101,10 @@ const Index = () => {
           <div className="grid md:grid-cols-2 gap-6 items-center">
             <div className="space-y-4">
               <div className="flex items-center">
-                <Search className="w-6 h-6 text-medical-600 mr-3" />
-                <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100">Buscar Paciente</h2>
+                <Search className="w-6 h-6 text-medical-600 dark:text-red-400 mr-3" />
+                <h2 className="text-xl font-semibold text-gray-800 dark:text-red-400">Buscar Paciente</h2>
               </div>
-              <p className="text-gray-600 dark:text-gray-300">
+              <p className="text-gray-600 dark:text-red-300">
                 Busque pacientes existentes por nombre, apellido o número de historia clínica.
               </p>
               <SearchInput 
@@ -118,10 +119,10 @@ const Index = () => {
               onClick={handleNewPatient}
             >
               <div className="flex items-center">
-                <PlusCircle className="w-6 h-6 text-medical-600 mr-3" />
-                <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100">Nuevo Paciente</h2>
+                <PlusCircle className="w-6 h-6 text-medical-600 dark:text-red-400 mr-3" />
+                <h2 className="text-xl font-semibold text-gray-800 dark:text-red-400">Nuevo Paciente</h2>
               </div>
-              <p className="text-gray-600 dark:text-gray-300">
+              <p className="text-gray-600 dark:text-red-300">
                 Registre un nuevo paciente en el sistema con todos sus datos médicos.
               </p>
               <button className="btn-medical mt-2 w-full">
@@ -139,9 +140,9 @@ const Index = () => {
             className="mt-8"
           >
             <div className="flex items-center mb-4">
-              <Users className="w-5 h-5 text-medical-600 mr-2" />
-              <h2 className="text-xl font-semibold text-gray-800">Resultados de búsqueda</h2>
-              <div className="ml-auto text-sm text-gray-500">
+              <Users className="w-5 h-5 text-medical-600 dark:text-red-400 mr-2" />
+              <h2 className="text-xl font-semibold text-gray-800 dark:text-red-400">Resultados de búsqueda</h2>
+              <div className="ml-auto text-sm text-gray-500 dark:text-red-300">
                 {searchResults.length} {searchResults.length === 1 ? 'paciente' : 'pacientes'} encontrado{searchResults.length !== 1 && 's'}
               </div>
             </div>
@@ -153,7 +154,7 @@ const Index = () => {
                 variants={itemVariants}
                 className="text-center py-12"
               >
-                <p className="text-gray-500">No se encontraron pacientes con esos criterios de búsqueda.</p>
+                <p className="text-gray-500 dark:text-red-300">No se encontraron pacientes con esos criterios de búsqueda.</p>
               </motion.div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
