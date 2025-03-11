@@ -78,6 +78,7 @@ const DocumentoImprimible: React.FC<DocumentoImprimibleProps> = ({
 
   return (
     <>
+     
       <div className="fixed inset-0 bg-black/50 z-40 flex items-center justify-center p-4">
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto z-50">
           <div className="p-6">
@@ -94,21 +95,22 @@ const DocumentoImprimible: React.FC<DocumentoImprimibleProps> = ({
               </div>
             </div>
             
-            <div className="print-container" ref={documentRef}>
-              <div className="documento">
-                <div className="header">
-                  <div className="titulo text-bold text-3xl">EPICRISIS NEONATAL</div>
-                  <div className="subtitulo">SANATORIO SAN FRANCISCO DE ASÍS</div>
+            <div className="print:shadow-none print:p-0" ref={documentRef}>
+            <div className="border-b pb-6 mb-6 print:border-none">
+              <div className="text-center mb-8">
+                <h2 className="text-3xl font-bold text-gray-900 dark:text-white">EPICRISIS NEONATAL</h2>
+                <p className="text-gray-600 dark:text-blue-600 mt-2">SANATORIO SAN FRANCISCO DE ASÍS</p>
                 </div>
                 
-                <div className="seccion">
-                  <div className="seccion-titulo">INFORMACIÓN DEL RECIÉN NACIDO</div>
+                  <div className="seccion-titulo mb-4">DATOS DEL RECIÉN NACIDO</div>
+                  
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 print:grid-cols-1 ">
                   <div className="fila">
                     <span className="etiqueta">Nombre completo:</span>
                     <span className="valor">{paciente.nombre} {paciente.apellido}</span>
                   </div>
                   <div className="fila">
-                    <span className="etiqueta">Fecha de nacimiento:</span>
+                    <span className="etiqueta">Fecha y horade nacimiento:</span>
                     <span className="valor">{formatDate(paciente.fechaNacimiento)} - {paciente.horaNacimiento} hs</span>
                   </div>
                   <div className="fila">
@@ -123,8 +125,9 @@ const DocumentoImprimible: React.FC<DocumentoImprimibleProps> = ({
                   </div>
                 </div>
                 
-                <div className="seccion">
-                  <div className="seccion-titulo">MEDIDAS ANTROPOMÉTRICAS</div>
+                <div className="seccion mt-4">
+                  <div className="seccion-titulo mb-4">MEDIDAS ANTROPOMÉTRICAS</div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 print:grid-cols-1 ">
                   <div className="fila">
                     <span className="etiqueta">Peso:</span>
                     <span className="valor">{paciente.peso} gramos</span>
@@ -138,9 +141,11 @@ const DocumentoImprimible: React.FC<DocumentoImprimibleProps> = ({
                     <span className="valor">{paciente.perimetroCefalico} cm</span>
                   </div>
                 </div>
+                </div>
                 
-                <div className="seccion">
-                  <div className="seccion-titulo">DATOS DEL NACIMIENTO</div>
+                <div className="seccion mt-4">
+                  <div className="seccion-titulo">DATOS DEL PARTO</div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 print:grid-cols-2 ">
                   <div className="fila">
                     <span className="etiqueta">Edad gestacional:</span>
                     <span className="valor">{paciente.edadGestacional}</span>
@@ -166,9 +171,11 @@ const DocumentoImprimible: React.FC<DocumentoImprimibleProps> = ({
                     <span className="valor">{paciente.clasificacion || 'No especificada'}</span>
                   </div>
                 </div>
+                </div>
                 
-                <div className="seccion">
+                <div className="seccion mt-4">
                   <div className="seccion-titulo">VACUNACIÓN</div>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 print:grid-cols-2 ">
                   <div className="fila">
                     <span className="etiqueta">Vacunación HBsAg:</span>
                     <span className="valor">{paciente.vacunacionHbsag ? 'Sí' : 'No'}</span>
@@ -201,6 +208,11 @@ const DocumentoImprimible: React.FC<DocumentoImprimibleProps> = ({
                       </div>
                     </>
                   )}
+                  </div>
+                  </div>
+                  <div className="seccion">
+                  <div className="seccion-titulo">PESQUISA NEONATAL</div>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 print:grid-cols-3 ">
                   <div className="fila">
                     <span className="etiqueta">Pesquisa metabólica:</span>
                     <span className="valor">{paciente.pesquisaMetabolica ? 'Sí' : 'No'}</span>
@@ -220,9 +232,11 @@ const DocumentoImprimible: React.FC<DocumentoImprimibleProps> = ({
                     </>
                   )}
                 </div>
+                </div>
                 
-                <div className="seccion">
-                  <div className="seccion-titulo">DATOS CLÍNICOS</div>
+                <div className="seccion mt-4">
+                  <div className="seccion-titulo">LABORATORIOS</div>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 print:grid-cols-2 ">
                   <div className="fila">
                     <span className="etiqueta">Grupo y factor RN:</span>
                     <span className="valor">{paciente.grupoFactorRn || 'No especificado'}</span>
@@ -249,10 +263,12 @@ const DocumentoImprimible: React.FC<DocumentoImprimibleProps> = ({
                     <span className="valor">{paciente.hematocritoValor || 'No especificado'} %</span>
                   </div>
                 </div>
+                </div>
                 
                 {(paciente.fechaEgreso || paciente.pesoEgreso) && (
-                  <div className="seccion">
+                  <div className="seccion mt-4">
                     <div className="seccion-titulo">DATOS DEL EGRESO</div>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 print:grid-cols-2 ">
                     <div className="fila">
                       <span className="etiqueta">Fecha de egreso:</span>
                       <span className="valor">{formatDate(paciente.fechaEgreso) || 'No especificada'}</span>
@@ -273,31 +289,34 @@ const DocumentoImprimible: React.FC<DocumentoImprimibleProps> = ({
                       <span className="etiqueta">% diferencia peso:</span>
                       <span className="valor">{calcularPorcentajeDiferenciaPeso()}</span>
                     </div>
+                    </div>
+                    
                      {/* Sección de Evolución */}
-      <div className="mb-4">
+      <div className="mt-4">
         <h3 className="text-lg font-semibold">Evolución durante la internación</h3>
-        <p className="text-gray-700">{paciente.evolucionInternacion || 'No especificado'}</p>
+        <p className="text-gray-700 dark:text-white">{paciente.evolucionInternacion || 'No especificado'}</p>
       </div>
 
       {/* Sección de Diagnósticos */}
       <div className="mb-4">
         <h3 className="text-lg font-semibold">Diagnósticos</h3>
-        <p className="text-gray-700">{paciente.diagnosticos || 'No especificado'}</p>
+        <p className="text-gray-700 dark:text-white">{paciente.diagnosticos || 'No especificado'}</p>
       </div>
 
       {/* Sección de Indicaciones al egreso */}
       <div className="mb-4">
         <h3 className="text-lg font-semibold">Indicaciones al egreso</h3>
-        <p className="text-gray-700">{paciente.indicacionesEgreso || 'No especificado'}</p>
+        <p className="text-gray-700 dark:text-white">{paciente.indicacionesEgreso || 'No especificado'}</p>
       </div>
 
       {/* Sección de Observaciones */}
       <div className="mb-4">
         <h3 className="text-lg font-semibold">Observaciones</h3>
-        <p className="text-gray-700">{paciente.observaciones || 'No especificado'}</p>
+        <p className="text-gray-700 dark:text-white">{paciente.observaciones || 'No especificado'}</p>
       </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 print:grid-cols-2 ">
                     <div className="fila">
-                      <span className="etiqueta">Enfermera:</span>
+                      <span className="etiqueta">Enfermera/o:</span>
                       <span className="valor">{paciente.enfermeraEgreso || 'No especificada'}</span>
                     </div>
                     <div className="fila">
@@ -305,25 +324,12 @@ const DocumentoImprimible: React.FC<DocumentoImprimibleProps> = ({
                       <span className="valor">{paciente.neonatologoEgreso || 'No especificado'}</span>
                     </div>
                   </div>
+                  </div>
                 )}
                 
-                <div className="seccion">
-                  <div className="seccion-titulo">EQUIPO MÉDICO</div>
-                  <div className="fila">
-                    <span className="etiqueta">Obstetra:</span>
-                    <span className="valor">{paciente.obstetra || 'No especificado'}</span>
-                  </div>
-                  <div className="fila">
-                    <span className="etiqueta">Neonatólogo:</span>
-                    <span className="valor">{paciente.neonatologo || 'No especificado'}</span>
-                  </div>
-                  <div className="fila">
-                    <span className="etiqueta">Enfermera:</span>
-                    <span className="valor">{paciente.enfermera || 'No especificado'}</span>
-                  </div>
-                </div>
                 
-                <div className="pie-pagina bg-white p-6 rounded-lg shadow-md space-y-4">
+                
+                <div className="pie-pagina bg-white p-6 rounded-lg shadow-md space-y-4 dark:bg-gray">
   <p className="text-sm text-gray-700">
     Realizar consulta ambulatoria por consultorios externos para seguimiento del recién nacido dentro de los 7 (siete) días de producido el egreso sanatorial. 
     <span className="font-semibold">{new Date().toLocaleDateString()}</span>
