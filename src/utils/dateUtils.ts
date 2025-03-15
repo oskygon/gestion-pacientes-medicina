@@ -3,35 +3,34 @@ import { format, parse, isValid } from 'date-fns';
 
 /**
  * Formatea una fecha en formato yyyy-MM-dd a un formato legible (dd/MM/yyyy)
+ * sin ajustes de zona horaria que pueden causar desplazamiento de un día
  */
 export const formatDate = (dateString: string): string => {
   try {
     if (!dateString) return '';
     
-    // Convertir string a objeto Date directamente
-    let date = new Date(dateString);
+    // Separar la fecha si viene con tiempo
+    const datePart = dateString.split('T')[0];
     
-    // Si la fecha no es válida, intentar parsear usando diferentes formatos
-    if (!isValid(date)) {
-      // Probar formato yyyy-MM-dd
-      date = parse(dateString, 'yyyy-MM-dd', new Date());
-      
-      // Si sigue sin ser válida, probar otros formatos comunes
-      if (!isValid(date)) {
-        const formats = ['dd/MM/yyyy', 'MM/dd/yyyy', 'dd-MM-yyyy'];
-        
-        for (const fmt of formats) {
-          date = parse(dateString, fmt, new Date());
-          if (isValid(date)) break;
+    // Dividir la fecha en componentes (año, mes, día)
+    const [year, month, day] = datePart.split('-').map(Number);
+    
+    // Verificar que tenemos componentes válidos
+    if (!year || !month || !day) {
+      // Intentar otros formatos comunes
+      const dateFormats = ['dd/MM/yyyy', 'MM/dd/yyyy', 'dd-MM-yyyy'];
+      for (const fmt of dateFormats) {
+        const parsedDate = parse(dateString, fmt, new Date());
+        if (isValid(parsedDate)) {
+          // Retornar en formato dd/MM/yyyy sin usar new Date() que puede ajustar la zona horaria
+          return format(parsedDate, 'dd/MM/yyyy');
         }
       }
+      return dateString; // Retornar el original si no se puede parsear
     }
     
-    // Verificar nuevamente si la fecha es válida
-    if (!isValid(date)) return dateString;
-    
-    // Formatear la fecha al formato deseado
-    return format(date, 'dd/MM/yyyy');
+    // Formatear manualmente la fecha para evitar ajustes de zona horaria
+    return `${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}/${year}`;
   } catch (error) {
     console.error('Error al formatear fecha:', error);
     return dateString;

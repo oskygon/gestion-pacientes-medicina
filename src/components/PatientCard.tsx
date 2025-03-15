@@ -1,9 +1,9 @@
-
 import React from 'react';
 import { Clock, FileText, User } from 'lucide-react';
 import { Paciente } from '../services/db';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
+import { formatDate } from '../utils/dateUtils';
 
 interface PatientCardProps {
   patient: Paciente;
@@ -45,12 +45,10 @@ const PatientCard: React.FC<PatientCardProps> = ({ patient, onClick }) => {
     }
   };
 
-  // Formatear fecha
+  // Formatear fecha usando nuestra utilidad mejorada
   const formatearFecha = (fecha: string) => {
     try {
-      const date = new Date(fecha);
-      if (isNaN(date.getTime())) return 'Fecha no válida';
-      return format(date, 'PPP', { locale: es });
+      return formatDate(fecha);
     } catch (e) {
       return 'Fecha no válida';
     }
