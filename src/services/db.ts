@@ -1,4 +1,3 @@
-
 const DB_NAME = 'ClinicaDB';
 const DB_VERSION = 2; // Increased version for schema migration
 const STORE_NAME = 'pacientes';
@@ -162,6 +161,7 @@ class DBService {
       const transaction = this.db!.transaction([STORE_NAME], 'readwrite');
       const store = transaction.objectStore(STORE_NAME);
       
+      // Ensure we're storing the exact date string without timezone adjustments
       const nuevoPaciente: Omit<Paciente, 'id'> = {
         ...paciente,
         createdAt: Date.now()
