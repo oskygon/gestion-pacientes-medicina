@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Save, X } from 'lucide-react';
@@ -428,7 +429,6 @@ const personalMedico = (
   <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl p-6 shadow-md">
     <h3 className="text-lg font-semibold text-gray-800 dark:text-blue-600 mb-4">Personal de Recepción</h3>
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-
       
       <div className="space-y-2">
         <label className="block text-sm font-medium text-gray-700 dark:text-gray-100">Obstetra</label>
@@ -557,7 +557,6 @@ const vacunacionPesquisa = (
       </div>
     </div>
     
-    
     <div className="mb-6">
       <h4 className="text-md font-medium text-gray-700 dark:text-gray-300 mb-3">Laboratorios</h4>
       <div className="space-y-4">
@@ -585,3 +584,114 @@ const vacunacionPesquisa = (
                 value={formData.protocoloPesquisa}
                 onChange={handleChange}
                 className="w-full h-12 p-3 text-base rounded-lg bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-medical-300 focus:border-transparent transition-all duration-300 text-gray-700 dark:text-gray-200"
+              />
+            </div>
+            <div className="space-y-1">
+              <label className="block text-xs font-medium text-gray-700 dark:text-gray-300">Fecha</label>
+              <input
+                type="date"
+                name="fechaPesquisa"
+                value={formData.fechaPesquisa}
+                onChange={handleChange}
+                className="w-full h-12 p-3 text-base rounded-lg bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-medical-300 focus:border-transparent transition-all duration-300 text-gray-700 dark:text-gray-200"
+              />
+            </div>
+            <div className="space-y-1">
+              <label className="block text-xs font-medium text-gray-700 dark:text-gray-300">Hora</label>
+              <input
+                type="time"
+                name="horaPesquisa"
+                value={formData.horaPesquisa}
+                onChange={handleChange}
+                className="w-full h-12 p-3 text-base rounded-lg bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-medical-300 focus:border-transparent transition-all duration-300 text-gray-700 dark:text-gray-200"
+              />
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  </div>
+);
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 p-4">
+      <div className="max-w-6xl mx-auto">
+        {/* Barra de navegación superior */}
+        <div className="flex justify-between items-center mb-6">
+          <Button variant="ghost" className="flex items-center" onClick={handleCancel}>
+            <ArrowLeft className="mr-2" size={18} />
+            Volver
+          </Button>
+          <h1 className="text-2xl font-bold text-gray-800 dark:text-white">Nuevo Paciente</h1>
+          <div className="w-24">
+            {/* Espacio para equilibrar la barra */}
+          </div>
+        </div>
+
+        {/* Modal para documento imprimible */}
+        {showDocumento && pacienteRegistrado && (
+          <motion.div 
+            className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+          >
+            <motion.div 
+              className="bg-white dark:bg-gray-800 w-full max-w-4xl h-[90vh] rounded-lg overflow-hidden flex flex-col shadow-xl"
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+            >
+              <div className="flex items-center justify-between p-4 border-b dark:border-gray-700">
+                <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Documento del Paciente</h2>
+                <Button variant="ghost" size="icon" onClick={handleCloseDocumento}>
+                  <X size={18} />
+                </Button>
+              </div>
+              <div className="flex-1 overflow-auto p-6">
+                <DocumentoImprimible paciente={pacienteRegistrado} />
+              </div>
+              <div className="p-4 border-t dark:border-gray-700 flex justify-end">
+                <Button variant="outline" className="mr-2" onClick={handleCloseDocumento}>
+                  Cerrar
+                </Button>
+                <Button onClick={() => window.print()}>Imprimir</Button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+
+        {/* Formulario principal */}
+        <form onSubmit={handleSubmit} className="space-y-6">
+          
+          {/* Secciones del formulario */}
+          {informacionPersonal}
+          {datosNacimiento}
+          {datosParto}
+          {personalMedico}
+          {vacunacionPesquisa}
+          
+          {/* Botones de acción */}
+          <div className="flex justify-end mt-8 space-x-4">
+            <Button 
+              type="button" 
+              variant="outline" 
+              onClick={handleCancel}
+              disabled={saving}
+            >
+              Cancelar
+            </Button>
+            <Button 
+              type="submit" 
+              disabled={saving}
+            >
+              <Save className="mr-2" size={18} />
+              {saving ? 'Guardando...' : 'Guardar Paciente'}
+            </Button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default NuevoPaciente;
