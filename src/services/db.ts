@@ -66,12 +66,19 @@ interface Paciente {
   telefono: string;          // Nuevo campo para el número de teléfono
   obraSocial: string;
   sarsCov2: string;
+  fechaCovid: string;
   chagas: string;
+  fechaChagas: string;
   toxoplasmosis: string;
+  fechaToxo: string;
   hiv: string;
+  fechaHIV: string;
   vdrl: string;
+  fechaVDRL: string;
   hepatitisB: string;
+  fechaHB: string;
   egb: string;
+  fechaEGB: string;
   profilaxisATB: string;
   createdAt: number;
 }

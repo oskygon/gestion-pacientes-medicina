@@ -79,289 +79,289 @@ const DocumentoImprimible: React.FC<DocumentoImprimibleProps> = ({
   return (
     <>
      
-      <div className="fixed inset-0 bg-black/50 z-40 flex items-center justify-center p-4">
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto z-50">
-          <div className="p-6">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold">Documento para imprimir</h2>
-              <div className="flex gap-2">
-                <Button onClick={handlePrint} className="bg-medical-600 hover:bg-medical-700">
-                  <Printer className="w-4 h-4 mr-2" />
-                  Imprimir
-                </Button>
-                <Button variant="outline" onClick={onClose}>
-                  Cerrar
-                </Button>
+     <div className="fixed inset-0 bg-black/50 z-40 flex items-center justify-center p-4">
+  <div className="bg-white dark:bg-slate-900 rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto z-50">
+    <div className="p-6">
+      <div className="sticky top-0 bg-white dark:bg-slate-900 border-b dark:border-slate-800 p-4 flex justify-between items-center">
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Documento para imprimir</h2>
+        <div className="flex gap-3">
+          <Button onClick={handlePrint} className="bg-medical-600 hover:bg-medical-700">
+            <Printer className="w-4 h-4 mr-2" />
+            Imprimir
+          </Button>
+          <Button variant="outline" onClick={onClose}>
+            Cerrar
+          </Button>
+        </div>
+      </div>
+
+      <div className="print:shadow-none print:p-0" ref={documentRef}>
+        <div className="border-b pb-6 mb-6 print:border-none">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">EPICRISIS NEONATAL</h2>
+            <p className="text-gray-600 dark:text-blue-600 mt-2">SANATORIO SAN FRANCISCO DE ASÍS</p>
+          </div>
+
+          {/* Sección de datos del recién nacido */}
+          <div className="seccion-titulo mb-4 text-xs font-bold">DATOS DEL RECIÉN NACIDO</div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 print:grid-cols-2">
+            <div className="fila flex items-center">
+              <span className="etiqueta text-xs font-medium">Nombre completo:</span>
+              <span className="valor text-xs ml-1">{paciente.nombre} {paciente.apellido}</span>
+            </div>
+            <div className="fila flex items-center">
+              <span className="etiqueta text-xs font-medium">Fecha y hora de nacimiento:</span>
+              <span className="valor text-xs ml-1">{formatDate(paciente.fechaNacimiento)} - {paciente.horaNacimiento} hs</span>
+            </div>
+            <div className="fila flex items-center">
+              <span className="etiqueta text-xs font-medium">Sexo:</span>
+              <span className="valor text-xs ml-1">
+                {paciente.sexo === 'M' ? 'Masculino' : paciente.sexo === 'F' ? 'Femenino' : paciente.sexo || 'No especificado'}
+              </span>
+            </div>
+            <div className="fila flex items-center">
+              <span className="etiqueta text-xs font-medium">N° Historia Clínica:</span>
+              <span className="valor text-xs ml-1">{paciente.numeroHistoriaClinica}</span>
+            </div>
+          </div>
+
+          {/* Sección de medidas antropométricas */}
+          <div className="seccion mt-4">
+            <div className="seccion-titulo mb-4 text-xs font-bold">MEDIDAS ANTROPOMÉTRICAS</div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 print:grid-cols-3">
+              <div className="fila flex items-center">
+                <span className="etiqueta text-xs font-medium">Peso:</span>
+                <span className="valor text-xs ml-1">{paciente.peso} gramos</span>
+              </div>
+              <div className="fila flex items-center">
+                <span className="etiqueta text-xs font-medium">Talla:</span>
+                <span className="valor text-xs ml-1">{paciente.talla} cm</span>
+              </div>
+              <div className="fila flex items-center">
+                <span className="etiqueta text-xs font-medium">Perímetro cefálico:</span>
+                <span className="valor text-xs ml-1">{paciente.perimetroCefalico} cm</span>
               </div>
             </div>
-            
-            <div className="print:shadow-none print:p-0" ref={documentRef}>
-            <div className="border-b pb-6 mb-6 print:border-none">
-              <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold text-gray-900 dark:text-white">EPICRISIS NEONATAL</h2>
-                <p className="text-gray-600 dark:text-blue-600 mt-2">SANATORIO SAN FRANCISCO DE ASÍS</p>
-                </div>
-                
-                  <div className="seccion-titulo mb-4">DATOS DEL RECIÉN NACIDO</div>
-                  
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 print:grid-cols-1 ">
-                  <div className="fila">
-                    <span className="etiqueta">Nombre completo:</span>
-                    <span className="valor">{paciente.nombre} {paciente.apellido}</span>
+          </div>
+
+          {/* Sección de datos del parto */}
+          <div className="seccion mt-4">
+            <div className="seccion-titulo text-xs font-bold">DATOS DEL PARTO</div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 print:grid-cols-2">
+              <div className="fila flex items-center">
+                <span className="etiqueta text-xs font-medium">Edad gestacional:</span>
+                <span className="valor text-xs ml-1">{paciente.edadGestacional}</span>
+              </div>
+              <div className="fila flex items-center">
+                <span className="etiqueta text-xs font-medium">APGAR:</span>
+                <span className="valor text-xs ml-1">{paciente.apgar}</span>
+              </div>
+              <div className="fila flex items-center">
+                <span className="etiqueta text-xs font-medium">Nacido por:</span>
+                <span className="valor text-xs ml-1">{paciente.nacidoPor || 'No especificado'}</span>
+              </div>
+              <div className="fila flex items-center">
+                <span className="etiqueta text-xs font-medium">Presentación:</span>
+                <span className="valor text-xs ml-1">{paciente.presentacion || 'No especificada'}</span>
+              </div>
+              <div className="fila flex items-center">
+                <span className="etiqueta text-xs font-medium">Líquido amniótico:</span>
+                <span className="valor text-xs ml-1">{paciente.liquidoAmniotico || 'No especificado'}</span>
+              </div>
+              <div className="fila flex items-center">
+                <span className="etiqueta text-xs font-medium">Clasificación:</span>
+                <span className="valor text-xs ml-1">{paciente.clasificacion || 'No especificada'}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Sección de vacunación */}
+          <div className="seccion mt-4">
+            <div className="seccion-titulo text-xs font-bold">VACUNACIÓN</div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 print:grid-cols-3">
+              <div className="fila flex items-center">
+                <span className="etiqueta text-xs font-medium">Vacunación HBsAg:</span>
+                <span className="valor text-xs ml-1">{paciente.vacunacionHbsag ? 'Sí' : 'No'}</span>
+              </div>
+              {paciente.vacunacionHbsag && (
+                <>
+                  <div className="fila flex items-center">
+                    <span className="etiqueta text-xs font-medium">Lote HBsAg:</span>
+                    <span className="valor text-xs ml-1">{paciente.loteHbsag || 'No especificado'}</span>
                   </div>
-                  <div className="fila">
-                    <span className="etiqueta">Fecha y horade nacimiento:</span>
-                    <span className="valor">{formatDate(paciente.fechaNacimiento)} - {paciente.horaNacimiento} hs</span>
+                  <div className="fila flex items-center">
+                    <span className="etiqueta text-xs font-medium">Fecha HBsAg:</span>
+                    <span className="valor text-xs ml-1">{formatDate(paciente.fechaHbsag) || 'No especificada'}</span>
                   </div>
-                  <div className="fila">
-                    <span className="etiqueta">Sexo:</span>
-                    <span className="valor">
-                      {paciente.sexo === 'M' ? 'Masculino' : paciente.sexo === 'F' ? 'Femenino' : paciente.sexo || 'No especificado'}
+                </>
+              )}
+              <div className="fila flex items-center">
+                <span className="etiqueta text-xs font-medium">Vacunación BCG:</span>
+                <span className="valor text-xs ml-1">{paciente.vacunacionBcg ? 'Sí' : 'No'}</span>
+              </div>
+              {paciente.vacunacionBcg && (
+                <>
+                  <div className="fila flex items-center">
+                    <span className="etiqueta text-xs font-medium">Lote BCG:</span>
+                    <span className="valor text-xs ml-1">{paciente.loteBcg || 'No especificado'}</span>
+                  </div>
+                  <div className="fila flex items-center">
+                    <span className="etiqueta text-xs font-medium">Fecha BCG:</span>
+                    <span className="valor text-xs ml-1">{formatDate(paciente.fechaBcg) || 'No especificada'}</span>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+
+          {/* Sección de pesquisa neonatal */}
+          <div className="seccion mt-4">
+            <div className="seccion-titulo text-xs font-bold">PESQUISA NEONATAL</div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 print:grid-cols-3">
+              <div className="fila flex items-center">
+                <span className="etiqueta text-xs font-medium">Pesquisa metabólica:</span>
+                <span className="valor text-xs ml-1">{paciente.pesquisaMetabolica ? 'Sí' : 'No'}</span>
+              </div>
+              {paciente.pesquisaMetabolica && (
+                <>
+                  <div className="fila flex items-center">
+                    <span className="etiqueta text-xs font-medium">Protocolo:</span>
+                    <span className="valor text-xs ml-1">{paciente.protocoloPesquisa || 'No especificado'}</span>
+                  </div>
+                  <div className="fila flex items-center">
+                    <span className="etiqueta text-xs font-medium">Fecha y hora:</span>
+                    <span className="valor text-xs ml-1">
+                      {formatDate(paciente.fechaPesquisa) || 'No especificada'} {paciente.horaPesquisa || ''}
                     </span>
                   </div>
-                  <div className="fila">
-                    <span className="etiqueta">N° Historia Clínica:</span>
-                    <span className="valor">{paciente.numeroHistoriaClinica}</span>
-                  </div>
-                </div>
-                
-                <div className="seccion mt-4">
-                  <div className="seccion-titulo mb-4">MEDIDAS ANTROPOMÉTRICAS</div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 print:grid-cols-1 ">
-                  <div className="fila">
-                    <span className="etiqueta">Peso:</span>
-                    <span className="valor">{paciente.peso} gramos</span>
-                  </div>
-                  <div className="fila">
-                    <span className="etiqueta">Talla:</span>
-                    <span className="valor">{paciente.talla} cm</span>
-                  </div>
-                  <div className="fila">
-                    <span className="etiqueta">Perímetro cefálico:</span>
-                    <span className="valor">{paciente.perimetroCefalico} cm</span>
-                  </div>
-                </div>
-                </div>
-                
-                <div className="seccion mt-4">
-                  <div className="seccion-titulo">DATOS DEL PARTO</div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 print:grid-cols-2 ">
-                  <div className="fila">
-                    <span className="etiqueta">Edad gestacional:</span>
-                    <span className="valor">{paciente.edadGestacional}</span>
-                  </div>
-                  <div className="fila">
-                    <span className="etiqueta">APGAR:</span>
-                    <span className="valor">{paciente.apgar}</span>
-                  </div>
-                  <div className="fila">
-                    <span className="etiqueta">Nacido por:</span>
-                    <span className="valor">{paciente.nacidoPor || 'No especificado'}</span>
-                  </div>
-                  <div className="fila">
-                    <span className="etiqueta">Presentación:</span>
-                    <span className="valor">{paciente.presentacion || 'No especificada'}</span>
-                  </div>
-                  <div className="fila">
-                    <span className="etiqueta">Líquido amniótico:</span>
-                    <span className="valor">{paciente.liquidoAmniotico || 'No especificado'}</span>
-                  </div>
-                  <div className="fila">
-                    <span className="etiqueta">Clasificación:</span>
-                    <span className="valor">{paciente.clasificacion || 'No especificada'}</span>
-                  </div>
-                </div>
-                </div>
-                
-                <div className="seccion mt-4">
-                  <div className="seccion-titulo">VACUNACIÓN</div>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 print:grid-cols-2 ">
-                  <div className="fila">
-                    <span className="etiqueta">Vacunación HBsAg:</span>
-                    <span className="valor">{paciente.vacunacionHbsag ? 'Sí' : 'No'}</span>
-                  </div>
-                  {paciente.vacunacionHbsag && (
-                    <>
-                      <div className="fila">
-                        <span className="etiqueta">Lote HBsAg:</span>
-                        <span className="valor">{paciente.loteHbsag || 'No especificado'}</span>
-                      </div>
-                      <div className="fila">
-                        <span className="etiqueta">Fecha HBsAg:</span>
-                        <span className="valor">{formatDate(paciente.fechaHbsag) || 'No especificada'}</span>
-                      </div>
-                    </>
-                  )}
-                  <div className="fila">
-                    <span className="etiqueta">Vacunación BCG:</span>
-                    <span className="valor">{paciente.vacunacionBcg ? 'Sí' : 'No'}</span>
-                  </div>
-                  {paciente.vacunacionBcg && (
-                    <>
-                      <div className="fila">
-                        <span className="etiqueta">Lote BCG:</span>
-                        <span className="valor">{paciente.loteBcg || 'No especificado'}</span>
-                      </div>
-                      <div className="fila">
-                        <span className="etiqueta">Fecha BCG:</span>
-                        <span className="valor">{formatDate(paciente.fechaBcg) || 'No especificada'}</span>
-                      </div>
-                    </>
-                  )}
-                  </div>
-                  </div>
-                  <div className="seccion">
-                  <div className="seccion-titulo">PESQUISA NEONATAL</div>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 print:grid-cols-3 ">
-                  <div className="fila">
-                    <span className="etiqueta">Pesquisa metabólica:</span>
-                    <span className="valor">{paciente.pesquisaMetabolica ? 'Sí' : 'No'}</span>
-                  </div>
-                  {paciente.pesquisaMetabolica && (
-                    <>
-                      <div className="fila">
-                        <span className="etiqueta">Protocolo:</span>
-                        <span className="valor">{paciente.protocoloPesquisa || 'No especificado'}</span>
-                      </div>
-                      <div className="fila">
-                        <span className="etiqueta">Fecha y hora:</span>
-                        <span className="valor">
-                          {formatDate(paciente.fechaPesquisa) || 'No especificada'} {paciente.horaPesquisa || ''}
-                        </span>
-                      </div>
-                    </>
-                  )}
-                </div>
-                </div>
-                
-                <div className="seccion mt-4">
-                  <div className="seccion-titulo">LABORATORIOS</div>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 print:grid-cols-2 ">
-                  <div className="fila">
-                    <span className="etiqueta">Grupo y factor RN:</span>
-                    <span className="valor">{paciente.grupoFactorRn || 'No especificado'}</span>
-                  </div>
-                  <div className="fila">
-                    <span className="etiqueta">Grupo y factor materno:</span>
-                    <span className="valor">{paciente.grupoFactorMaterno || 'No especificado'}</span>
-                  </div>
-                  <div className="fila">
-                    <span className="etiqueta">PCD:</span>
-                    <span className="valor">{paciente.pcd || 'No especificado'}</span>
-                  </div>
-                  
-                  <div className="fila">
-                    <span className="etiqueta">Bilirrubina Total:</span>
-                    <span className="valor">{paciente.bilirrubinaTotalValor || 'No especificado'} mg/dl</span>
-                  </div>
-                  <div className="fila">
-                    <span className="etiqueta">Bilirrubina Directa:</span>
-                    <span className="valor">{paciente.bilirrubinaDirectaValor || 'No especificado'} mg/dl</span>
-                  </div>
-                  <div className="fila">
-                    <span className="etiqueta">Hematocrito:</span>
-                    <span className="valor">{paciente.hematocritoValor || 'No especificado'} %</span>
-                  </div>
-                </div>
-                </div>
-                
-                {(paciente.fechaEgreso || paciente.pesoEgreso) && (
-                  <div className="seccion mt-4">
-                    <div className="seccion-titulo">DATOS DEL EGRESO</div>
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 print:grid-cols-2 ">
-                    <div className="fila">
-                      <span className="etiqueta">Fecha de egreso:</span>
-                      <span className="valor">{formatDate(paciente.fechaEgreso) || 'No especificada'}</span>
-                    </div>
-                    <div className="fila">
-                      <span className="etiqueta">Días de vida:</span>
-                      <span className="valor">{paciente.ddv || 'No especificados'}</span>
-                    </div>
-                    <div className="fila">
-                      <span className="etiqueta">Hora de egreso:</span>
-                      <span className="valor">{paciente.horaEgreso || 'No especificada'}</span>
-                    </div>
-                    <div className="fila">
-                      <span className="etiqueta">Peso de egreso:</span>
-                      <span className="valor">{paciente.pesoEgreso || 'No especificado'} g</span>
-                    </div>
-                    <div className="fila">
-                      <span className="etiqueta">% diferencia peso:</span>
-                      <span className="valor">{calcularPorcentajeDiferenciaPeso()}</span>
-                    </div>
-                    </div>
-                    
-                     {/* Sección de Evolución */}
-      <div className="mt-4">
-        <h3 className="text-lg font-semibold">Evolución durante la internación</h3>
-        <p className="text-gray-700 dark:text-white">{paciente.evolucionInternacion || 'No especificado'}</p>
-      </div>
+                </>
+              )}
+            </div>
+          </div>
 
-      {/* Sección de Diagnósticos */}
-      <div className="mb-4">
-        <h3 className="text-lg font-semibold">Diagnósticos</h3>
-        <p className="text-gray-700 dark:text-white">{paciente.diagnosticos || 'No especificado'}</p>
-      </div>
+          {/* Sección de laboratorios */}
+          <div className="seccion mt-4">
+            <div className="seccion-titulo text-xs font-bold">LABORATORIOS</div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 print:grid-cols-3">
+              <div className="fila flex items-center">
+                <span className="etiqueta text-xs font-medium">Grupo y factor RN:</span>
+                <span className="valor text-xs ml-1">{paciente.grupoFactorRn || 'No especificado'}</span>
+              </div>
+              <div className="fila flex items-center">
+                <span className="etiqueta text-xs font-medium">Grupo y factor materno:</span>
+                <span className="valor text-xs ml-1">{paciente.grupoFactorMaterno || 'No especificado'}</span>
+              </div>
+              <div className="fila flex items-center">
+                <span className="etiqueta text-xs font-medium">PCD:</span>
+                <span className="valor text-xs ml-1">{paciente.pcd || 'No especificado'}</span>
+              </div>
+              <div className="fila flex items-center">
+                <span className="etiqueta text-xs font-medium">Bilirrubina Total:</span>
+                <span className="valor text-xs ml-1">{paciente.bilirrubinaTotalValor || 'No especificado'} mg/dl</span>
+              </div>
+              <div className="fila flex items-center">
+                <span className="etiqueta text-xs font-medium">Bilirrubina Directa:</span>
+                <span className="valor text-xs ml-1">{paciente.bilirrubinaDirectaValor || 'No especificado'} mg/dl</span>
+              </div>
+              <div className="fila flex items-center">
+                <span className="etiqueta text-xs font-medium">Hematocrito:</span>
+                <span className="valor text-xs ml-1">{paciente.hematocritoValor || 'No especificado'} %</span>
+              </div>
+            </div>
+          </div>
 
-      {/* Sección de Indicaciones al egreso */}
-      <div className="mb-4">
-        <h3 className="text-lg font-semibold">Indicaciones al egreso</h3>
-        <p className="text-gray-700 dark:text-white">{paciente.indicacionesEgreso || 'No especificado'}</p>
-      </div>
+          {/* Sección de datos del egreso */}
+          {(paciente.fechaEgreso || paciente.pesoEgreso) && (
+            <div className="seccion mt-4">
+              <div className="seccion-titulo text-xs font-bold">DATOS DEL EGRESO</div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 print:grid-cols-3">
+                <div className="fila flex items-center">
+                  <span className="etiqueta text-xs font-medium">Fecha de egreso:</span>
+                  <span className="valor text-xs ml-1">{formatDate(paciente.fechaEgreso) || 'No especificada'}</span>
+                </div>
+                <div className="fila flex items-center">
+                  <span className="etiqueta text-xs font-medium">Días de vida:</span>
+                  <span className="valor text-xs ml-1">{paciente.ddv || 'No especificados'}</span>
+                </div>
+                <div className="fila flex items-center">
+                  <span className="etiqueta text-xs font-medium">Hora de egreso:</span>
+                  <span className="valor text-xs ml-1">{paciente.horaEgreso || 'No especificada'}</span>
+                </div>
+                <div className="fila flex items-center">
+                  <span className="etiqueta text-xs font-medium">Peso de egreso:</span>
+                  <span className="valor text-xs ml-1">{paciente.pesoEgreso || 'No especificado'} g</span>
+                </div>
+                <div className="fila flex items-center">
+                  <span className="etiqueta text-xs font-medium">% diferencia peso:</span>
+                  <span className="valor text-xs ml-1">{calcularPorcentajeDiferenciaPeso()}</span>
+                </div>
+              </div>
 
-      {/* Sección de Observaciones */}
-      <div className="mb-4">
-        <h3 className="text-lg font-semibold">Observaciones</h3>
-        <p className="text-gray-700 dark:text-white">{paciente.observaciones || 'No especificado'}</p>
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 print:grid-cols-2 ">
-                    <div className="fila">
-                      <span className="etiqueta">Enfermera/o:</span>
-                      <span className="valor">{paciente.enfermeraEgreso || 'No especificada'}</span>
-                    </div>
-                    <div className="fila">
-                      <span className="etiqueta">Neonatólogo/a:</span>
-                      <span className="valor">{paciente.neonatologoEgreso || 'No especificado'}</span>
-                    </div>
-                  </div>
-                  </div>
-                )}
-                
-                
-                
-                <div className="pie-pagina bg-white p-6 rounded-lg shadow-md space-y-4 dark:bg-gray">
-  <p className="text-sm text-gray-700">
-    Realizar consulta ambulatoria por consultorios externos para seguimiento del recién nacido dentro de los 7 (siete) días de producido el egreso sanatorial. 
-    <span className="font-semibold">{new Date().toLocaleDateString()}</span>
-  </p>
-  
-  <p className="text-sm text-gray-700">
-    A fin de dar cumplimiento a lo estipulado en el ART 4 INC.D del D.R. N° 208/01 de la Ley básica de salud N° 153/99, a pedido del paciente, familiar, representante legal, se hace entrega en este acto de copia de Epicrisis de historia clínica del RN. 
-    <span className="font-semibold">{new Date().toLocaleDateString()}</span>
-  </p>
-  
-  <p className="text-sm text-gray-700 font-semibold">RECIBÍ CONFORME</p>
-  
-  <div className="space-y-6">
-    <p className="text-sm text-gray-700">FIRMA: _______________________________</p>
-    <p className="text-sm text-gray-700">ACLARACIÓN: __________________________</p>
-    <p className="text-sm text-gray-700">DNI: _________________________________</p>
-  </div>
-  
-  <div className="space-y-2">
-    <p className="text-sm text-gray-700">PROFESIONAL ACTUANTE: ________________</p>
-    <p className="text-sm text-gray-700">FIRMA Y SELLO</p>
-  </div>
-  
-  <p className="text-sm text-gray-700">
-    FECHA: <span className="font-semibold">{new Date().toLocaleDateString()}</span>
-  </p>
-</div>
+              {/* Sección de evolución */}
+              <div className="mt-4">
+                <h3 className="text-xs font-semibold">Evolución durante la internación</h3>
+                <p className="text-xs text-gray-700 dark:text-white">{paciente.evolucionInternacion || 'No especificado'}</p>
+              </div>
+
+              {/* Sección de diagnósticos */}
+              <div className="mb-4">
+                <h3 className="text-xs font-semibold">Diagnósticos</h3>
+                <p className="text-xs text-gray-700 dark:text-white">{paciente.diagnosticos || 'No especificado'}</p>
+              </div>
+
+              {/* Sección de indicaciones al egreso */}
+              <div className="mb-4">
+                <h3 className="text-xs font-semibold">Indicaciones al egreso</h3>
+                <p className="text-xs text-gray-700 dark:text-white">{paciente.indicacionesEgreso || 'No especificado'}</p>
+              </div>
+
+              {/* Sección de observaciones */}
+              <div className="mb-4">
+                <h3 className="text-xs font-semibold">Observaciones</h3>
+                <p className="text-xs text-gray-700 dark:text-white">{paciente.observaciones || 'No especificado'}</p>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 print:grid-cols-2">
+                <div className="fila flex items-center">
+                  <span className="etiqueta text-xs font-medium">Enfermera/o:</span>
+                  <span className="valor text-xs ml-1">{paciente.enfermeraEgreso || 'No especificada'}</span>
+                </div>
+                <div className="fila flex items-center">
+                  <span className="etiqueta text-xs font-medium">Neonatólogo/a:</span>
+                  <span className="valor text-xs ml-1">{paciente.neonatologoEgreso || 'No especificado'}</span>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Pie de página */}
+          <div className="pie-pagina bg-white pt-6 rounded-lg shadow-md space-y-4 dark:bg-gray-800 text-white">
+            <p className="text-xs text-gray-700 dark:text-white">
+              Realizar consulta ambulatoria por consultorios externos para seguimiento del recién nacido dentro de los 7 (siete) días de producido el egreso sanatorial. 
+              <span className="font-semibold">{new Date().toLocaleDateString()}</span>
+            </p>
+            <p className="text-xs text-gray-700 dark:text-white">
+              A fin de dar cumplimiento a lo estipulado en el ART 4 INC.D del D.R. N° 208/01 de la Ley básica de salud N° 153/99, a pedido del paciente, familiar, representante legal, se hace entrega en este acto de copia de Epicrisis de historia clínica del RN. 
+              <span className="font-semibold">{new Date().toLocaleDateString()}</span>
+            </p>
+            <p className="text-xs text-gray-700 dark:text-white font-semibold">RECIBÍ CONFORME</p>
+            <div className='flex justify-between'>
+              <div className="space-y-6">
+                <p className="text-xs text-gray-700 dark:text-white">FIRMA: _______________________________</p>
+                <p className="text-xs text-gray-700 dark:text-white">ACLARACIÓN: __________________________</p>
+                <p className="text-xs text-gray-700 dark:text-white">DNI: _________________________________</p>
+              </div>
+              <div className="space-y-2">
+                <p className="text-xs text-gray-700 dark:text-white">PROFESIONAL ACTUANTE: ________________</p>
+                <p className="text-xs text-gray-700 dark:text-white">FIRMA Y SELLO</p>
               </div>
             </div>
           </div>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+
     </>
   );
 };

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, Calendar, ClipboardList, Edit, Printer, User } from 'lucide-react';
+import { ArrowLeft, Baby,Ruler, Calendar, ClipboardList,Crown, Clock, Edit,Hourglass, Printer, User, Weight, Activity, Sticker } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { toast } from 'sonner';
 import { dbService, Paciente } from '../services/db';
@@ -41,16 +41,9 @@ const DetallePaciente = () => {
 
     cargarPaciente();
   }, [id, navigate]);
+  
 
-  // const formatearFecha = (fecha: string) => {
-  //   try {
-  //     const date = new Date(fecha);
-  //     if (isNaN(date.getTime())) return 'Fecha no válida';
-  //     return format(date, 'PPP', { locale: es });
-  //   } catch (e) {
-  //     return 'Fecha no válida';
-  //   }
-  // };
+
 
   const formatearFecha = (fecha: string) => {
     try {
@@ -58,7 +51,7 @@ const DetallePaciente = () => {
       if (isNaN(date.getTime())) return 'Fecha no válida';
   
       // Extraer día, mes y año
-      const dia = date.getDate(); // Día del mes (1-31)
+      const dia = date.getDate() +1; // Día del mes (1-31)
       const mes = date.getMonth() + 1; // Mes (0-11) + 1 para ajustar a 1-12
       const año = date.getFullYear(); // Año (4 dígitos)
   
@@ -110,52 +103,63 @@ const DetallePaciente = () => {
 // };
 
 
-const calcularEdad = (fechaNacimiento: string) => {
-  try {
-      // Convertir la fecha de nacimiento al formato Date
-      const [dia, mes, anio] = fechaNacimiento.split('/').map(Number);
-      const fechaNac = new Date(anio, mes - 1, dia); // Los meses en Date son 0-indexados
+// const calcularEdad = (fechaNacimiento: string) => {
+//   try {
+//       // Convertir la fecha de nacimiento al formato Date
+//       const [dia, mes, anio] = fechaNacimiento.split('/').map(Number);
+//       const fechaNac = new Date(anio, mes - 1, dia); // Restamos 1 al mes
       
-      const hoy = new Date();
+//       const hoy = new Date();
       
-      // Validar si la fecha es válida
-      if (isNaN(fechaNac.getTime())) return 'Fecha no válida';
+//       // Validar si la fecha es válida
+//       if (isNaN(fechaNac.getTime())) return 'Fecha no válida';
       
-      // Verificar que la fecha de nacimiento no sea en el futuro
-      if (fechaNac > hoy) return 'La fecha de nacimiento no puede ser en el futuro';
+//       // Verificar que la fecha de nacimiento no sea en el futuro
+//       if (fechaNac > hoy) return 'La fecha de nacimiento no puede ser en el futuro';
       
-      // Calcular la diferencia en días
-      const diferenciaMilisegundos = hoy.getTime() - fechaNac.getTime();
-      const dias = Math.floor(diferenciaMilisegundos / (1000 * 60 * 60 * 24));
+//       // Calcular la diferencia en días
+//       const diferenciaMilisegundos = hoy.getTime() - fechaNac.getTime();
+//       const dias = Math.floor(diferenciaMilisegundos / (1000 * 60 * 60 * 24));
       
-      // Calcular la edad en años
-      const edad = hoy.getFullYear() - fechaNac.getFullYear();
-      const mesActual = hoy.getMonth() - fechaNac.getMonth();
+//       // Calcular la edad en años
+//       let edad = hoy.getFullYear() - fechaNac.getFullYear();
+//       const mesActual = hoy.getMonth() - fechaNac.getMonth();
       
-      // Si es un recién nacido (menos de 30 días), retornar los días
-      if (dias < 30) {
-          return `${dias} días`;
-      }
+//       // Si es un recién nacido (menos de 30 días), retornar los días
+//       if (dias < 30) {
+//           return `${dias} días`;
+//       }
       
-      // Si tiene menos de un año, calcular los meses
-      if (edad === 0) {
-          const meses = hoy.getMonth() - fechaNac.getMonth() + 
-              (hoy.getDate() < fechaNac.getDate() ? -1 : 0) + 
-              (hoy.getMonth() < fechaNac.getMonth() ? 12 : 0);
+//       // Si tiene menos de un año, calcular los meses y días correctamente
+//       if (edad === 0) {
+//           const meses = mesActual + (hoy.getDate() < fechaNac.getDate() ? -1 : 0);
+//           const diasRestantes = hoy.getDate() >= fechaNac.getDate()
+//               ? hoy.getDate() - fechaNac.getDate()
+//               : new Date(hoy.getFullYear(), hoy.getMonth(), 0).getDate() - fechaNac.getDate() + hoy.getDate();
           
-          return `${meses} meses y ${dias % 30} días`;
-      }
+//           return `${meses} meses y ${diasRestantes} días`;
+//       }
       
-      // Ajustar la edad si aún no ha pasado el cumpleaños este año
-      if (mesActual < 0 || (mesActual === 0 && hoy.getDate() < fechaNac.getDate())) {
-          return `${edad - 1} años y ${dias % 365} días`;
-      }
+//       // Ajustar la edad si aún no ha pasado el cumpleaños este año
+//       if (mesActual < 0 || (mesActual === 0 && hoy.getDate() < fechaNac.getDate())) {
+//           edad--;
+//       }
       
-      return `${edad} años y ${dias % 365} días`;
-  } catch (e) {
-      return 'Error en fecha';
-  }
-};
+//       // Calcular los meses y días restantes
+//       let meses = mesActual >= 0 ? mesActual : 12 + mesActual;
+//       if (hoy.getDate() < fechaNac.getDate()) {
+//           meses--;
+//       }
+//       const diasRestantes = hoy.getDate() >= fechaNac.getDate()
+//           ? hoy.getDate() - fechaNac.getDate()
+//           : new Date(hoy.getFullYear(), hoy.getMonth(), 0).getDate() - fechaNac.getDate() + hoy.getDate();
+      
+//       return `${edad} años, ${meses} meses y ${diasRestantes} días`;
+//   } catch (e) {
+//       return 'Error en fecha';
+//   }
+// };
+
   const calcularPorcentajeDiferenciaPeso = () => {
     if (!paciente?.peso || !paciente?.pesoEgreso) return '-';
     
@@ -178,22 +182,32 @@ const calcularEdad = (fechaNacimiento: string) => {
     <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-md dark:bg-gray-800/80 dark:text-white">
       <div className="flex flex-col md:flex-row">
         <div className="w-full md:w-2/3">
-          <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
+          <h2 className="text-2xl font-bold mb-6 text-gray-800 dark:text-blue-600">
             {paciente?.nombre} {paciente?.apellido}
           </h2>
-          
-          <div className="mt-2 grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2">
-            <div className="flex items-center">
-              <ClipboardList className="w-4 h-4 text-medical-600 mr-2" />
-              <span className="text-gray-600 dark:text-gray-300">HC: {paciente?.numeroHistoriaClinica}</span>
-            </div>
-            
-            <div className="flex items-center">
+          <div className="mt-2 grid grid-cols-2 md:grid-cols-2 gap-x-6 gap-y-2">
+
+          <div className="flex items-center">
               <Calendar className="w-4 h-4 text-medical-600 mr-2" />
               <span className="text-gray-600 dark:text-gray-300">
                 Fecha de nacimiento: {formatearFecha(paciente?.fechaNacimiento || '')}
               </span>
             </div>
+          
+            <div className="flex items-center">
+              <ClipboardList className="w-4 h-4 text-medical-600 mr-2" />
+              <span className="text-gray-600 dark:text-gray-300">Historia Clínica: {paciente?.numeroHistoriaClinica}</span>
+            </div>
+            
+           
+            <div className="flex items-center">
+              <Clock className="w-4 h-4 text-medical-600 mr-2" />
+              <span className="text-gray-600 dark:text-gray-300">
+                Hora de nacimiento: {paciente?.horaNacimiento}
+              </span>
+            </div>
+
+        
             
             <div className="flex items-center">
               <User className="w-4 h-4 text-medical-600 mr-2" />
@@ -205,7 +219,13 @@ const calcularEdad = (fechaNacimiento: string) => {
             <div className="flex items-center">
               <Calendar className="w-4 h-4 text-medical-600 mr-2" />
               <span className="text-gray-600 dark:text-gray-300">
-                Edad: {calcularEdad(paciente?.fechaNacimiento || '')}
+                Edad: {paciente?.ddv || '-'} ddv
+              </span>
+            </div>
+            <div className="flex items-center">
+              <Sticker className="w-4 h-4 text-medical-600 mr-2" />
+              <span className="text-gray-600 dark:text-gray-300">
+                Número de pulsera: {paciente?.pulsera} 
               </span>
             </div>
           </div>
@@ -234,131 +254,157 @@ const calcularEdad = (fechaNacimiento: string) => {
   );
 
   const SeccionDatosNacimiento = () => (
-    <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-md">
-      <h3 className="text-lg font-semibold text-gray-800 mb-4">Datos de Nacimiento</h3>
+    <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-md dark: dark:bg-gray-800">
+      <h3 className="text-lg font-semibold text-gray-800 mb-4 dark:text-blue-600">Datos de Nacimiento</h3>
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div>
-          <p className="text-sm text-gray-500">Peso</p>
-          <p className="font-medium text-gray-800">{paciente?.peso || '-'} g</p>
-        </div>
+
+
+      <div className="flex items-center">
+              <Weight className="w-4 h-4 text-medical-600 mr-2" />
+              <span className="text-gray-600 dark:text-gray-300">
+                Peso: {paciente?.peso} gramos.
+              </span>
+            </div>
+      <div className="flex items-center">
+              <Ruler className="w-4 h-4 text-medical-600 mr-2" />
+              <span className="text-gray-600 dark:text-gray-300">
+                Talla: {paciente?.talla} cm.
+              </span>
+            </div>
+      <div className="flex items-center">
+              <Crown className="w-4 h-4 text-medical-600 mr-2" />
+              <span className="text-gray-600 dark:text-gray-300">
+                Perímetro cefálico: {paciente?.perimetroCefalico} cm.
+              </span>
+            </div>
+      <div className="flex items-center">
+              <Hourglass className="w-4 h-4 text-medical-600 mr-2" />
+              <span className="text-gray-600 dark:text-gray-300">
+                Edad gestacional: {paciente?.edadGestacional} días.
+              </span>
+            </div>
+      <div className="flex items-center">
+              <Activity className="w-4 h-4 text-medical-600 mr-2" />
+              <span className="text-gray-600 dark:text-gray-300">
+                APGAR: {paciente?.apgar} 
+              </span>
+            </div>
+
+      
         
-        <div>
-          <p className="text-sm text-gray-500">Talla</p>
-          <p className="font-medium text-gray-800">{paciente?.talla || '-'} cm</p>
-        </div>
         
-        <div>
-          <p className="text-sm text-gray-500">Perímetro Cefálico</p>
-          <p className="font-medium text-gray-800">{paciente?.perimetroCefalico || '-'} cm</p>
-        </div>
         
-        <div>
-          <p className="text-sm text-gray-500">Edad Gestacional</p>
-          <p className="font-medium text-gray-800">{paciente?.edadGestacional || '-'}</p>
-        </div>
         
-        <div>
-          <p className="text-sm text-gray-500">APGAR</p>
-          <p className="font-medium text-gray-800">{paciente?.apgar || '-'}</p>
-        </div>
         
-        <div>
-          <p className="text-sm text-gray-500">DDV</p>
+        
+        
+        
+        {/* <div>
+          <p className="text-sm text-gray-500 dark:text-white">DDV</p>
           <p className="font-medium text-gray-800">{paciente?.ddv || '-'}</p>
-        </div>
+        </div> */}
         
-        <div>
-          <p className="text-sm text-gray-500">HC</p>
-          <p className="font-medium text-gray-800">{paciente?.hc || '-'}</p>
-        </div>
+        {/* <div>
+          <p className="text-sm text-gray-500 dark:text-white">HC</p>
+          <p className="font-medium text-gray-800 dark:text-white">{paciente?.hc || '-'}</p>
+        </div> */}
         
-        <div>
-          <p className="text-sm text-gray-500">Pulsera</p>
-          <p className="font-medium text-gray-800">{paciente?.pulsera || '-'}</p>
-        </div>
         
-        <div>
-          <p className="text-sm text-gray-500">Hora de Nacimiento</p>
-          <p className="font-medium text-gray-800">{paciente?.horaNacimiento || '-'}</p>
-        </div>
+        
+        
       </div>
     </div>
   );
 
   const SeccionDatosParto = () => (
-    <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-md">
-      <h3 className="text-lg font-semibold text-gray-800 mb-4">Datos del Parto</h3>
+    <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-md dark:bg-gray-800">
+      <h3 className="text-lg font-semibold text-gray-800 mb-4 dark:text-blue-600">Datos del Parto</h3>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <p className="text-sm text-gray-500">Nacido Por</p>
-          <p className="font-medium text-gray-800">{paciente?.nacidoPor || '-'}</p>
-        </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+      <div className="flex items-center">
+              <Activity className="w-4 h-4 text-medical-600 mr-2" />
+              <span className="text-gray-600 dark:text-gray-300">
+                Nacido por: {paciente?.nacidoPor} 
+              </span>
+            </div>
+      <div className="flex items-center">
+              <Activity className="w-4 h-4 text-medical-600 mr-2" />
+              <span className="text-gray-600 dark:text-gray-300">
+                Presentación: {paciente?.presentacion} 
+              </span>
+            </div>
+      <div className="flex items-center">
+              <Activity className="w-4 h-4 text-medical-600 mr-2" />
+              <span className="text-gray-600 dark:text-gray-300">
+                Líquido Amniótico: {paciente?.liquidoAmniotico} 
+              </span>
+            </div>
+      <div className="flex items-center">
+              <Activity className="w-4 h-4 text-medical-600 mr-2" />
+              <span className="text-gray-600 dark:text-gray-300">
+                Ruptura de Membranas: {paciente?.rupturaMembranas} 
+              </span>
+            </div>
+      <div className="flex items-center">
+              <Activity className="w-4 h-4 text-medical-600 mr-2" />
+              <span className="text-gray-600 dark:text-gray-300">
+                Clasificación: {paciente?.clasificacion} 
+              </span>
+            </div>
+      <div className="flex items-center">
+              <Activity className="w-4 h-4 text-medical-600 mr-2" />
+              <span className="text-gray-600 dark:text-gray-300">
+                Procedencia: {paciente?.procedencia} 
+              </span>
+            </div>
         
-        <div>
-          <p className="text-sm text-gray-500">Presentación</p>
-          <p className="font-medium text-gray-800">{paciente?.presentacion || '-'}</p>
-        </div>
-        
-        <div>
-          <p className="text-sm text-gray-500">Líquido Amniótico</p>
-          <p className="font-medium text-gray-800">{paciente?.liquidoAmniotico || '-'}</p>
-        </div>
-        
-        <div>
-          <p className="text-sm text-gray-500">Ruptura de Membranas</p>
-          <p className="font-medium text-gray-800">{paciente?.rupturaMembranas || '-'}</p>
-        </div>
-        
-        <div>
-          <p className="text-sm text-gray-500">Clasificación</p>
-          <p className="font-medium text-gray-800">{paciente?.clasificacion || '-'}</p>
-        </div>
-        
-        <div>
-          <p className="text-sm text-gray-500">Procedencia</p>
-          <p className="font-medium text-gray-800">{paciente?.procedencia || '-'}</p>
-        </div>
       </div>
     </div>
   );
 
   const SeccionPersonalMedico = () => (
-    <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-md">
-      <h3 className="text-lg font-semibold text-gray-800 mb-4">Personal Médico</h3>
+    <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-md dark:bg-gray-800">
+      <h3 className="text-lg font-semibold text-gray-800 mb-4 dark:text-blue-600">Personal de Recepción</h3>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <p className="text-sm text-gray-500">Sector de Internación</p>
-          <p className="font-medium text-gray-800">{paciente?.sectorInternacion || '-'}</p>
-        </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {/* <div>
+          <p className="text-sm text-gray-500 dark:text-white">Sector de Internación</p>
+          <p className="font-medium text-gray-800 dark:text-white">{paciente?.sectorInternacion || '-'}</p>
+        </div> */}
+
+<div className="flex items-center">
+              <Activity className="w-4 h-4 text-medical-600 mr-2" />
+              <span className="text-gray-600 dark:text-gray-300">
+                Obstétra: {paciente?.obstetra} 
+              </span>
+            </div>
+<div className="flex items-center">
+              <Activity className="w-4 h-4 text-medical-600 mr-2" />
+              <span className="text-gray-600 dark:text-gray-300">
+                Enfermera: {paciente?.enfermera} 
+              </span>
+            </div>
+<div className="flex items-center">
+              <Activity className="w-4 h-4 text-medical-600 mr-2" />
+              <span className="text-gray-600 dark:text-gray-300">
+                Neonatólogo/a: {paciente?.neonatologo} 
+              </span>
+            </div>
         
-        <div>
-          <p className="text-sm text-gray-500">Obstetra</p>
-          <p className="font-medium text-gray-800">{paciente?.obstetra || '-'}</p>
-        </div>
         
-        <div>
-          <p className="text-sm text-gray-500">Enfermera</p>
-          <p className="font-medium text-gray-800">{paciente?.enfermera || '-'}</p>
-        </div>
-        
-        <div>
-          <p className="text-sm text-gray-500">Neonatólogo/a</p>
-          <p className="font-medium text-gray-800">{paciente?.neonatologo || '-'}</p>
-        </div>
       </div>
     </div>
   );
 
   const SeccionVacunacionPesquisa = () => (
-    <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-md">
-      <h3 className="text-lg font-semibold text-gray-800 mb-4">Vacunación y Pesquisa</h3>
+    <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-md dark:bg-gray-800">
+      <h3 className="text-lg font-semibold text-gray-800 mb-4 dark:text-blue-600">Vacunación y Pesquisa</h3>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
         <div>
-          <h4 className="text-md font-medium text-gray-700 mb-2">Vacunación HBsAg</h4>
+          <h4 className="text-md font-medium text-gray-700 mb-2 dark:text-white">Vacunación HBsAg</h4>
           <div className="flex items-center mb-2">
             <Badge variant="outline" className={paciente?.vacunacionHbsag ? "bg-green-50 text-green-600 border-green-200" : "bg-gray-50 text-gray-600 border-gray-200"}>
               {paciente?.vacunacionHbsag ? 'Aplicada' : 'No aplicada'}
@@ -368,12 +414,12 @@ const calcularEdad = (fechaNacimiento: string) => {
             <>
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <p className="text-sm text-gray-500">Lote</p>
-                  <p className="font-medium text-gray-800">{paciente?.loteHbsag || '-'}</p>
+                  <p className="text-sm text-gray-500 dark:text-white">Lote</p>
+                  <p className="font-medium text-gray-800 dark:text-white">{paciente?.loteHbsag || '-'}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">Fecha</p>
-                  <p className="font-medium text-gray-800">{formatDate(paciente?.fechaHbsag || '')}</p>
+                  <p className="text-sm text-gray-500 dark:text-white">Fecha</p>
+                  <p className="font-medium text-gray-800 dark:text-white">{formatDate(paciente?.fechaHbsag || '')}</p>
                 </div>
               </div>
             </>
@@ -381,7 +427,7 @@ const calcularEdad = (fechaNacimiento: string) => {
         </div>
         
         <div>
-          <h4 className="text-md font-medium text-gray-700 mb-2">Vacunación BCG</h4>
+          <h4 className="text-md font-medium text-gray-700 mb-2 dark:text-white">Vacunación BCG</h4>
           <div className="flex items-center mb-2">
             <Badge variant="outline" className={paciente?.vacunacionBcg ? "bg-green-50 text-green-600 border-green-200" : "bg-gray-50 text-gray-600 border-gray-200"}>
               {paciente?.vacunacionBcg ? 'Aplicada' : 'No aplicada'}
@@ -391,12 +437,12 @@ const calcularEdad = (fechaNacimiento: string) => {
             <>
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <p className="text-sm text-gray-500">Lote</p>
-                  <p className="font-medium text-gray-800">{paciente?.loteBcg || '-'}</p>
+                  <p className="text-sm text-gray-500 dark:text-white">Lote</p>
+                  <p className="font-medium text-gray-800 dark:text-white">{paciente?.loteBcg || '-'}</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">Fecha</p>
-                  <p className="font-medium text-gray-800">{formatDate(paciente?.fechaBcg || '')}</p>
+                  <p className="text-sm text-gray-500 dark:text-white">Fecha</p>
+                  <p className="font-medium text-gray-800 dark:text-white">{formatDate(paciente?.fechaBcg || '')}</p>
                 </div>
               </div>
             </>
@@ -405,9 +451,9 @@ const calcularEdad = (fechaNacimiento: string) => {
       </div>
       
       <div className="mb-6">
-        <h4 className="text-md font-medium text-gray-700 mb-2">Pesquisa Metabólica</h4>
+        <h4 className="text-md font-medium text-gray-700 mb-2 dark:text-white">Pesquisa Metabólica</h4>
         <div className="flex items-center mb-2">
-          <Badge variant="outline" className={paciente?.pesquisaMetabolica ? "bg-green-50 text-green-600 border-green-200" : "bg-gray-50 text-gray-600 border-gray-200"}>
+          <Badge variant="outline" className={paciente?.pesquisaMetabolica ? "bg-green-50  text-green-600 border-green-200" : "bg-gray-50 text-gray-600 border-gray-200"}>
             {paciente?.pesquisaMetabolica ? 'Realizada' : 'No realizada'}
           </Badge>
         </div>
@@ -415,16 +461,16 @@ const calcularEdad = (fechaNacimiento: string) => {
           <>
             <div className="grid grid-cols-3 gap-2">
               <div>
-                <p className="text-sm text-gray-500">Protocolo</p>
-                <p className="font-medium text-gray-800">{paciente?.protocoloPesquisa || '-'}</p>
+                <p className="text-sm text-gray-500dark:text-white">Protocolo</p>
+                <p className="font-medium text-gray-800dark:text-white">{paciente?.protocoloPesquisa || '-'}</p>
               </div>
               <div>
-                <p className="text-sm text-gray-500">Fecha</p>
-                <p className="font-medium text-gray-800">{formatDate(paciente?.fechaPesquisa || '')}</p>
+                <p className="text-sm text-gray-500dark:text-white">Fecha</p>
+                <p className="font-medium text-gray-800dark:text-white">{formatDate(paciente?.fechaPesquisa || '')}</p>
               </div>
               <div>
-                <p className="text-sm text-gray-500">Hora</p>
-                <p className="font-medium text-gray-800">{paciente?.horaPesquisa || '-'}</p>
+                <p className="text-sm text-gray-500dark:text-white">Hora</p>
+                <p className="font-medium text-gray-800dark:text-white">{paciente?.horaPesquisa || '-'}</p>
               </div>
             </div>
           </>
@@ -432,119 +478,140 @@ const calcularEdad = (fechaNacimiento: string) => {
       </div>
       
       <div className="mb-6">
-        <h4 className="text-md font-medium text-gray-700 mb-2">Grupo y Factor</h4>
+        <h4 className="text-md font-medium text-gray-700 mb-2 dark:text-white">Grupo y Factor</h4>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
           <div>
-            <p className="text-sm text-gray-500">Recién Nacido</p>
-            <p className="font-medium text-gray-800">{paciente?.grupoFactorRn || '-'}</p>
+            <p className="text-sm text-gray-500 dark:text-white">Recién Nacido</p>
+            <p className="font-medium text-gray-800 dark:text-white">{paciente?.grupoFactorRn || '-'}</p>
           </div>
           <div>
-            <p className="text-sm text-gray-500">Materno</p>
-            <p className="font-medium text-gray-800">{paciente?.grupoFactorMaterno || '-'}</p>
+            <p className="text-sm text-gray-500 dark:text-white">Materno</p>
+            <p className="font-medium text-gray-800 dark:text-white">{paciente?.grupoFactorMaterno || '-'}</p>
           </div>
           <div>
-            <p className="text-sm text-gray-500">PCD</p>
-            <p className="font-medium text-gray-800">{paciente?.pcd || '-'}</p>
+            <p className="text-sm text-gray-500 dark:text-white">PCD</p>
+            <p className="font-medium text-gray-800 dark:text-white">{paciente?.pcd || '-'}</p>
           </div>
         </div>
       </div>
       
       <div>
-        <h4 className="text-md font-medium text-gray-700 mb-2">Laboratorios</h4>
+        <h4 className="text-md font-medium text-gray-700 mb-2 dark:text-white">Laboratorios</h4>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-2">
           <div>
-            <p className="text-sm text-gray-500">Bilirrubina Total</p>
-            <p className="font-medium text-gray-800">{paciente?.bilirrubinaTotalValor || '-'} mg/dl</p>
+            <p className="text-sm text-gray-500 dark:text-white">Bilirrubina Total</p>
+            <p className="font-medium text-gray-800 dark:text-white">{paciente?.bilirrubinaTotalValor || '-'} mg/dl</p>
           </div>
           <div>
-            <p className="text-sm text-gray-500">Bilirrubina Directa</p>
-            <p className="font-medium text-gray-800">{paciente?.bilirrubinaDirectaValor || '-'} mg/dl</p>
+            <p className="text-sm text-gray-500 dark:text-white">Bilirrubina Directa</p>
+            <p className="font-medium text-gray-800 dark:text-white">{paciente?.bilirrubinaDirectaValor || '-'} mg/dl</p>
           </div>
           <div>
-            <p className="text-sm text-gray-500">Hematocrito</p>
-            <p className="font-medium text-gray-800">{paciente?.hematocritoValor || '-'} %</p>
+            <p className="text-sm text-gray-500 dark:text-white">Hematocrito</p>
+            <p className="font-medium text-gray-800 dark:text-white">{paciente?.hematocritoValor || '-'} %</p>
           </div>
         </div>
         <div>
-          <p className="text-sm text-gray-500">Otros laboratorios</p>
-          <p className="font-medium text-gray-800">{paciente?.laboratorios || '-'}</p>
+          <p className="text-sm text-gray-500 dark:text-white">Otros laboratorios</p>
+          <p className="font-medium text-gray-800 dark:text-white">{paciente?.laboratorios || '-'}</p>
         </div>
       </div>
     </div>
   );
 
   const SeccionDatosEgreso = () => (
-    <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-md">
-      <h3 className="text-lg font-semibold text-gray-800 mb-4">Datos del Egreso</h3>
+    <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-md dark:bg-gray-800">
+      <h3 className="text-lg font-semibold text-gray-800 mb-4 dark:text-blue-600">Datos del Egreso</h3>
       
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+      {/* Primera fila: 4 columnas */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
         <div>
-          <p className="text-sm text-gray-500">Fecha</p>
-          <p className="font-medium text-gray-800">{formatDate(paciente?.fechaEgreso || '')}</p>
+          <p className="text-sm text-gray-500 dark:text-white">Fecha</p>
+          <p className="font-medium text-gray-800 dark:text-white">{formatDate(paciente?.fechaEgreso || '')}</p>
         </div>
         
         <div>
-          <p className="text-sm text-gray-500">Hora</p>
-          <p className="font-medium text-gray-800">{paciente?.horaEgreso || '-'}</p>
+          <p className="text-sm text-gray-500 dark:text-white">Hora</p>
+          <p className="font-medium text-gray-800 dark:text-white">{paciente?.horaEgreso || '-'}</p>
         </div>
         
         <div>
-          <p className="text-sm text-gray-500">Peso</p>
-          <p className="font-medium text-gray-800">{paciente?.pesoEgreso || '-'} g</p>
+          <p className="text-sm text-gray-500 dark:text-white">Peso</p>
+          <p className="font-medium text-gray-800 dark:text-white">{paciente?.pesoEgreso || '-'} g</p>
         </div>
         
         <div>
-          <p className="text-sm text-gray-500">% Diferencia Peso</p>
-          <p className="font-medium text-gray-800">{calcularPorcentajeDiferenciaPeso()}</p>
+          <p className="text-sm text-gray-500 dark:text-white">% Diferencia Peso</p>
+          <p className="font-medium text-gray-800 dark:text-white">{calcularPorcentajeDiferenciaPeso()}</p>
         </div>
-
-        <div>
-        <p className="text-sm text-gray-500">Evolución durante la internación</p>
-        <p className="font-medium text-gray-800">{paciente?.evolucionInternacion || '-'}</p>
       </div>
-
-      <div>
-        <p className="text-sm text-gray-500">Diagnósticos</p>
-        <p className="font-medium text-gray-800">{paciente?.diagnosticos || '-'}</p>
-      </div>
-
-      <div>
-        <p className="text-sm text-gray-500">Indicaciones al egreso</p>
-        <p className="font-medium text-gray-800">{paciente?.indicacionesEgreso || '-'}</p>
-      </div>
-
-      <div>
-        <p className="text-sm text-gray-500">Observaciones</p>
-        <p className="font-medium text-gray-800">{paciente?.observaciones || '-'}</p>
-      </div>
-
+      
+      {/* Campos de texto en una sola columna */}
+      <div className="mb-4">
+        <div className="mb-3">
+          <p className="text-sm text-gray-500 dark:text-white">Evolución durante la internación</p>
+          <p className="font-medium text-gray-800 dark:text-white">{paciente?.evolucionInternacion || '-'}</p>
+        </div>
         
+        <div className="mb-3">
+          <p className="text-sm text-gray-500 dark:text-white">Diagnósticos</p>
+          <p className="font-medium text-gray-800 dark:text-white">{paciente?.diagnosticos || '-'}</p>
+        </div>
         
+        <div className="mb-3">
+          <p className="text-sm text-gray-500 dark:text-white">Indicaciones al egreso</p>
+          <p className="font-medium text-gray-800 dark:text-white">{paciente?.indicacionesEgreso || '-'}</p>
+        </div>
+        
+        <div className="mb-3">
+          <p className="text-sm text-gray-500 dark:text-white">Observaciones</p>
+          <p className="font-medium text-gray-800 dark:text-white">{paciente?.observaciones || '-'}</p>
+        </div>
+      </div>
+      
+      {/* Última fila: 2 columnas */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <p className="text-sm text-gray-500">Enfermera</p>
-          <p className="font-medium text-gray-800">{paciente?.enfermeraEgreso || '-'}</p>
+          <p className="text-sm text-gray-500 dark:text-white">Enfermera</p>
+          <p className="font-medium text-gray-800 dark:text-white">{paciente?.enfermeraEgreso || '-'}</p>
         </div>
         
         <div>
-          <p className="text-sm text-gray-500">Neonatólogo/a</p>
-          <p className="font-medium text-gray-800">{paciente?.neonatologoEgreso || '-'}</p>
+          <p className="text-sm text-gray-500 dark:text-white">Neonatólogo/a</p>
+          <p className="font-medium text-gray-800 dark:text-white">{paciente?.neonatologoEgreso || '-'}</p>
         </div>
       </div>
     </div>
   );
 
   const SeccionDatosMaternos = () => (
-    <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-md">
-      <h3 className="text-lg font-semibold text-gray-800 mb-4">Datos Maternos</h3>
+    <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-md dark:bg-gray-800">
+      <h3 className="text-lg font-semibold text-gray-800 mb-4 dark:text-blue-600">Datos Maternos</h3>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="flex items-center">
+              <Activity className="w-4 h-4 text-medical-600 mr-2" />
+              <span className="text-gray-600 dark:text-gray-300">
+                Nombre y Apellido: {paciente?.datosMaternos} 
+              </span>
+            </div>
+      <div className="flex items-center">
+              <Activity className="w-4 h-4 text-medical-600 mr-2" />
+              <span className="text-gray-600 dark:text-gray-300">
+                Número de documento: {paciente?.numeroHistoriaClinica} 
+              </span>
+            </div>
+      <div className="flex items-center">
+              <Activity className="w-4 h-4 text-medical-600 mr-2" />
+              <span className="text-gray-600 dark:text-gray-300">
+                Número de teléfono: {paciente?.telefono} 
+              </span>
+            </div>
       
-      <div className="mb-4">
-        <p className="text-sm text-gray-500">Datos Maternos Generales</p>
-        <p className="font-medium text-gray-800">{paciente?.datosMaternos || '-'}</p>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-5">
         <div>
-          <p className="text-sm text-gray-500">SARS-CoV-2 (PCR)</p>
+          <p className="text-sm text-gray-500 dark:text-white">SARS-CoV-2 (PCR)</p>
           <Badge 
             variant="outline" 
             className={
@@ -560,7 +627,7 @@ const calcularEdad = (fechaNacimiento: string) => {
         </div>
         
         <div>
-          <p className="text-sm text-gray-500">Chagas</p>
+          <p className="text-sm text-gray-500 dark:text-white">Chagas</p>
           <Badge 
             variant="outline" 
             className={
@@ -576,7 +643,7 @@ const calcularEdad = (fechaNacimiento: string) => {
         </div>
         
         <div>
-          <p className="text-sm text-gray-500">Toxoplasmosis</p>
+          <p className="text-sm text-gray-500 dark:text-white">Toxoplasmosis</p>
           <Badge 
             variant="outline" 
             className={
@@ -592,7 +659,7 @@ const calcularEdad = (fechaNacimiento: string) => {
         </div>
         
         <div>
-          <p className="text-sm text-gray-500">HIV</p>
+          <p className="text-sm text-gray-500 dark:text-white">HIV</p>
           <Badge 
             variant="outline" 
             className={
@@ -608,7 +675,7 @@ const calcularEdad = (fechaNacimiento: string) => {
         </div>
         
         <div>
-          <p className="text-sm text-gray-500">VDRL</p>
+          <p className="text-sm text-gray-500 dark:text-white">VDRL</p>
           <Badge 
             variant="outline" 
             className={
@@ -624,7 +691,7 @@ const calcularEdad = (fechaNacimiento: string) => {
         </div>
         
         <div>
-          <p className="text-sm text-gray-500">Hepatitis B</p>
+          <p className="text-sm text-gray-500 dark:text-white">Hepatitis B</p>
           <Badge 
             variant="outline" 
             className={
@@ -640,7 +707,7 @@ const calcularEdad = (fechaNacimiento: string) => {
         </div>
         
         <div>
-          <p className="text-sm text-gray-500">EGB</p>
+          <p className="text-sm text-gray-500 dark:text-white">EGB</p>
           <Badge 
             variant="outline" 
             className={

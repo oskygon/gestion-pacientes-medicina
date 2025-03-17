@@ -77,12 +77,19 @@ const NuevoPaciente = () => {
     telefono: "",
     obraSocial: "",  
     sarsCov2: '',
+    fechaCovid: fechaActual,
     chagas: '',
+    fechaChagas: fechaActual,
     toxoplasmosis: '',
+    fechaToxo: fechaActual,
     hiv: '',
+    fechaHIV: fechaActual,
     vdrl: '',
+    fechaVDRL: fechaActual,
     hepatitisB: '',
+    fechaHB: fechaActual,
     egb: '',
+    fechaEGB: fechaActual,
     profilaxisATB: ''
   });
 
@@ -776,6 +783,16 @@ const vacunacionPesquisa = (
             <option value="Negativo">Negativo</option>
             <option value="No realizado">No realizado</option>
           </select>
+          <div className="space-y-1">
+              <label className="block text-xs font-medium text-gray-700 dark:text-gray-300">Fecha</label>
+              <input
+                type="date"
+                name="fechaCovid"
+                value={formData.fechaCovid}
+                onChange={handleChange}
+                className="w-full h-12 p-3 text-base rounded-lg bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-medical-300 focus:border-transparent transition-all duration-300 text-gray-700 dark:text-gray-200"
+              />
+            </div>
         </div>
         
         <div className="space-y-2">
@@ -792,6 +809,16 @@ const vacunacionPesquisa = (
             <option value="No realizado">No realizado</option>
             <option value="Pendiente">Pendiente</option>
           </select>
+          <div className="space-y-1">
+              <label className="block text-xs font-medium text-gray-700 dark:text-gray-300">Fecha</label>
+              <input
+                type="date"
+                name="fechaChagas"
+                value={formData.fechaChagas}
+                onChange={handleChange}
+                className="w-full h-12 p-3 text-base rounded-lg bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-medical-300 focus:border-transparent transition-all duration-300 text-gray-700 dark:text-gray-200"
+              />
+            </div>
         </div>
         
         <div className="space-y-2">
@@ -809,6 +836,16 @@ const vacunacionPesquisa = (
             <option value="Pendiente">Pendiente</option>
             <option value="Zona gris">Zona gris</option>
           </select>
+          <div className="space-y-1">
+              <label className="block text-xs font-medium text-gray-700 dark:text-gray-300">Fecha</label>
+              <input
+                type="date"
+                name="fechaToxo"
+                value={formData.fechaToxo}
+                onChange={handleChange}
+                className="w-full h-12 p-3 text-base rounded-lg bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-medical-300 focus:border-transparent transition-all duration-300 text-gray-700 dark:text-gray-200"
+              />
+            </div>
         </div>
         
         <div className="space-y-2">
@@ -825,6 +862,16 @@ const vacunacionPesquisa = (
             <option value="No realizado">No realizado</option>
             <option value="Pendiente">Pendiente</option>
           </select>
+          <div className="space-y-1">
+              <label className="block text-xs font-medium text-gray-700 dark:text-gray-300">Fecha</label>
+              <input
+                type="date"
+                name="fechaHIV"
+                value={formData.fechaHIV}
+                onChange={handleChange}
+                className="w-full h-12 p-3 text-base rounded-lg bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-medical-300 focus:border-transparent transition-all duration-300 text-gray-700 dark:text-gray-200"
+              />
+            </div>
         </div>
         
         <div className="space-y-2">
@@ -841,6 +888,16 @@ const vacunacionPesquisa = (
             <option value="No realizado">No realizado</option>
             <option value="Pendiente">Pendiente</option>
           </select>
+          <div className="space-y-1">
+              <label className="block text-xs font-medium text-gray-700 dark:text-gray-300">Fecha</label>
+              <input
+                type="date"
+                name="fechaVDRL"
+                value={formData.fechaVDRL}
+                onChange={handleChange}
+                className="w-full h-12 p-3 text-base rounded-lg bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-medical-300 focus:border-transparent transition-all duration-300 text-gray-700 dark:text-gray-200"
+              />
+            </div>
         </div>
         
         <div className="space-y-2">
@@ -857,6 +914,16 @@ const vacunacionPesquisa = (
             <option value="No realizado">No realizado</option>
             <option value="Pendiente">Pendiente</option>
           </select>
+          <div className="space-y-1">
+              <label className="block text-xs font-medium text-gray-700 dark:text-gray-300">Fecha</label>
+              <input
+                type="date"
+                name="fechaHB"
+                value={formData.fechaHB}
+                onChange={handleChange}
+                className="w-full h-12 p-3 text-base rounded-lg bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-medical-300 focus:border-transparent transition-all duration-300 text-gray-700 dark:text-gray-200"
+              />
+            </div>
         </div>
         
            
@@ -873,6 +940,16 @@ const vacunacionPesquisa = (
             <option value="Negativo">Negativo</option>
             <option value="No realizado">No realizado</option>
           </select>
+          <div className="space-y-1">
+              <label className="block text-xs font-medium text-gray-700 dark:text-gray-300">Fecha</label>
+              <input
+                type="date"
+                name="fechaEGB"
+                value={formData.fechaEGB}
+                onChange={handleChange}
+                className="w-full h-12 p-3 text-base rounded-lg bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-medical-300 focus:border-transparent transition-all duration-300 text-gray-700 dark:text-gray-200"
+              />
+            </div>
         </div>
         <div className="space-y-2">
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">PROFILAXIS ATB</label>
