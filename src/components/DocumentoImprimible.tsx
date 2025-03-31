@@ -28,6 +28,7 @@ const DocumentoImprimible: React.FC<DocumentoImprimibleProps> = ({
             @page { 
               size: A4; 
               margin: 2cm; 
+              margin-top: 0;
             }
             body { 
               font-family: Arial, sans-serif; 
@@ -132,7 +133,7 @@ const DocumentoImprimible: React.FC<DocumentoImprimibleProps> = ({
               body { margin: 0; padding: 0; }
               /* Ocultar título en el encabezado de la página impresa */
               @page { margin-top: 0; }
-              .header { display: none; }
+              .header { display: block; }
             }
           </style>
         </head>
