@@ -130,6 +130,9 @@ const DocumentoImprimible: React.FC<DocumentoImprimibleProps> = ({
             @media print {
               .no-print { display: none; }
               body { margin: 0; padding: 0; }
+              /* Ocultar título en el encabezado de la página impresa */
+              @page { margin-top: 0; }
+              .header { display: none; }
             }
           </style>
         </head>
