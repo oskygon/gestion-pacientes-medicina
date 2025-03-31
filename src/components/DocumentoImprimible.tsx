@@ -133,7 +133,18 @@ const DocumentoImprimible: React.FC<DocumentoImprimibleProps> = ({
               body { margin: 0; padding: 0; }
               /* Ocultar título en el encabezado de la página impresa */
               @page { margin-top: 0; }
-              .header { display: block; }
+              .header { 
+                display: block; 
+                text-align: center;
+                margin: 0 auto 15px auto;
+                padding-top: 1cm;
+              }
+              .titulo {
+                font-size: 22px;
+              }
+              .subtitulo {
+                font-size: 14px;
+              }
             }
           </style>
         </head>
@@ -179,7 +190,7 @@ const DocumentoImprimible: React.FC<DocumentoImprimibleProps> = ({
           </div>
 
           <div ref={documentRef} className="documento p-6 bg-white dark:bg-slate-900">
-            <div className="header border-b border-gray-300 dark:border-gray-700 pb-4 mb-6">
+            <div className="header border-b border-gray-300 dark:border-gray-700 pb-4 mb-6 text-center">
               <h1 className="titulo text-2xl font-bold text-center text-gray-900 dark:text-white">EPICRISIS NEONATAL</h1>
               <p className="subtitulo text-base text-center text-gray-600 dark:text-gray-400 mt-2">SANATORIO SAN FRANCISCO DE ASÍS</p>
             </div>
